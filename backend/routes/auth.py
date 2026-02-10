@@ -85,34 +85,27 @@ def login(data: UserLogin, session: Session = Depends(get_session)):
 # REFRESH TOKEN
 # -----------------------------
 
-@router.post("/refresh")
-def refresh_token(refresh_token: str, session: Session = Depends(get_session)):
+@router.post("/auth/refresh")
+def refresh_access_token(body: dict, session: Session = Depends(get_session)):
+    refresh_token = body.get("refresh_token")
+    
+    # Verify the refresh token
     payload = verify_refresh_token(refresh_token)
-    user_id = int(payload.get("sub"))
-
+    user_id = payload.get("sub")
+    
     user = session.get(User, user_id)
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
-
-    if user.refresh_token != refresh_token:
-        raise HTTPException(status_code=401, detail="Invalid refresh token")
-
-    if user.refresh_token_expires < datetime.utcnow():
-        raise HTTPException(status_code=401, detail="Refresh token expired")
-
-    # rotate refresh token
-    new_refresh = create_refresh_token({"sub": str(user.id)})
-    user.refresh_token = new_refresh
-    user.refresh_token_expires = datetime.utcnow() + timedelta(days=30)
-
-    new_access = create_access_token({"sub": str(user.id)})
-
-    session.add(user)
-    session.commit()
-
+    
+    # ✅ Create NEW access token
+    new_access_token = create_access_token({"sub": str(user.id)})
+    
+    # ✅ Create NEW refresh token (rotation)
+    new_refresh_token = create_refresh_token({"sub": str(user.id)})
+    
     return {
-        "access_token": new_access,
-        "refresh_token": new_refresh
+        "access_token": new_access_token,
+        "refresh_token": new_refresh_token  # ✅ Return new refresh token
     }
 
 # -----------------------------

@@ -41,13 +41,6 @@
             Settings
           </RouterLink>
 
-            <RouterLink
-              to="/items"
-              class="px-3 py-2 rounded-md text-sm hover:bg-gray-100 transition"
-              active-class="bg-gray-100 text-gray-900 font-medium"
-          >
-            Items
-          </RouterLink>
         </nav>
       </div>
 
