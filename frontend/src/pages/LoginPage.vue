@@ -73,7 +73,6 @@ async function handleLogin() {
     })
 
     const data = await res.json()
-
     setTokens(data.access_token, data.refresh_token)
 
     router.push("/dashboard")

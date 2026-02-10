@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
+import { accessToken } from '../utils/auth'
 import LandingPage from '../pages/LandingPage.vue'
 import LoginPage from '../pages/LoginPage.vue'
 import RegisterPage from '../pages/RegisterPage.vue'
@@ -9,6 +9,7 @@ import EditItemPage from '../pages/EditItemPage.vue'
 import SettingsPage from '../pages/SettingsPage.vue'
 import ItemsPage from '../pages/ItemsPage.vue'
 import ItemDetails from '../pages/ItemDetails.vue'
+
 
 const routes = [
   { path: '/', component: LandingPage },
@@ -33,16 +34,15 @@ const router = createRouter({
 })
 
 // Global auth guard
-router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem("token")
-  const isLoggedIn = !!token
-
-  if (to.meta.guestOnly && isLoggedIn) {
-    return next("/dashboard")
-  }
+router.beforeEach(async (to, from, next) => {
+  const isLoggedIn = !!accessToken.value // ✅ Use the reactive ref directly
 
   if (to.meta.requiresAuth && !isLoggedIn) {
     return next("/login")
+  }
+
+  if (to.meta.guestOnly && isLoggedIn) {
+    return next("/dashboard")
   }
 
   next()

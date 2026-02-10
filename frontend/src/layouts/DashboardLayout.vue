@@ -1,6 +1,11 @@
 <script setup>
 import { ref, onMounted } from "vue"
+import { useRouter } from "vue-router" // ✅ Add this
 import DashboardHeader from "../components/layout/DashboardHeader.vue"
+import { apiFetch } from "../utils/api"
+import { clearTokens } from "../utils/auth" // ✅ Add this
+
+const router = useRouter() // ✅ Add this
 
 const props = defineProps({
   pageTitle: { type: String, default: "Dashboard" }
@@ -12,11 +17,15 @@ const userName = ref("User")
 // Fetch user profile on load
 onMounted(async () => {
   try {
-    const res = await fetch("http://localhost:8000/auth/me", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-      }
-    })
+    const res = await apiFetch("/auth/me")
+
+    // ✅ If unauthorized, clear tokens and redirect to login
+    if (res.status === 401) {
+      console.error("Unauthorized - redirecting to login")
+      clearTokens() // Clear invalid/expired tokens
+      router.push("/login") // Redirect to login page
+      return
+    }
 
     if (!res.ok) {
       console.error("Failed to fetch user profile")
