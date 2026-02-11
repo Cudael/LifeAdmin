@@ -204,6 +204,36 @@
 
     </div>
 
+    <!-- NEW ROW: MINI CALENDAR + CATEGORIES -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+      
+      <!-- Mini Calendar Widget -->
+      <MiniCalendar :items="itemsStore.items" />
+
+      <!-- Categories Overview (2 columns) -->
+      <div class="lg:col-span-2 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-shadow duration-300">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+            <FileText :size="24" class="text-teal-500" />
+            Categories Overview
+          </h3>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <div
+            v-for="category in categoryStats"
+            :key="category.name"
+            class="p-4 bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl border border-teal-200/50 hover:shadow-md transition-all hover:scale-105 duration-200 cursor-pointer"
+          >
+            <div class="text-3xl mb-2">{{ category.icon }}</div>
+            <p class="text-sm text-gray-600 mb-1">{{ category.name }}</p>
+            <p class="text-2xl font-bold text-gray-900">{{ category.count }}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
     <!-- UPCOMING EXPIRATIONS (full width) - Enhanced -->
     <div class="mt-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-shadow duration-300">
       <div class="flex items-center justify-between mb-6">
@@ -304,6 +334,7 @@ import { apiFetch } from "../utils/api"
 
 import DashboardLayout from "../layouts/DashboardLayout.vue"
 import SummaryCard from "../components/SummaryCard.vue"
+import MiniCalendar from "../components/MiniCalendar.vue"
 
 import {
   Package,
@@ -351,6 +382,25 @@ const stats = computed(() => ({
     return diff <= 30
   }).length
 }))
+
+const categoryStats = computed(() => {
+  const categories = [
+    { name: 'Passport', icon: '🛂', key: 'passport' },
+    { name: 'License', icon: '🪪', key: 'license' },
+    { name: 'Insurance', icon: '🏥', key: 'insurance' },
+    { name: 'Banking', icon: '🏦', key: 'banking' },
+    { name: 'Subscriptions', icon: '💳', key: 'subscription' },
+    { name: 'Other', icon: '📄', key: 'other' }
+  ]
+
+  return categories.map(cat => ({
+    ...cat,
+    count: itemsStore.items.filter(item => 
+      item.category?.toLowerCase() === cat.key ||
+      item.type?.toLowerCase() === cat.key
+    ).length
+  }))
+})
 
 const recentItems = computed(() =>
   [...itemsStore.items]

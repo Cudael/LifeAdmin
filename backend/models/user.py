@@ -10,7 +10,11 @@ class User(SQLModel, table=True):
     email: str = Field(unique=True, index=True)
     password_hash: Optional[str] = None  # Changed to Optional for Google OAuth users
 
-    # Google OAuth fields (NEW)
+    # Email verification (NEW)
+    email_verified: bool = Field(default=False)
+    email_verified_at: Optional[datetime] = None
+
+    # Google OAuth fields
     google_id: Optional[str] = Field(default=None, unique=True, index=True)
     profile_picture: Optional[str] = None
 
@@ -21,10 +25,21 @@ class User(SQLModel, table=True):
     refresh_token: Optional[str] = None
     refresh_token_expires: Optional[datetime] = None
 
-    # Timestamps
-    created_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
-
-    # Notification preferences (NEW)
+    # Notification preferences
     email_notifications: bool = Field(default=True)  # Enable/disable email notifications
     notification_days_before: int = Field(default=7)  # How many days before expiry to notify (default 7 days)
     daily_digest: bool = Field(default=False)  # Send daily digest email
+
+    # Display preferences
+    date_format: str = Field(default="MM/DD/YYYY")  # Date format preference
+    time_format: str = Field(default="12h")  # Time format preference (12h or 24h)
+    items_per_page: int = Field(default=25)  # Items to show per page
+    default_sort: str = Field(default="expiration_asc")  # Default sort order for items list
+
+    # Account settings
+    language: str = Field(default="en")  # Language preference
+    timezone: str = Field(default="UTC")  # Timezone preference
+
+    # Timestamps
+    created_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
+    updated_at: Optional[datetime] = Field(default_factory=datetime.utcnow)

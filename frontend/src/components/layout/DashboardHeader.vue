@@ -45,6 +45,15 @@
             <Settings :size="18" />
             Settings
           </RouterLink>
+
+          <router-link
+            to="/calendar"
+            class="nav-link"
+            :class="{ 'nav-link-active': $route.path === '/calendar' }"
+          >
+            <Calendar :size="18" />
+            Calendar
+          </router-link>
           
         </nav>
       </div>
@@ -107,7 +116,7 @@
         <!-- NOTIFICATION BELL -->
         <div class="relative">
           <button
-            @click="toggleNotifications"
+            @click.stop="toggleNotifications"
             class="relative w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
           >
             <Bell :size="20" class="text-gray-700" />
@@ -133,6 +142,7 @@
             <div
               v-if="notificationsOpen"
               v-click-outside="closeNotifications"
+              @click.stop
               class="absolute right-0 mt-2 w-96 max-h-[500px] bg-white border-2 border-gray-200 rounded-2xl shadow-2xl z-[60] overflow-hidden"
             >
               <!-- Header -->
@@ -149,38 +159,71 @@
 
               <!-- Notifications List -->
               <div class="overflow-y-auto max-h-[400px]">
+                <!-- Empty State -->
                 <div v-if="notifications.length === 0" class="px-4 py-8 text-center text-gray-500">
                   <Bell :size="32" class="mx-auto mb-2 text-gray-300" />
                   <p class="text-sm">No notifications yet</p>
                 </div>
 
-                <button
-                  v-for="notification in notifications"
-                  :key="notification.id"
-                  @click.stop="handleNotificationClick(notification)"
-                  class="w-full px-4 py-3 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0 text-left"
-                  :class="{ 'bg-teal-50/50': !notification.is_read }"
-                >
-                  <div class="flex items-start gap-3">
-                    <div class="flex-shrink-0 mt-1">
-                      <div
-                        class="w-2 h-2 rounded-full"
-                        :class="notification.is_read ? 'bg-gray-300' : 'bg-teal-500'"
-                      ></div>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                      <p class="text-sm font-semibold text-gray-900 mb-1">
-                        {{ notification.title }}
-                      </p>
-                      <p class="text-xs text-gray-600">
-                        {{ notification.message }}
-                      </p>
-                      <p class="text-xs text-gray-400 mt-1">
-                        {{ formatTime(notification.created_at) }}
-                      </p>
-                    </div>
+                <!-- Unread Section -->
+                <div v-if="unreadNotifications.length > 0">
+                  <div class="px-4 py-2 bg-gray-50 border-b border-gray-200">
+                    <p class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Unread</p>
                   </div>
-                </button>
+                  <button
+                    v-for="notification in unreadNotifications"
+                    :key="notification.id"
+                    @click.stop="handleNotificationClick(notification)"
+                    class="w-full px-4 py-3 hover:bg-gray-50 transition-colors border-b border-gray-100 text-left bg-teal-50/50"
+                  >
+                    <div class="flex items-start gap-3">
+                      <div class="flex-shrink-0 mt-1">
+                        <div class="w-2 h-2 rounded-full bg-teal-500"></div>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-gray-900 mb-1">
+                          {{ notification.title }}
+                        </p>
+                        <p class="text-xs text-gray-600">
+                          {{ notification.message }}
+                        </p>
+                        <p class="text-xs text-gray-400 mt-1">
+                          {{ formatTime(notification.created_at) }}
+                        </p>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+
+                <!-- Read Section -->
+                <div v-if="readNotifications.length > 0">
+                  <div class="px-4 py-2 bg-gray-50 border-b border-gray-200">
+                    <p class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Earlier</p>
+                  </div>
+                  <button
+                    v-for="notification in readNotifications"
+                    :key="notification.id"
+                    @click.stop="handleNotificationClick(notification)"
+                    class="w-full px-4 py-3 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0 text-left opacity-70 hover:opacity-100"
+                  >
+                    <div class="flex items-start gap-3">
+                      <div class="flex-shrink-0 mt-1">
+                        <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-gray-900 mb-1">
+                          {{ notification.title }}
+                        </p>
+                        <p class="text-xs text-gray-600">
+                          {{ notification.message }}
+                        </p>
+                        <p class="text-xs text-gray-400 mt-1">
+                          {{ formatTime(notification.created_at) }}
+                        </p>
+                      </div>
+                    </div>
+                  </button>
+                </div>
               </div>
             </div>
           </Transition>
@@ -390,7 +433,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from "vue"
+import { ref, computed, onMounted, onUnmounted, nextTick } from "vue"
 import { useRouter } from "vue-router"
 import { clearTokens } from "../../utils/auth"
 import { apiFetch } from "../../utils/api"
@@ -435,6 +478,16 @@ const initials = computed(() => {
   return props.userName.charAt(0).toUpperCase() + (props.userName.charAt(1) || '').toUpperCase()
 })
 
+// Computed: Unread notifications
+const unreadNotifications = computed(() => {
+  return notifications.value.filter(n => !n.is_read)
+})
+
+// Computed: Read notifications
+const readNotifications = computed(() => {
+  return notifications.value.filter(n => n.is_read)
+})
+
 // Click outside directive
 const vClickOutside = {
   mounted(el, binding) {
@@ -443,7 +496,9 @@ const vClickOutside = {
         binding.value(event)
       }
     }
-    document.body.addEventListener('click', el.clickOutsideEvent)
+    setTimeout(() => {
+      document.body.addEventListener('click', el.clickOutsideEvent)
+    }, 100)
   },
   unmounted(el) {
     document.body.removeEventListener('click', el.clickOutsideEvent)
@@ -457,7 +512,6 @@ async function fetchNotifications() {
     if (res.ok) {
       const data = await res.json()
       notifications.value = data
-      console.log('Fetched notifications:', data.length)
     }
   } catch (error) {
     console.error('Failed to fetch notifications:', error)
@@ -478,9 +532,14 @@ async function fetchUnreadCount() {
 }
 
 // Toggle notifications dropdown
-async function toggleNotifications() {
-  notificationsOpen.value = !notificationsOpen.value
+async function toggleNotifications(event) {
+  event.stopPropagation()
+  
   if (notificationsOpen.value) {
+    notificationsOpen.value = false
+  } else {
+    notificationsOpen.value = true
+    await nextTick()
     await fetchNotifications()
     await fetchUnreadCount()
   }
@@ -494,28 +553,19 @@ function closeNotifications() {
 // Mark notification as read
 async function markAsRead(notificationId) {
   try {
-    console.log('Marking notification as read:', notificationId)
-    
     const res = await apiFetch(`/notifications/${notificationId}/read`, {
       method: 'POST'
     })
     
     if (res.ok) {
-      console.log('Successfully marked as read')
-      
-      // Update local state
       const notification = notifications.value.find(n => n.id === notificationId)
       if (notification && !notification.is_read) {
         notification.is_read = true
         unreadCount.value = Math.max(0, unreadCount.value - 1)
-        console.log('Updated local state. New unread count:', unreadCount.value)
       }
-      
       return true
-    } else {
-      console.error('Failed to mark as read. Status:', res.status)
-      return false
     }
+    return false
   } catch (error) {
     console.error('Error marking notification as read:', error)
     return false
@@ -524,36 +574,28 @@ async function markAsRead(notificationId) {
 
 // Handle notification click
 async function handleNotificationClick(notification) {
-  console.log('Notification clicked:', notification.id)
-  
   // Mark as read
-  const success = await markAsRead(notification.id)
+  await markAsRead(notification.id)
   
-  if (success) {
-    // Close dropdown
-    notificationsOpen.value = false
-    
-    // Navigate to item
-    router.push(`/items/${notification.item_id}`)
-  }
+  // Close dropdown
+  notificationsOpen.value = false
+  
+  // Navigate to item
+  router.push(`/items/${notification.item_id}`)
 }
 
 // Mark all as read
 async function handleMarkAllAsRead() {
   try {
-    console.log('Marking all as read...')
-    
     const res = await apiFetch('/notifications/mark-all-read', {
       method: 'POST'
     })
     
     if (res.ok) {
-      // Update local state
       notifications.value.forEach(n => {
         n.is_read = true
       })
       unreadCount.value = 0
-      console.log('All notifications marked as read')
     }
   } catch (error) {
     console.error('Failed to mark all as read:', error)

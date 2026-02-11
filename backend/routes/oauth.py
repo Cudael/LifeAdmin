@@ -5,6 +5,7 @@ from sqlmodel import Session, select
 from authlib.integrations.starlette_client import OAuth
 import os
 from dotenv import load_dotenv
+from datetime import datetime
 
 from database import get_session
 from models.user import User
@@ -51,6 +52,7 @@ async def google_callback(request: Request, session: Session = Depends(get_sessi
         name = user_info.get('name')
         google_id = user_info.get('sub')
         picture = user_info.get('picture')
+        email_verified = user_info.get('email_verified', False)  # Google provides this
         
         if not email:
             raise HTTPException(status_code=400, detail="Email not provided by Google")
@@ -69,18 +71,32 @@ async def google_callback(request: Request, session: Session = Depends(get_sessi
                 email=email,
                 google_id=google_id,
                 profile_picture=picture,
-                password_hash=None  # No password for Google users
+                password_hash=None,  # No password for Google users
+                email_verified=True,  # ✅ Google emails are pre-verified
+                email_verified_at=datetime.utcnow()  # ✅ Mark when verified
             )
             session.add(user)
             session.commit()
             session.refresh(user)
+            print(f"✅ New Google user created and auto-verified: {email}")
         else:
             # Update existing user with Google info
             print(f"User exists: {email}")
+            
+            # Update Google ID if not set
             if not user.google_id:
                 user.google_id = google_id
+            
+            # Update profile picture if not set
             if not user.profile_picture:
                 user.profile_picture = picture
+            
+            # ✅ Auto-verify email if signing in with Google (even if previously unverified)
+            if not user.email_verified and email_verified:
+                user.email_verified = True
+                user.email_verified_at = datetime.utcnow()
+                print(f"✅ Email auto-verified via Google: {email}")
+            
             session.add(user)
             session.commit()
         

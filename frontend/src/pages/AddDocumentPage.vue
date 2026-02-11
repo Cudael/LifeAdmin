@@ -42,8 +42,56 @@
         <span class="font-medium text-gray-700">Back</span>
       </button>
 
-      <!-- Form Card -->
-      <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-gray-100 p-8 md:p-10">
+      <!-- ✅ VERIFICATION REQUIRED GUARD -->
+      <div v-if="user && !isVerified" class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-orange-200 p-8 md:p-10">
+        <div class="text-center py-8">
+          <div class="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <ShieldAlert :size="40" class="text-orange-600" />
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-3">Email Verification Required</h3>
+          <p class="text-gray-600 mb-6 max-w-md mx-auto">
+            Please verify your email address to add documents and upload files. Check your inbox for the verification link.
+          </p>
+          
+          <!-- Resend Button -->
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button
+              @click="resendVerification"
+              :disabled="resending"
+              class="px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              <Loader2 v-if="resending" :size="20" class="animate-spin" />
+              <Mail v-else :size="20" />
+              {{ resending ? 'Sending...' : 'Resend Verification Email' }}
+            </button>
+            
+            <RouterLink
+              to="/items"
+              class="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-colors"
+            >
+              Back to Items
+            </RouterLink>
+          </div>
+
+          <!-- Success Message -->
+          <Transition
+            enter-active-class="transition-all duration-200 ease-out"
+            enter-from-class="opacity-0 translate-y-2"
+            enter-to-class="opacity-100 translate-y-0"
+            leave-active-class="transition-all duration-150 ease-in"
+            leave-from-class="opacity-100 translate-y-0"
+            leave-to-class="opacity-0 translate-y-2"
+          >
+            <div v-if="verificationEmailSent" class="mt-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl flex items-center justify-center gap-2">
+              <CheckCircle2 :size="18" class="text-green-600" />
+              <p class="text-sm text-green-800 font-medium">✅ Verification email sent! Check your inbox.</p>
+            </div>
+          </Transition>
+        </div>
+      </div>
+
+      <!-- ✅ FORM (Only show if verified) -->
+      <div v-else-if="user" class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-gray-100 p-8 md:p-10">
 
         <!-- SUCCESS MESSAGE -->
         <Transition
@@ -239,6 +287,14 @@
 
       </div>
 
+      <!-- Loading State -->
+      <div v-else class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-gray-100 p-8 md:p-10">
+        <div class="text-center py-12">
+          <Loader2 :size="48" class="animate-spin text-teal-500 mx-auto mb-4" />
+          <p class="text-gray-600">Loading...</p>
+        </div>
+      </div>
+
       <!-- Quick Tips -->
       <div class="mt-8 p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl border-2 border-blue-200">
         <div class="flex items-start gap-3">
@@ -271,7 +327,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue"
+import { ref, computed, onMounted } from "vue"
 import { useRouter } from "vue-router"
 import DashboardLayout from "../layouts/DashboardLayout.vue"
 import FileUploader from "../components/FileUploader.vue"
@@ -292,10 +348,18 @@ import {
   ChevronRight,
   ChevronDown,
   Clock,
-  Lightbulb
+  Lightbulb,
+  ShieldAlert,
+  Mail
 } from "lucide-vue-next"
 
 const router = useRouter()
+
+// ✅ User state
+const user = ref(null)
+const isVerified = computed(() => user.value?.email_verified || false)
+const resending = ref(false)
+const verificationEmailSent = ref(false)
 
 // Form fields
 const name = ref("")
@@ -327,6 +391,50 @@ const daysUntilExpiry = computed(() => {
   
   return diffDays
 })
+
+// ✅ Load user on mount
+onMounted(async () => {
+  await loadUser()
+})
+
+// ✅ Load user function
+async function loadUser() {
+  try {
+    const res = await apiFetch("/auth/me")
+    if (res.ok) {
+      user.value = await res.json()
+    }
+  } catch (err) {
+    console.error("Failed to load user:", err)
+  }
+}
+
+// ✅ Resend verification email
+async function resendVerification() {
+  resending.value = true
+  verificationEmailSent.value = false
+  
+  try {
+    const res = await apiFetch("/auth/resend-verification", {
+      method: "POST"
+    })
+
+    if (res.ok) {
+      verificationEmailSent.value = true
+      setTimeout(() => {
+        verificationEmailSent.value = false
+      }, 5000)
+    } else {
+      const data = await res.json()
+      alert(data.detail || "Failed to send verification email")
+    }
+  } catch (err) {
+    console.error("Resend verification error:", err)
+    alert("Something went wrong. Please try again.")
+  } finally {
+    resending.value = false
+  }
+}
 
 async function handleSubmit() {
   errorMessage.value = ""
@@ -371,6 +479,14 @@ async function handleSubmit() {
 
     if (!res.ok) {
       const data = await res.json()
+      
+      // ✅ Check if it's a verification error
+      if (res.status === 403 && data.detail?.includes('verification')) {
+        errorMessage.value = "⚠️ Email verification required. Please verify your email to add documents."
+        loading.value = false
+        return
+      }
+      
       errorMessage.value = data.detail || "Failed to add document"
       loading.value = false
       return

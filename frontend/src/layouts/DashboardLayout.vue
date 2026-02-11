@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from "vue"
 import { useRouter } from "vue-router"
 import DashboardHeader from "../components/layout/DashboardHeader.vue"
+import EmailVerificationBanner from "../components/EmailVerificationBanner.vue"  // ✅ Import
 import { apiFetch } from "../utils/api"
 import { clearTokens } from "../utils/auth"
 import { Sparkles, TrendingUp } from "lucide-vue-next"
@@ -13,9 +14,10 @@ const props = defineProps({
 })
 
 // User info
+const user = ref(null)  // ✅ Changed to full user object
 const userName = ref("User")
 const userEmail = ref("")
-const userAvatar = ref(null) // NEW
+const userAvatar = ref(null)
 const loading = ref(true)
 
 // Check if it's the dashboard page
@@ -49,9 +51,10 @@ onMounted(async () => {
     }
 
     const data = await res.json()
+    user.value = data  // ✅ Store full user object
     userName.value = data.full_name || data.username || data.name || "User"
     userEmail.value = data.email || ""
-    userAvatar.value = data.profile_picture || null // NEW
+    userAvatar.value = data.profile_picture || null
     loading.value = false
 
   } catch (err) {
@@ -70,6 +73,9 @@ onMounted(async () => {
       :userEmail="userEmail"
       :userAvatar="userAvatar"
     />
+
+    <!-- ✅ EMAIL VERIFICATION BANNER (Below header, above content) -->
+    <EmailVerificationBanner v-if="user && !loading" :user="user" />
 
     <!-- MAIN CONTENT AREA (with top padding for fixed header) -->
     <main class="flex-1 p-4 md:p-6 lg:p-8 pt-20 overflow-y-auto">

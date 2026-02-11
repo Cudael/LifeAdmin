@@ -1,5 +1,5 @@
 <template>
-  <DashboardLayout pageTitle="Settings">
+  <DashboardLayout pageTitle="Profile">
 
     <template #actions>
       <button
@@ -11,13 +11,13 @@
       </button>
     </template>
 
-    <!-- SETTINGS HEADER -->
+    <!-- PROFILE HEADER -->
     <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
-      <p class="text-gray-600">Manage your app preferences and configurations</p>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">My Profile</h1>
+      <p class="text-gray-600">Manage your personal information and security</p>
     </div>
 
-    <!-- SETTINGS LAYOUT -->
+    <!-- PROFILE LAYOUT -->
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
       <!-- LEFT SIDEBAR -->
@@ -93,33 +93,33 @@
 
 <script setup>
 import { ref, computed } from "vue"
-import AccountSettings from "../components/settings/AccountSettings.vue"
-import PreferencesSettings from "../components/settings/PreferencesSettings.vue"
+import ProfileSettings from "../components/profile/ProfileSettings.vue"
+import SecuritySettings from "../components/profile/SecuritySettings.vue"
 import DashboardLayout from "../layouts/DashboardLayout.vue"
 
 import {
-  Settings,
-  Sliders
+  User,
+  Shield
 } from "lucide-vue-next"
 
 const menu = [
   {
-    key: "account",
-    label: "Account",
-    description: "Manage your account settings",
-    icon: Settings,
-    component: AccountSettings
+    key: "profile",
+    label: "Personal Info",
+    description: "Manage your personal information",
+    icon: User,
+    component: ProfileSettings
   },
   {
-    key: "preferences",
-    label: "Preferences",
-    description: "Customize your app experience",
-    icon: Sliders,
-    component: PreferencesSettings
+    key: "security",
+    label: "Security",
+    description: "Password and authentication settings",
+    icon: Shield,
+    component: SecuritySettings
   }
 ]
 
-const active = ref("account")
+const active = ref("profile")
 const hasUnsavedChanges = ref(false)
 
 const activeMenu = computed(() => {
