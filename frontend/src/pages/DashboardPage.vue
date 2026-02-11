@@ -6,53 +6,63 @@
       <div class="flex gap-3">
         <RouterLink
           to="/add-document"
-          class="px-4 py-2 bg-gradient-to-r from-teal-400 to-cyan-400 text-black rounded-lg font-semibold shadow hover:from-teal-300 hover:to-cyan-300 transition"
+          class="group px-5 py-2.5 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl font-semibold shadow-lg shadow-teal-500/30 hover:shadow-xl hover:shadow-teal-500/40 hover:scale-105 transition-all duration-200 flex items-center gap-2"
         >
-          + Add Document
+          <PlusCircle :size="18" class="group-hover:rotate-90 transition-transform duration-200" />
+          Add Document
         </RouterLink>
 
         <RouterLink
           to="/add-subscription"
-          class="px-4 py-2 bg-white/10 backdrop-blur border border-white/20 text-white rounded-lg font-semibold hover:bg-white/20 transition"
+          class="group px-5 py-2.5 bg-white/80 backdrop-blur-sm border border-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-white hover:border-teal-300 hover:shadow-md transition-all duration-200 flex items-center gap-2"
         >
-          + Add Subscription
+          <PlusCircle :size="18" class="group-hover:rotate-90 transition-transform duration-200" />
+          Add Subscription
         </RouterLink>
       </div>
     </template>
 
-    <!-- SUMMARY CARDS ROW 1 -->
+    <!-- SUMMARY CARDS ROW 1 - Enhanced with better hover effects -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-
+      
       <SummaryCard
         label="Total Items"
         :icon="Package"
         iconColor="stroke-teal-500"
         subtitle="All stored items"
         :value="stats.total"
+        bgGradient="from-teal-50 to-cyan-50"
+        class="hover:scale-105 transition-transform duration-200"
       />
 
       <SummaryCard
         label="Expiring Soon"
         :icon="Clock"
-        iconColor="stroke-red-500"
+        iconColor="stroke-orange-500"
         subtitle="Within 30 days"
         :value="stats.soon"
+        bgGradient="from-orange-50 to-red-50"
+        class="hover:scale-105 transition-transform duration-200"
       />
 
       <SummaryCard
         label="This Week"
         :icon="Calendar"
-        iconColor="stroke-yellow-500"
+        iconColor="stroke-amber-500"
         subtitle="Next 7 days"
         :value="stats.week"
+        bgGradient="from-amber-50 to-yellow-50"
+        class="hover:scale-105 transition-transform duration-200"
       />
 
       <SummaryCard
         label="Expired"
         :icon="AlertTriangle"
-        iconColor="stroke-red-600"
+        iconColor="stroke-red-500"
         subtitle="Needs attention"
         :value="stats.expired"
+        bgGradient="from-red-50 to-pink-50"
+        class="hover:scale-105 transition-transform duration-200"
       />
 
     </div>
@@ -63,63 +73,90 @@
       <SummaryCard
         label="Documents"
         :icon="FileText"
-        iconColor="stroke-green-600"
+        iconColor="stroke-green-500"
         subtitle="Uploaded files"
         :value="stats.documents"
+        bgGradient="from-green-50 to-emerald-50"
+        class="hover:scale-105 transition-transform duration-200"
       />
 
       <SummaryCard
         label="Subscriptions"
         :icon="CreditCard"
-        iconColor="stroke-purple-600"
+        iconColor="stroke-purple-500"
         subtitle="Recurring items"
         :value="stats.subscriptions"
+        bgGradient="from-purple-50 to-violet-50"
+        class="hover:scale-105 transition-transform duration-200"
       />
 
       <SummaryCard
         label="Recently Added"
         :icon="PlusCircle"
-        iconColor="stroke-teal-600"
+        iconColor="stroke-blue-500"
         subtitle="Last 30 days"
         :value="stats.recent"
+        bgGradient="from-blue-50 to-indigo-50"
+        class="hover:scale-105 transition-transform duration-200"
       />
 
       <SummaryCard
         label="Missing Documents"
         :icon="AlertTriangle"
-        iconColor="stroke-blue-600"
+        iconColor="stroke-gray-500"
         subtitle="No file uploaded"
         :value="stats.missingDocs"
+        bgGradient="from-gray-50 to-slate-50"
+        class="hover:scale-105 transition-transform duration-200"
       />
 
     </div>
 
-    <!-- WIDGETS LAYOUT -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- WIDGETS LAYOUT - Enhanced with better styling -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-      <!-- RECENTLY ADDED (2 columns wide) -->
-      <div class="lg:col-span-2 bg-white rounded-3xl shadow p-6 border border-teal-100">
-        <h3 class="text-xl font-semibold mb-4 text-gray-900">Recently Added</h3>
-
-        <div v-if="recentItems.length === 0" class="text-gray-500 text-sm">
-          No recent items.
+      <!-- RECENTLY ADDED (2 columns wide) - Enhanced -->
+      <div class="lg:col-span-2 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-shadow duration-300">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+            <Clock :size="24" class="text-teal-500" />
+            Recently Added
+          </h3>
+          <RouterLink to="/items" class="text-teal-600 text-sm font-medium hover:text-teal-700 hover:underline">
+            View All →
+          </RouterLink>
         </div>
 
-        <ul v-else class="space-y-4">
+        <div v-if="recentItems.length === 0" class="text-center py-12">
+          <Package :size="48" class="text-gray-300 mx-auto mb-3" />
+          <p class="text-gray-500 text-sm">No recent items yet</p>
+          <RouterLink to="/add-document" class="text-teal-600 text-sm font-medium hover:underline mt-2 inline-block">
+            Add your first item
+          </RouterLink>
+        </div>
+
+        <ul v-else class="space-y-3">
           <li
             v-for="item in recentItems"
             :key="item.id"
-            class="flex justify-between items-center"
+            class="group flex justify-between items-center p-4 rounded-xl hover:bg-gradient-to-r hover:from-teal-50 hover:to-cyan-50 transition-all duration-200 border border-transparent hover:border-teal-200"
           >
-            <div>
-              <p class="font-medium text-gray-900">{{ item.name }}</p>
-              <p class="text-xs text-gray-500">
-                Added {{ formatDate(item.created_at) }}
-              </p>
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-cyan-400 flex items-center justify-center flex-shrink-0 shadow-md">
+                <FileText :size="20" class="text-white" />
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900 group-hover:text-teal-700 transition-colors">
+                  {{ item.name }}
+                </p>
+                <p class="text-xs text-gray-500 mt-1">
+                  Added {{ formatDate(item.created_at) }}
+                </p>
+              </div>
             </div>
             <RouterLink
               :to="`/items/${item.id}`"
-              class="text-teal-600 text-sm font-medium hover:underline"
+              class="px-4 py-2 bg-teal-500 text-white text-sm font-medium rounded-lg hover:bg-teal-600 transition-colors shadow-sm opacity-0 group-hover:opacity-100 duration-200"
             >
               View
             </RouterLink>
@@ -127,32 +164,39 @@
         </ul>
       </div>
 
-      <!-- RECOMMENDED ACTIONS (1 column wide) -->
-      <div class="bg-white rounded-3xl shadow p-6 border border-teal-100">
-        <h3 class="text-xl font-semibold mb-4 text-gray-900">Recommended Actions</h3>
+      <!-- RECOMMENDED ACTIONS (1 column wide) - Enhanced -->
+      <div class="bg-gradient-to-br from-teal-500 to-cyan-500 rounded-2xl shadow-lg p-6 text-white hover:shadow-xl transition-shadow duration-300">
+        <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+          <AlertTriangle :size="24" />
+          Action Items
+        </h3>
 
-        <div v-if="recommended.length === 0" class="text-gray-500 text-sm">
-          You're all caught up.
+        <div v-if="recommended.length === 0" class="text-center py-8">
+          <div class="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-3">
+            <span class="text-3xl">✨</span>
+          </div>
+          <p class="text-white/90 font-medium">You're all caught up!</p>
+          <p class="text-white/70 text-sm mt-1">Great job staying organized</p>
         </div>
 
         <ul v-else class="space-y-4">
           <li
             v-for="action in recommended"
             :key="action.id"
-            class="flex items-start gap-3"
+            class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-colors duration-200"
           >
-            <div class="w-2 h-2 rounded-full bg-teal-500 mt-2"></div>
-
-            <div>
-              <p class="font-medium text-gray-900">{{ action.text }}</p>
-
-              <RouterLink
-                v-if="action.link"
-                :to="action.link"
-                class="text-teal-600 text-sm font-medium hover:underline"
-              >
-                {{ action.cta }}
-              </RouterLink>
+            <div class="flex items-start gap-3">
+              <div class="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
+              <div class="flex-1">
+                <p class="font-medium text-white mb-2">{{ action.text }}</p>
+                <RouterLink
+                  v-if="action.link"
+                  :to="action.link"
+                  class="inline-flex items-center gap-1 text-sm font-medium text-white/90 hover:text-white underline-offset-2 hover:underline"
+                >
+                  {{ action.cta }} →
+                </RouterLink>
+              </div>
             </div>
           </li>
         </ul>
@@ -160,29 +204,47 @@
 
     </div>
 
-    <!-- UPCOMING EXPIRATIONS (full width) -->
-    <div class="mt-8 bg-white rounded-3xl shadow p-6 border border-teal-100">
-      <h3 class="text-xl font-semibold mb-4 text-gray-900">Upcoming Expirations</h3>
-
-      <div v-if="upcoming.length === 0" class="text-gray-500 text-sm">
-        Nothing expiring soon.
+    <!-- UPCOMING EXPIRATIONS (full width) - Enhanced -->
+    <div class="mt-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-shadow duration-300">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+          <AlertTriangle :size="24" class="text-orange-500" />
+          Upcoming Expirations
+        </h3>
+        <span class="px-3 py-1 bg-orange-100 text-orange-700 text-xs font-semibold rounded-full">
+          {{ upcoming.length }} items
+        </span>
       </div>
 
-      <ul v-else class="space-y-4">
+      <div v-if="upcoming.length === 0" class="text-center py-12">
+        <Calendar :size="48" class="text-gray-300 mx-auto mb-3" />
+        <p class="text-gray-500 text-sm">Nothing expiring soon</p>
+        <p class="text-gray-400 text-xs mt-1">You're all set! 🎉</p>
+      </div>
+
+      <ul v-else class="space-y-3">
         <li
           v-for="item in upcoming"
           :key="item.id"
-          class="flex justify-between items-center"
+          class="group flex justify-between items-center p-4 rounded-xl hover:bg-orange-50 transition-all duration-200 border border-transparent hover:border-orange-200"
         >
-          <div>
-            <p class="font-medium text-gray-900">{{ item.name }}</p>
-            <p class="text-xs text-gray-500">
-              Expires {{ formatDate(item.expiration_date) }}
-            </p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 to-red-400 flex items-center justify-center flex-shrink-0 shadow-md">
+              <Clock :size="20" class="text-white" />
+            </div>
+            <div>
+              <p class="font-semibold text-gray-900">{{ item.name }}</p>
+              <p class="text-xs text-gray-500 mt-1 flex items-center gap-2">
+                <span>Expires {{ formatDate(item.expiration_date) }}</span>
+                <span class="px-2 py-0.5 bg-orange-100 text-orange-700 rounded-full font-medium">
+                  {{ daysLeft(item.expiration_date) }} days
+                </span>
+              </p>
+            </div>
           </div>
           <RouterLink
             :to="`/items/${item.id}`"
-            class="text-red-600 text-sm font-medium hover:underline"
+            class="px-4 py-2 bg-orange-500 text-white text-sm font-medium rounded-lg hover:bg-orange-600 transition-colors shadow-sm opacity-0 group-hover:opacity-100 duration-200"
           >
             Review
           </RouterLink>
@@ -190,27 +252,43 @@
       </ul>
     </div>
 
-    <!-- TIMELINE (full width) -->
-    <div class="mt-8 bg-white rounded-3xl shadow p-6 border border-teal-100">
-      <h3 class="text-xl font-semibold mb-4 text-gray-900">Next Deadlines</h3>
-
-      <div v-if="timeline.length === 0" class="text-gray-500 text-sm">
-        No upcoming deadlines.
+    <!-- TIMELINE (full width) - Enhanced -->
+    <div class="mt-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-shadow duration-300">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+          <Calendar :size="24" class="text-teal-500" />
+          Next Deadlines
+        </h3>
       </div>
 
-      <div v-else class="space-y-6">
-        <div
-          v-for="item in timeline"
-          :key="item.id"
-          class="flex items-start gap-3"
-        >
-          <div class="w-2 h-2 rounded-full bg-teal-500 mt-2"></div>
+      <div v-if="timeline.length === 0" class="text-center py-12">
+        <Calendar :size="48" class="text-gray-300 mx-auto mb-3" />
+        <p class="text-gray-500 text-sm">No upcoming deadlines</p>
+      </div>
 
-          <div>
-            <p class="font-medium text-gray-900">{{ item.name }}</p>
-            <p class="text-xs text-gray-500">
-              {{ formatDate(item.expiration_date) }} • {{ daysLeft(item.expiration_date) }} days left
-            </p>
+      <div v-else class="relative pl-8 space-y-6">
+        <!-- Timeline line -->
+        <div class="absolute left-2 top-3 bottom-3 w-0.5 bg-gradient-to-b from-teal-400 to-cyan-400"></div>
+
+        <div
+          v-for="(item, index) in timeline"
+          :key="item.id"
+          class="relative"
+        >
+          <!-- Timeline dot -->
+          <div class="absolute -left-6 w-4 h-4 rounded-full bg-gradient-to-br from-teal-400 to-cyan-400 shadow-lg border-2 border-white"></div>
+
+          <div class="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-4 border border-teal-200/50 hover:shadow-md transition-shadow duration-200">
+            <p class="font-semibold text-gray-900 mb-1">{{ item.name }}</p>
+            <div class="flex items-center gap-3 text-xs text-gray-600">
+              <span class="flex items-center gap-1">
+                <Calendar :size="14" />
+                {{ formatDate(item.expiration_date) }}
+              </span>
+              <span class="px-2 py-1 bg-teal-100 text-teal-700 rounded-full font-medium">
+                {{ daysLeft(item.expiration_date) }} days left
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -302,7 +380,7 @@ const recommended = computed(() => {
       id: 1,
       text: `${stats.value.expired} items have expired — review them`,
       link: "/items?filter=expired",
-      cta: "Review"
+      cta: "Review Now"
     })
   }
 
@@ -311,7 +389,7 @@ const recommended = computed(() => {
       id: 2,
       text: `${stats.value.soon} items are expiring soon`,
       link: "/items?filter=soon",
-      cta: "View"
+      cta: "View Items"
     })
   }
 
@@ -320,7 +398,7 @@ const recommended = computed(() => {
       id: 3,
       text: `${stats.value.missingDocs} items are missing documents`,
       link: "/items?filter=missingDocs",
-      cta: "Fix"
+      cta: "Fix Now"
     })
   }
 
@@ -328,7 +406,7 @@ const recommended = computed(() => {
     actions.push({
       id: 4,
       text: "Add your first item to get started",
-      link: "/add-item",
+      link: "/add-document",
       cta: "Add Item"
     })
   }

@@ -1,7 +1,8 @@
+# backend/utils/auth.py
 from datetime import datetime, timedelta
 from typing import Optional
-import os  # ✅ Add this
-from dotenv import load_dotenv  # ✅ Add this
+import os
+from dotenv import load_dotenv
 
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
@@ -28,13 +29,14 @@ REFRESH_TOKEN_EXPIRE_DAYS = 30
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
-# ... rest of your code stays exactly the same ...
+# Password hashing
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
 def verify_password(plain: str, hashed: str) -> bool:
     return pwd_context.verify(plain, hashed)
 
+# Token creation
 def create_access_token(data: dict):
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     data.update({"exp": expire})
@@ -45,6 +47,7 @@ def create_refresh_token(data: dict):
     data.update({"exp": expire})
     return jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
 
+# Token verification
 def verify_refresh_token(token: str):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -52,6 +55,15 @@ def verify_refresh_token(token: str):
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid refresh token")
 
+def decode_token(token: str):
+    """Decode and verify a JWT token (for OAuth)"""
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except JWTError:
+        return None
+
+# Get current user from token
 def get_current_user(
     token: str = Depends(oauth2_scheme),
     session: Session = Depends(get_session)

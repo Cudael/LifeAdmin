@@ -3,6 +3,8 @@ import { accessToken } from '../utils/auth'
 import LandingPage from '../pages/LandingPage.vue'
 import LoginPage from '../pages/LoginPage.vue'
 import RegisterPage from '../pages/RegisterPage.vue'
+import ForgotPasswordPage from '../pages/ForgotPasswordPage.vue' // NEW
+import AuthCallback from '../pages/AuthCallback.vue'
 import DashboardPage from '../pages/DashboardPage.vue'
 import AddDocumentPage from '../pages/AddDocumentPage.vue'
 import EditItemPage from '../pages/EditItemPage.vue'
@@ -17,6 +19,10 @@ const routes = [
   // Guest-only routes
   { path: '/login', component: LoginPage, meta: { guestOnly: true } },
   { path: '/register', component: RegisterPage, meta: { guestOnly: true } },
+  { path: '/forgot-password', component: ForgotPasswordPage, meta: { guestOnly: true } }, // NEW
+  
+  // OAuth callback (no auth required during callback)
+  { path: '/auth/callback', component: AuthCallback },
 
   // Auth-required routes
   { path: '/dashboard', component: DashboardPage, meta: { requiresAuth: true } },
@@ -25,7 +31,7 @@ const routes = [
   { path: "/settings", name: "Settings", component: SettingsPage, meta: { requiresAuth: true } },
   { path: "/items", name: "Items", component: ItemsPage, meta: { requiresAuth: true } },
   { path: "/items/:id", name: "ItemDetails", component: () => import("../pages/ItemDetails.vue"), props: true, meta: { requiresAuth: true } },
-  {path: "/items/:id/edit", name: "item-edit", component: () => import("../pages/EditItemPage.vue"), props: true, meta: { requiresAuth: true } },
+  { path: "/items/:id/edit", name: "item-edit", component: () => import("../pages/EditItemPage.vue"), props: true, meta: { requiresAuth: true } },
 ]
 
 const router = createRouter({
@@ -35,7 +41,7 @@ const router = createRouter({
 
 // Global auth guard
 router.beforeEach(async (to, from, next) => {
-  const isLoggedIn = !!accessToken.value // ✅ Use the reactive ref directly
+  const isLoggedIn = !!accessToken.value
 
   if (to.meta.requiresAuth && !isLoggedIn) {
     return next("/login")

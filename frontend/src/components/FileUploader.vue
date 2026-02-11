@@ -45,8 +45,7 @@ watch(() => props.modelValue, (newFile) => {
     <!-- Upload Zone -->
     <label
       class="block border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition
-             hover:border-teal-400 hover:bg-teal-50
-             flex flex-col items-center justify-center gap-2"
+             hover:border-teal-400 hover:bg-teal-50 flex-col items-center justify-center gap-2"
       :class="dragOver ? 'border-teal-500 bg-teal-50' : 'border-gray-300'"
       @dragover.prevent="dragOver = true"
       @dragleave.prevent="dragOver = false"

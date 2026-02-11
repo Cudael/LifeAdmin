@@ -1,3 +1,4 @@
+# backend/routes/auth.py
 from fastapi import APIRouter, HTTPException, Depends
 from sqlmodel import Session, select
 
@@ -85,7 +86,7 @@ def login(data: UserLogin, session: Session = Depends(get_session)):
 # REFRESH TOKEN
 # -----------------------------
 
-@router.post("/auth/refresh")
+@router.post("/refresh")  # Fixed: removed duplicate /auth prefix
 def refresh_access_token(body: dict, session: Session = Depends(get_session)):
     refresh_token = body.get("refresh_token")
     
@@ -117,5 +118,8 @@ def get_me(user: User = Depends(get_current_user)):
     return {
         "id": user.id,
         "email": user.email,
-        "full_name": user.full_name
+        "full_name": user.full_name,
+        "username": user.full_name,  # ✅ Added for frontend compatibility
+        "profile_picture": user.profile_picture,  # ✅ Added for Google OAuth users
+        "created_at": user.created_at.isoformat() if user.created_at else None  # ✅ Added
     }
