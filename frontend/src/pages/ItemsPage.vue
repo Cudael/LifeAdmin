@@ -216,7 +216,7 @@ async function confirmDelete() {
 onMounted(async () => {
   const res = await apiFetch("/items")
   const data = await res.json()
-  itemsStore.setItems(data)
+  itemsStore.setItems(data.items || data)
 })
 </script>
 
