@@ -65,4 +65,5 @@ htmlcov/
 # Build artifacts
 build/
 dist/
-*.egg-info/
+*.egg-info/backend/__pycache__
+backend/requirements_temp.txt
