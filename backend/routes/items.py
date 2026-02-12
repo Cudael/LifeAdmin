@@ -1,10 +1,13 @@
 # backend/routes/items.py
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, Query
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, Query, Request
 from sqlmodel import Session, select, func, or_
 from typing import Optional
 from datetime import datetime
 import os
 import logging
+
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 
 from models.item import Item, ItemCreate, ItemUpdate
 from models.user import User
@@ -16,6 +19,11 @@ from utils.file_validation import validate_file  # ✅ Import your existing vali
 
 router = APIRouter(prefix="/items", tags=["Items"])
 logger = logging.getLogger(__name__)
+limiter = Limiter(key_func=get_remote_address)
+
+# ✅ Constants for validation
+ALLOWED_CATEGORIES = ["Travel", "Health", "Finance", "Work", "Personal", "Subscriptions"]
+ALLOWED_ITEM_TYPES = ["document", "subscription"]
 
 
 # -----------------------------
@@ -40,7 +48,9 @@ def require_verified_email(user: User = Depends(get_current_user)) -> User:
 # -----------------------------
 
 @router.post("")
-def create_item(
+@limiter.limit("30/minute")  # ✅ Limit item creation to prevent spam
+async def create_item(
+    request: Request,
     item: ItemCreate,
     session: Session = Depends(get_session),
     user: User = Depends(require_verified_email)
@@ -218,7 +228,9 @@ def update_item(
 
 
 @router.put("/{item_id}")
+@limiter.limit("30/minute")  # ✅ Rate limit updates
 async def update_item_with_file(
+    request: Request,
     item_id: int,
     name: str = Form(...),
     type: str = Form(...),
@@ -247,6 +259,19 @@ async def update_item_with_file(
     if db_item.user_id != user.id:
         logger.warning(f"⚠️ User {user.email} attempted to update item {item_id} owned by another user")
         raise HTTPException(status_code=403, detail="Not authorized to update this item")
+    
+    # ✅ Validate input
+    if not name or len(name.strip()) < 2:
+        raise HTTPException(status_code=400, detail="Name must be at least 2 characters")
+    
+    if len(name) > 200:
+        raise HTTPException(status_code=400, detail="Name must not exceed 200 characters")
+    
+    if category not in ALLOWED_CATEGORIES:
+        raise HTTPException(status_code=400, detail=f"Invalid category. Allowed: {', '.join(ALLOWED_CATEGORIES)}")
+    
+    if type not in ALLOWED_ITEM_TYPES:
+        raise HTTPException(status_code=400, detail=f"Invalid type. Allowed: {', '.join(ALLOWED_ITEM_TYPES)}")
     
     # ✅ Validate file if provided
     if file and file.filename:
@@ -296,7 +321,9 @@ async def update_item_with_file(
 
 
 @router.delete("/{item_id}")
-def delete_item(
+@limiter.limit("20/minute")  # ✅ Rate limit deletions
+async def delete_item(
+    request: Request,
     item_id: int,
     session: Session = Depends(get_session),
     user: User = Depends(require_verified_email)
@@ -335,7 +362,9 @@ def delete_item(
 # -----------------------------
 
 @router.post("/upload")
-def upload_item(
+@limiter.limit("20/minute")  # ✅ Rate limit file uploads (more expensive operation)
+async def upload_item(
+    request: Request,
     name: str = Form(...),
     category: str = Form(...),
     type: str = Form(...),
@@ -363,11 +392,11 @@ def upload_item(
     if len(name) > 200:
         raise HTTPException(status_code=400, detail="Name must not exceed 200 characters")
     
-    if category not in ["Travel", "Health", "Finance", "Work", "Personal", "Subscriptions"]:
-        raise HTTPException(status_code=400, detail="Invalid category")
+    if category not in ALLOWED_CATEGORIES:
+        raise HTTPException(status_code=400, detail=f"Invalid category. Allowed: {', '.join(ALLOWED_CATEGORIES)}")
     
-    if type not in ["document", "subscription"]:
-        raise HTTPException(status_code=400, detail="Invalid type")
+    if type not in ALLOWED_ITEM_TYPES:
+        raise HTTPException(status_code=400, detail=f"Invalid type. Allowed: {', '.join(ALLOWED_ITEM_TYPES)}")
     
     # ✅ Validate file if provided
     if file and file.filename:
@@ -410,7 +439,9 @@ def upload_item(
 # -----------------------------
 
 @router.delete("/bulk")
-def bulk_delete_items(
+@limiter.limit("10/minute")  # ✅ Rate limit bulk operations
+async def bulk_delete_items(
+    request: Request,
     item_ids: list[int],
     session: Session = Depends(get_session),
     user: User = Depends(require_verified_email)

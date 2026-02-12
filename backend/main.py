@@ -67,9 +67,12 @@ app.add_middleware(
 )
 
 # ✅ Session Middleware (required for OAuth)
+# Import SECRET_KEY from auth utils (already validated there)
+from utils.auth import SECRET_KEY
+
 app.add_middleware(
     SessionMiddleware, 
-    secret_key=os.getenv("SECRET_KEY", "your-secret-key-change-this-in-production"),
+    secret_key=SECRET_KEY,
     max_age=3600,  # 1 hour
     same_site="lax",
     https_only=os.getenv("SECURE_COOKIES", "false").lower() == "true"
@@ -92,6 +95,34 @@ async def limit_upload_size(request: Request, call_next):
                 )
     
     response = await call_next(request)
+    return response
+
+
+# ✅ Security headers middleware
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    """Add security headers to all responses"""
+    response = await call_next(request)
+    
+    # Prevent MIME type sniffing
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    
+    # Prevent clickjacking
+    response.headers["X-Frame-Options"] = "DENY"
+    
+    # Enable XSS filter in older browsers
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    
+    # Referrer policy
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    
+    # Permissions policy
+    response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
+    
+    # HSTS for production (only if HTTPS is enabled)
+    if os.getenv("SECURE_COOKIES", "false").lower() == "true":
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    
     return response
 
 

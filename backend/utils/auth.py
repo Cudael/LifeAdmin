@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from jose import jwt, JWTError
+import jwt  # PyJWT library (replaces python-jose to avoid ecdsa vulnerability)
+from jwt.exceptions import PyJWTError
 from passlib.context import CryptContext
 from sqlmodel import Session
 
@@ -23,7 +24,9 @@ if not SECRET_KEY:
 
 ALGORITHM = "HS256"
 
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 1 day
+# ✅ Security: Reduced token lifetime (30 minutes for access token)
+# Shorter-lived tokens reduce the impact of token theft
+ACCESS_TOKEN_EXPIRE_MINUTES = 30  # 30 minutes (was 24 hours)
 REFRESH_TOKEN_EXPIRE_DAYS = 30
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -52,7 +55,7 @@ def verify_refresh_token(token: str):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload
-    except JWTError:
+    except PyJWTError:
         raise HTTPException(status_code=401, detail="Invalid refresh token")
 
 def decode_token(token: str):
@@ -60,7 +63,7 @@ def decode_token(token: str):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload
-    except JWTError:
+    except PyJWTError:
         return None
 
 # Get current user from token
@@ -71,7 +74,7 @@ def get_current_user(
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id = int(payload.get("sub"))
-    except JWTError:
+    except PyJWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
     user = session.get(User, user_id)

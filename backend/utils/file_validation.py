@@ -6,10 +6,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 # Allowed file types
+# Security: Removed .zip and .rar as they can contain malicious files
+# Archives should be unpacked and individual files uploaded
 ALLOWED_EXTENSIONS = {
     'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx',
     'jpg', 'jpeg', 'png', 'gif', 'webp',
-    'txt', 'csv', 'zip', 'rar'
+    'txt', 'csv'
 }
 
 ALLOWED_MIME_TYPES = {
@@ -18,13 +20,14 @@ ALLOWED_MIME_TYPES = {
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     'application/vnd.ms-excel',
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
     'image/jpeg',
     'image/png',
     'image/gif',
     'image/webp',
     'text/plain',
     'text/csv',
-    'application/zip',
 }
 
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
