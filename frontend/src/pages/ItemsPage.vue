@@ -369,19 +369,12 @@ onMounted(async () => {
 
       </div>
 
-      <!-- Stats Grid - Bottom Row (4 quick stats) -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <!-- Stats Grid - Bottom Row (3 quick stats) -->
+      <div class="grid grid-cols-2 lg:grid-cols-3 gap-3">
         
         <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-gray-200/50 hover:shadow-md transition-shadow">
           <p class="text-xs text-gray-500 mb-1">Total</p>
           <p class="text-2xl font-bold text-gray-900">{{ itemsStore.items.length }}</p>
-        </div>
-        
-        <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-orange-200/50 hover:shadow-md transition-shadow">
-          <p class="text-xs text-gray-500 mb-1">Expiring</p>
-          <p class="text-2xl font-bold text-orange-600">
-            {{ itemsStore.items.filter(i => getStatus(i.expiration_date) === 'soon').length }}
-          </p>
         </div>
 
         <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-teal-200/50 hover:shadow-md transition-shadow">
