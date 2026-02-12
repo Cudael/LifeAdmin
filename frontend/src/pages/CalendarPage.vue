@@ -377,7 +377,8 @@ async function loadItems() {
   try {
     const res = await apiFetch('/items')
     if (res.ok) {
-      items.value = await res.json()
+      const data = await res.json()
+      items.value = data.items || data
     }
   } catch (err) {
     console.error('Failed to load items:', err)
