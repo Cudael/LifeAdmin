@@ -14,7 +14,7 @@
 
         <RouterLink
           to="/add-subscription"
-          class="group px-5 py-2.5 bg-white/80 backdrop-blur-sm border border-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-white hover:border-teal-300 hover:shadow-md transition-all duration-200 flex items-center gap-2"
+          class="group px-5 py-2.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40 hover:scale-105 transition-all duration-200 flex items-center gap-2"
         >
           <PlusCircle :size="18" class="group-hover:rotate-90 transition-transform duration-200" />
           Add Subscription
@@ -22,17 +22,18 @@
       </div>
     </template>
 
-    <!-- SUMMARY CARDS ROW 1 - Enhanced with better hover effects -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- SUMMARY CARDS - Compact Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
       
       <SummaryCard
         label="Total Items"
         :icon="Package"
         iconColor="stroke-teal-500"
-        subtitle="All stored items"
+        subtitle="All items"
         :value="stats.total"
         bgGradient="from-teal-50 to-cyan-50"
         class="hover:scale-105 transition-transform duration-200"
+        @click="navigateToItems('all')"
       />
 
       <SummaryCard
@@ -43,6 +44,7 @@
         :value="stats.soon"
         bgGradient="from-orange-50 to-red-50"
         class="hover:scale-105 transition-transform duration-200"
+        @click="navigateToItems('soon')"
       />
 
       <SummaryCard
@@ -53,6 +55,7 @@
         :value="stats.week"
         bgGradient="from-amber-50 to-yellow-50"
         class="hover:scale-105 transition-transform duration-200"
+        @click="navigateToItems('week')"
       />
 
       <SummaryCard
@@ -63,12 +66,8 @@
         :value="stats.expired"
         bgGradient="from-red-50 to-pink-50"
         class="hover:scale-105 transition-transform duration-200"
+        @click="navigateToItems('expired')"
       />
-
-    </div>
-
-    <!-- SUMMARY CARDS ROW 2 -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
 
       <SummaryCard
         label="Documents"
@@ -78,6 +77,7 @@
         :value="stats.documents"
         bgGradient="from-green-50 to-emerald-50"
         class="hover:scale-105 transition-transform duration-200"
+        @click="navigateToItems('documents')"
       />
 
       <SummaryCard
@@ -88,26 +88,7 @@
         :value="stats.subscriptions"
         bgGradient="from-purple-50 to-violet-50"
         class="hover:scale-105 transition-transform duration-200"
-      />
-
-      <SummaryCard
-        label="Recently Added"
-        :icon="PlusCircle"
-        iconColor="stroke-blue-500"
-        subtitle="Last 30 days"
-        :value="stats.recent"
-        bgGradient="from-blue-50 to-indigo-50"
-        class="hover:scale-105 transition-transform duration-200"
-      />
-
-      <SummaryCard
-        label="Missing Documents"
-        :icon="AlertTriangle"
-        iconColor="stroke-gray-500"
-        subtitle="No file uploaded"
-        :value="stats.missingDocs"
-        bgGradient="from-gray-50 to-slate-50"
-        class="hover:scale-105 transition-transform duration-200"
+        @click="navigateToItems('subscriptions')"
       />
 
     </div>
@@ -329,6 +310,7 @@
 
 <script setup>
 import { computed, onMounted } from "vue"
+import { useRouter } from "vue-router"
 import { useItemsStore } from "../stores/items"
 import { apiFetch } from "../utils/api"
 
@@ -347,6 +329,11 @@ import {
 } from "lucide-vue-next"
 
 const itemsStore = useItemsStore()
+const router = useRouter()
+
+function navigateToItems(filter) {
+  router.push({ path: '/items', query: { filter } })
+}
 
 function getStatus(date) {
   if (!date) return "valid"

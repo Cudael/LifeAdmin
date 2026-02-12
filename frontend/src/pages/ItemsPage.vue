@@ -217,6 +217,16 @@ onMounted(async () => {
   const res = await apiFetch("/items")
   const data = await res.json()
   itemsStore.setItems(data.items || data)
+  
+  // Apply filter from query parameter if present and valid
+  const filterParam = route.query.filter
+  const validFilters = ['all', 'soon', 'week', 'expired', 'documents', 'subscriptions', 'missingDocs']
+  
+  if (filterParam && validFilters.includes(filterParam)) {
+    activeStatFilter.value = filterParam
+    // Auto-open filters panel if filter is applied from URL
+    showFilters.value = true
+  }
 })
 </script>
 
