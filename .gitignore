@@ -68,3 +68,4 @@ dist/
 *.egg-info/
 backend/__pycache__
 backend/requirements_temp.txt
+backend/requirements_temp2.txt
