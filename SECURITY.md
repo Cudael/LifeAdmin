@@ -4,6 +4,15 @@
 
 LifeAdmin takes security seriously. This document outlines our security practices, known limitations, and how to report vulnerabilities.
 
+## Recent Security Updates
+
+### 2026-02-12: Critical Vulnerability Fix
+**Issue**: Replaced `python-jose` with `PyJWT` to eliminate the vulnerable `ecdsa==0.19.1` dependency.
+- **Vulnerability**: Minerva timing attack on P-256 in python-ecdsa (no patch available)
+- **Impact**: None for this application (we use HS256, not ECDSA), but removed as a precautionary measure
+- **Solution**: Migrated from python-jose to PyJWT 2.10.1 (actively maintained, no ecdsa dependency)
+- **Testing**: All JWT functionality verified, no breaking changes
+
 ## Security Features
 
 ### Authentication & Authorization

@@ -3,6 +3,12 @@
 ## Overview
 Comprehensive security and code quality review completed for LifeAdmin application. This report summarizes all findings, fixes applied, and recommendations for future improvements.
 
+## ⚠️ CRITICAL UPDATE (2026-02-12)
+**Vulnerability Found**: `ecdsa==0.19.1` has Minerva timing attack vulnerability (no patch available)
+**Resolution**: Replaced `python-jose` with `PyJWT==2.10.1` to eliminate ecdsa dependency
+**Impact**: Zero impact on functionality (we use HS256, not ECDSA algorithms)
+**Status**: ✅ Fixed and verified (no vulnerabilities in PyJWT)
+
 ## Issues Found and Fixed
 
 ### 🔴 Critical Security Issues (ALL FIXED)
