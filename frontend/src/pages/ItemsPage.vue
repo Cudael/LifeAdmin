@@ -26,7 +26,8 @@ import {
   Clock,
   AlertTriangle,
   Upload,
-  Calendar
+  Calendar,
+  PlusCircle
 } from "lucide-vue-next"
 
 const itemsStore = useItemsStore()
@@ -237,13 +238,31 @@ onMounted(async () => {
     <template #actions>
       <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full">
         
-        <!-- Search Bar -->
-        <div class="flex-1 max-w-xl">
-          <SearchBar v-model="search" placeholder="Search items..." />
+        <!-- Action Buttons (Left Side) -->
+        <div class="flex items-center gap-3">
+          
+          <!-- Add Document -->
+          <RouterLink
+            to="/add-document"
+            class="group px-5 py-2.5 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl font-semibold shadow-lg shadow-teal-500/30 hover:shadow-xl hover:shadow-teal-500/40 hover:scale-105 transition-all duration-200 flex items-center gap-2"
+          >
+            <PlusCircle :size="18" class="group-hover:rotate-90 transition-transform duration-200" />
+            Add Document
+          </RouterLink>
+
+          <!-- Add Subscription -->
+          <RouterLink
+            to="/add-subscription"
+            class="group px-5 py-2.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40 hover:scale-105 transition-all duration-200 flex items-center gap-2"
+          >
+            <PlusCircle :size="18" class="group-hover:rotate-90 transition-transform duration-200" />
+            Add Subscription
+          </RouterLink>
+
         </div>
 
-        <!-- Action Buttons -->
-        <div class="flex items-center gap-2">
+        <!-- Search Bar and Filters (Right Side) -->
+        <div class="flex items-center gap-2 flex-1 justify-end">
           
           <!-- Filters Button (with indicator) -->
           <button
@@ -260,23 +279,10 @@ onMounted(async () => {
             ></span>
           </button>
 
-          <!-- Add Document -->
-          <RouterLink
-            to="/add-document"
-            class="group px-4 py-2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 flex items-center gap-2"
-          >
-            <FileText :size="18" />
-            <span class="hidden lg:inline">Document</span>
-          </RouterLink>
-
-          <!-- Add Subscription -->
-          <RouterLink
-            to="/add-subscription"
-            class="group px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 flex items-center gap-2"
-          >
-            <Repeat :size="18" />
-            <span class="hidden lg:inline">Subscription</span>
-          </RouterLink>
+          <!-- Search Bar -->
+          <div class="max-w-md w-full">
+            <SearchBar v-model="search" placeholder="Search items..." />
+          </div>
 
         </div>
       </div>
@@ -291,54 +297,55 @@ onMounted(async () => {
         <h3 class="text-lg font-bold text-gray-900">Insights</h3>
       </div>
 
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- Stats Grid - Top Row (4 insights) -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
         
         <!-- Expiring This Month -->
-        <div class="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-orange-200/50 hover:shadow-md transition-shadow">
-          <div class="flex items-center gap-2 mb-2">
-            <Clock :size="16" class="text-orange-500" />
+        <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-orange-200/50 hover:shadow-md transition-shadow">
+          <div class="flex items-center gap-2 mb-1">
+            <Clock :size="14" class="text-orange-500" />
             <p class="text-xs text-gray-600 font-medium">Expiring This Month</p>
           </div>
-          <p class="text-3xl font-bold text-orange-600">
+          <p class="text-2xl font-bold text-orange-600">
             {{ insights.expiringThisMonth }}
           </p>
           <button
             v-if="insights.expiringThisMonth > 0"
             @click="setFilter('soon')"
-            class="mt-2 text-xs text-orange-600 hover:text-orange-700 font-medium hover:underline"
+            class="mt-1 text-xs text-orange-600 hover:text-orange-700 font-medium hover:underline"
           >
             View items →
           </button>
         </div>
 
         <!-- Needs Attention -->
-        <div class="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-red-200/50 hover:shadow-md transition-shadow">
-          <div class="flex items-center gap-2 mb-2">
-            <AlertTriangle :size="16" class="text-red-500" />
+        <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-red-200/50 hover:shadow-md transition-shadow">
+          <div class="flex items-center gap-2 mb-1">
+            <AlertTriangle :size="14" class="text-red-500" />
             <p class="text-xs text-gray-600 font-medium">Needs Attention</p>
           </div>
-          <p class="text-3xl font-bold text-red-600">
+          <p class="text-2xl font-bold text-red-600">
             {{ insights.needsAttention }}
           </p>
           <button
             v-if="insights.needsAttention > 0"
             @click="setFilter('expired')"
-            class="mt-2 text-xs text-red-600 hover:text-red-700 font-medium hover:underline"
+            class="mt-1 text-xs text-red-600 hover:text-red-700 font-medium hover:underline"
           >
             View expired →
           </button>
         </div>
 
         <!-- Files Uploaded -->
-        <div class="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-teal-200/50 hover:shadow-md transition-shadow">
-          <div class="flex items-center gap-2 mb-2">
-            <Upload :size="16" class="text-teal-500" />
+        <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-teal-200/50 hover:shadow-md transition-shadow">
+          <div class="flex items-center gap-2 mb-1">
+            <Upload :size="14" class="text-teal-500" />
             <p class="text-xs text-gray-600 font-medium">Files Uploaded</p>
           </div>
-          <p class="text-3xl font-bold text-teal-600">
+          <p class="text-2xl font-bold text-teal-600">
             {{ insights.filesUploaded }}
           </p>
-          <p class="mt-2 text-xs text-gray-500">
+          <p class="mt-1 text-xs text-gray-500">
             {{ itemsStore.items.length > 0 
               ? Math.round((insights.filesUploaded / itemsStore.items.length) * 100) 
               : 0 
@@ -347,48 +354,50 @@ onMounted(async () => {
         </div>
 
         <!-- Added This Week -->
-        <div class="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-blue-200/50 hover:shadow-md transition-shadow">
-          <div class="flex items-center gap-2 mb-2">
-            <Calendar :size="16" class="text-blue-500" />
+        <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-blue-200/50 hover:shadow-md transition-shadow">
+          <div class="flex items-center gap-2 mb-1">
+            <Calendar :size="14" class="text-blue-500" />
             <p class="text-xs text-gray-600 font-medium">Added This Week</p>
           </div>
-          <p class="text-3xl font-bold text-blue-600">
+          <p class="text-2xl font-bold text-blue-600">
             {{ insights.addedThisWeek }}
           </p>
-          <p class="mt-2 text-xs text-gray-500">
+          <p class="mt-1 text-xs text-gray-500">
             Last 7 days
           </p>
         </div>
 
       </div>
-    </div>
 
-    <!-- QUICK STATS (Simplified) -->
-    <div class="mb-6 grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="bg-white rounded-xl p-4 border border-gray-200 hover:shadow-md transition-shadow">
-        <p class="text-xs text-gray-500 mb-1">Total</p>
-        <p class="text-2xl font-bold text-gray-900">{{ itemsStore.items.length }}</p>
-      </div>
-      
-      <div class="bg-white rounded-xl p-4 border border-orange-200 hover:shadow-md transition-shadow">
-        <p class="text-xs text-gray-500 mb-1">Expiring</p>
-        <p class="text-2xl font-bold text-orange-600">
-          {{ itemsStore.items.filter(i => getStatus(i.expiration_date) === 'soon').length }}
-        </p>
-      </div>
+      <!-- Stats Grid - Bottom Row (4 quick stats) -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        
+        <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-gray-200/50 hover:shadow-md transition-shadow">
+          <p class="text-xs text-gray-500 mb-1">Total</p>
+          <p class="text-2xl font-bold text-gray-900">{{ itemsStore.items.length }}</p>
+        </div>
+        
+        <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-orange-200/50 hover:shadow-md transition-shadow">
+          <p class="text-xs text-gray-500 mb-1">Expiring</p>
+          <p class="text-2xl font-bold text-orange-600">
+            {{ itemsStore.items.filter(i => getStatus(i.expiration_date) === 'soon').length }}
+          </p>
+        </div>
 
-      <div class="bg-white rounded-xl p-4 border border-teal-200 hover:shadow-md transition-shadow">
-        <p class="text-xs text-gray-500 mb-1">Documents</p>
-        <p class="text-2xl font-bold text-teal-600">
-          {{ itemsStore.items.filter(i => i.type === 'document').length }}
-        </p>
-      </div>
+        <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-teal-200/50 hover:shadow-md transition-shadow">
+          <p class="text-xs text-gray-500 mb-1">Documents</p>
+          <p class="text-2xl font-bold text-teal-600">
+            {{ itemsStore.items.filter(i => i.type === 'document').length }}
+          </p>
+        </div>
 
-      <div class="bg-white rounded-xl p-4 border border-purple-200 hover:shadow-md transition-shadow">
-        <p class="text-xs text-gray-500 mb-1">Subscriptions</p>
-        <p class="text-2xl font-bold text-purple-600">
-          {{ itemsStore.items.filter(i => i.type === 'subscription').length }}
-        </p>
+        <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-purple-200/50 hover:shadow-md transition-shadow">
+          <p class="text-xs text-gray-500 mb-1">Subscriptions</p>
+          <p class="text-2xl font-bold text-purple-600">
+            {{ itemsStore.items.filter(i => i.type === 'subscription').length }}
+          </p>
+        </div>
+
       </div>
     </div>
 
