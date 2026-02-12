@@ -183,13 +183,14 @@ class SettingsUpdate(BaseModel):
     @validator('timezone')
     def validate_timezone(cls, v):
         if v is not None:
-            # Basic timezone validation - common timezones
-            common_timezones = ['UTC', 'America/New_York', 'America/Chicago', 'America/Denver', 
-                              'America/Los_Angeles', 'Europe/London', 'Europe/Paris', 'Asia/Tokyo', 
-                              'Asia/Shanghai', 'Australia/Sydney']
-            # For now, accept any string but could use pytz for stricter validation
-            if len(v) > 50:
-                raise ValueError('Timezone string too long')
+            # Basic validation - accept common patterns
+            # For stricter validation, install pytz: pip install pytz
+            # and use: pytz.timezone(v) to validate
+            if len(v) > 50 or len(v) < 3:
+                raise ValueError('Invalid timezone string')
+            # Basic format check (e.g., "UTC", "America/New_York")
+            if not v.replace('_', '').replace('/', '').replace('-', '').replace('+', '').isalnum():
+                raise ValueError('Invalid timezone format')
         return v
 
 

@@ -21,6 +21,10 @@ router = APIRouter(prefix="/items", tags=["Items"])
 logger = logging.getLogger(__name__)
 limiter = Limiter(key_func=get_remote_address)
 
+# ✅ Constants for validation
+ALLOWED_CATEGORIES = ["Travel", "Health", "Finance", "Work", "Personal", "Subscriptions"]
+ALLOWED_ITEM_TYPES = ["document", "subscription"]
+
 
 # -----------------------------
 # VERIFICATION HELPER
@@ -263,11 +267,11 @@ async def update_item_with_file(
     if len(name) > 200:
         raise HTTPException(status_code=400, detail="Name must not exceed 200 characters")
     
-    if category not in ["Travel", "Health", "Finance", "Work", "Personal", "Subscriptions"]:
-        raise HTTPException(status_code=400, detail="Invalid category")
+    if category not in ALLOWED_CATEGORIES:
+        raise HTTPException(status_code=400, detail=f"Invalid category. Allowed: {', '.join(ALLOWED_CATEGORIES)}")
     
-    if type not in ["document", "subscription"]:
-        raise HTTPException(status_code=400, detail="Invalid type")
+    if type not in ALLOWED_ITEM_TYPES:
+        raise HTTPException(status_code=400, detail=f"Invalid type. Allowed: {', '.join(ALLOWED_ITEM_TYPES)}")
     
     # ✅ Validate file if provided
     if file and file.filename:
@@ -388,11 +392,11 @@ async def upload_item(
     if len(name) > 200:
         raise HTTPException(status_code=400, detail="Name must not exceed 200 characters")
     
-    if category not in ["Travel", "Health", "Finance", "Work", "Personal", "Subscriptions"]:
-        raise HTTPException(status_code=400, detail="Invalid category")
+    if category not in ALLOWED_CATEGORIES:
+        raise HTTPException(status_code=400, detail=f"Invalid category. Allowed: {', '.join(ALLOWED_CATEGORIES)}")
     
-    if type not in ["document", "subscription"]:
-        raise HTTPException(status_code=400, detail="Invalid type")
+    if type not in ALLOWED_ITEM_TYPES:
+        raise HTTPException(status_code=400, detail=f"Invalid type. Allowed: {', '.join(ALLOWED_ITEM_TYPES)}")
     
     # ✅ Validate file if provided
     if file and file.filename:
