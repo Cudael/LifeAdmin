@@ -4,6 +4,7 @@ from fastapi.responses import RedirectResponse
 from sqlmodel import Session, select
 from authlib.integrations.starlette_client import OAuth
 import os
+import logging
 from dotenv import load_dotenv
 from datetime import datetime
 
@@ -14,6 +15,7 @@ from utils.auth import create_access_token
 load_dotenv()
 
 router = APIRouter(prefix="/auth", tags=["OAuth"])
+logger = logging.getLogger(__name__)
 
 # OAuth Configuration
 oauth = OAuth()
@@ -57,7 +59,7 @@ async def google_callback(request: Request, session: Session = Depends(get_sessi
         if not email:
             raise HTTPException(status_code=400, detail="Email not provided by Google")
         
-        print(f"Google OAuth: User {email} attempting to sign in")
+        logger.info(f"Google OAuth: User {email} attempting to sign in")
         
         # Check if user exists
         statement = select(User).where(User.email == email)
@@ -65,7 +67,7 @@ async def google_callback(request: Request, session: Session = Depends(get_sessi
         
         if not user:
             # Create new user
-            print(f"Creating new user: {email}")
+            logger.info(f"Creating new user via Google OAuth: {email}")
             user = User(
                 full_name=name or "Google User",
                 email=email,
@@ -78,10 +80,10 @@ async def google_callback(request: Request, session: Session = Depends(get_sessi
             session.add(user)
             session.commit()
             session.refresh(user)
-            print(f"✅ New Google user created and auto-verified: {email}")
+            logger.info(f"✅ New Google user created and auto-verified: {email}")
         else:
             # Update existing user with Google info
-            print(f"User exists: {email}")
+            logger.info(f"Existing user logging in via Google: {email}")
             
             # Update Google ID if not set
             if not user.google_id:
@@ -95,7 +97,7 @@ async def google_callback(request: Request, session: Session = Depends(get_sessi
             if not user.email_verified and email_verified:
                 user.email_verified = True
                 user.email_verified_at = datetime.utcnow()
-                print(f"✅ Email auto-verified via Google: {email}")
+                logger.info(f"✅ Email auto-verified via Google: {email}")
             
             session.add(user)
             session.commit()
@@ -103,7 +105,7 @@ async def google_callback(request: Request, session: Session = Depends(get_sessi
         # Create JWT token (same format as your login)
         access_token = create_access_token({"sub": str(user.id)})
         
-        print(f"Token created for user: {email}")
+        logger.info(f"OAuth token created for user: {email}")
         
         # Redirect to frontend with token
         frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173")
@@ -112,9 +114,7 @@ async def google_callback(request: Request, session: Session = Depends(get_sessi
         )
         
     except Exception as e:
-        print(f"OAuth Error: {str(e)}")
-        import traceback
-        traceback.print_exc()
+        logger.error(f"OAuth Error: {str(e)}", exc_info=True)
         
         frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173")
         return RedirectResponse(

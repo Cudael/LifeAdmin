@@ -23,7 +23,9 @@ if not SECRET_KEY:
 
 ALGORITHM = "HS256"
 
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 1 day
+# ✅ Security: Reduced token lifetime (30 minutes for access token)
+# Shorter-lived tokens reduce the impact of token theft
+ACCESS_TOKEN_EXPIRE_MINUTES = 30  # 30 minutes (was 24 hours)
 REFRESH_TOKEN_EXPIRE_DAYS = 30
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

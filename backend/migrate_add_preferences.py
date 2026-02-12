@@ -16,13 +16,35 @@ def migrate():
         ("updated_at", "TIMESTAMP", None)
     ]
     
+    # Note: SQLite ALTER TABLE doesn't support parameterized queries for column definitions
+    # However, since we're using controlled, hardcoded column names and types (not user input),
+    # this is safe. We validate the column names to prevent any injection attempts.
+    allowed_columns = {"date_format", "time_format", "items_per_page", "default_sort", "language", "timezone", "updated_at"}
+    allowed_types = {"TEXT", "INTEGER", "TIMESTAMP"}
+    
     for col_name, col_type, default_value in columns:
+        # Security: Validate column name and type against whitelist
+        if col_name not in allowed_columns:
+            print(f"⚠️ Skipping invalid column name: {col_name}")
+            continue
+        if col_type not in allowed_types:
+            print(f"⚠️ Skipping invalid column type for {col_name}: {col_type}")
+            continue
+            
         try:
             if default_value:
                 if col_type == "INTEGER":
-                    cursor.execute(f"ALTER TABLE user ADD COLUMN {col_name} {col_type} DEFAULT {default_value}")
+                    # Validate that default_value is actually an integer
+                    try:
+                        int(default_value)
+                        cursor.execute(f"ALTER TABLE user ADD COLUMN {col_name} {col_type} DEFAULT {default_value}")
+                    except ValueError:
+                        print(f"⚠️ Invalid integer default for {col_name}: {default_value}")
+                        continue
                 else:
-                    cursor.execute(f"ALTER TABLE user ADD COLUMN {col_name} {col_type} DEFAULT '{default_value}'")
+                    # For TEXT/TIMESTAMP, escape single quotes in default value
+                    safe_default = default_value.replace("'", "''")
+                    cursor.execute(f"ALTER TABLE user ADD COLUMN {col_name} {col_type} DEFAULT '{safe_default}'")
             else:
                 cursor.execute(f"ALTER TABLE user ADD COLUMN {col_name} {col_type}")
             

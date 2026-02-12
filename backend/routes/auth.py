@@ -13,6 +13,7 @@ from utils.auth import (
     verify_refresh_token
 )
 from pydantic import BaseModel, EmailStr, validator
+from typing import Optional
 from datetime import datetime, timedelta
 import secrets
 from email.mime.text import MIMEText
@@ -114,6 +115,82 @@ class ResetPasswordRequest(BaseModel):
 
 class VerifyTokenRequest(BaseModel):
     token: str
+
+
+class PreferencesUpdate(BaseModel):
+    """Validated user display preferences"""
+    date_format: Optional[str] = None
+    time_format: Optional[str] = None
+    items_per_page: Optional[int] = None
+    default_sort: Optional[str] = None
+    
+    @validator('date_format')
+    def validate_date_format(cls, v):
+        if v is not None:
+            allowed_formats = ['MM/DD/YYYY', 'DD/MM/YYYY', 'YYYY-MM-DD', 'DD.MM.YYYY']
+            if v not in allowed_formats:
+                raise ValueError(f'Invalid date format. Allowed: {", ".join(allowed_formats)}')
+        return v
+    
+    @validator('time_format')
+    def validate_time_format(cls, v):
+        if v is not None:
+            allowed_formats = ['12h', '24h']
+            if v not in allowed_formats:
+                raise ValueError(f'Invalid time format. Allowed: {", ".join(allowed_formats)}')
+        return v
+    
+    @validator('items_per_page')
+    def validate_items_per_page(cls, v):
+        if v is not None:
+            if v < 5 or v > 100:
+                raise ValueError('Items per page must be between 5 and 100')
+        return v
+    
+    @validator('default_sort')
+    def validate_default_sort(cls, v):
+        if v is not None:
+            allowed_sorts = ['expiration_asc', 'expiration_desc', 'title_asc', 'title_desc', 'created_asc', 'created_desc']
+            if v not in allowed_sorts:
+                raise ValueError(f'Invalid sort option. Allowed: {", ".join(allowed_sorts)}')
+        return v
+
+
+class SettingsUpdate(BaseModel):
+    """Validated user account settings"""
+    email_notifications_enabled: Optional[bool] = None
+    notification_days: Optional[int] = None
+    daily_digest: Optional[bool] = None
+    language: Optional[str] = None
+    timezone: Optional[str] = None
+    
+    @validator('notification_days')
+    def validate_notification_days(cls, v):
+        if v is not None:
+            if v < 0 or v > 365:
+                raise ValueError('Notification days must be between 0 and 365')
+        return v
+    
+    @validator('language')
+    def validate_language(cls, v):
+        if v is not None:
+            # Common language codes
+            allowed_languages = ['en', 'es', 'fr', 'de', 'it', 'pt', 'ja', 'zh', 'ko', 'ar', 'ru']
+            if v not in allowed_languages:
+                raise ValueError(f'Invalid language code. Allowed: {", ".join(allowed_languages)}')
+        return v
+    
+    @validator('timezone')
+    def validate_timezone(cls, v):
+        if v is not None:
+            # Basic timezone validation - common timezones
+            common_timezones = ['UTC', 'America/New_York', 'America/Chicago', 'America/Denver', 
+                              'America/Los_Angeles', 'Europe/London', 'Europe/Paris', 'Asia/Tokyo', 
+                              'Asia/Shanghai', 'Australia/Sydney']
+            # For now, accept any string but could use pytz for stricter validation
+            if len(v) > 50:
+                raise ValueError('Timezone string too long')
+        return v
 
 
 # -----------------------------
@@ -595,22 +672,22 @@ def get_settings(user: User = Depends(get_current_user)):
 
 @router.put("/settings")
 def update_settings(
-    settings_data: dict,
+    settings_data: SettingsUpdate,
     user: User = Depends(get_current_user),
     session: Session = Depends(get_session)
 ):
     """Update user account settings"""
     
-    if "email_notifications_enabled" in settings_data:
-        user.email_notifications = settings_data["email_notifications_enabled"]
-    if "notification_days" in settings_data:
-        user.notification_days_before = settings_data["notification_days"]
-    if "daily_digest" in settings_data:
-        user.daily_digest = settings_data["daily_digest"]
-    if "language" in settings_data:
-        user.language = settings_data["language"]
-    if "timezone" in settings_data:
-        user.timezone = settings_data["timezone"]
+    if settings_data.email_notifications_enabled is not None:
+        user.email_notifications = settings_data.email_notifications_enabled
+    if settings_data.notification_days is not None:
+        user.notification_days_before = settings_data.notification_days
+    if settings_data.daily_digest is not None:
+        user.daily_digest = settings_data.daily_digest
+    if settings_data.language is not None:
+        user.language = settings_data.language
+    if settings_data.timezone is not None:
+        user.timezone = settings_data.timezone
     
     user.updated_at = datetime.utcnow()
     
@@ -644,20 +721,20 @@ def get_preferences(user: User = Depends(get_current_user)):
 
 @router.put("/preferences")
 def update_preferences(
-    preferences_data: dict,
+    preferences_data: PreferencesUpdate,
     user: User = Depends(get_current_user),
     session: Session = Depends(get_session)
 ):
     """Update user display preferences"""
     
-    if "date_format" in preferences_data:
-        user.date_format = preferences_data["date_format"]
-    if "time_format" in preferences_data:
-        user.time_format = preferences_data["time_format"]
-    if "items_per_page" in preferences_data:
-        user.items_per_page = preferences_data["items_per_page"]
-    if "default_sort" in preferences_data:
-        user.default_sort = preferences_data["default_sort"]
+    if preferences_data.date_format is not None:
+        user.date_format = preferences_data.date_format
+    if preferences_data.time_format is not None:
+        user.time_format = preferences_data.time_format
+    if preferences_data.items_per_page is not None:
+        user.items_per_page = preferences_data.items_per_page
+    if preferences_data.default_sort is not None:
+        user.default_sort = preferences_data.default_sort
     
     user.updated_at = datetime.utcnow()
     
