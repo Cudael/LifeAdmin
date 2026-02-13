@@ -200,6 +200,55 @@
             </p>
           </div>
 
+          <!-- REMINDER DAYS -->
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <Bell :size="16" class="text-teal-600" />
+              Reminder Schedule
+              <span class="text-gray-500 text-xs font-normal">(optional)</span>
+            </label>
+            <div class="space-y-3">
+              <div class="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <Info :size="16" class="text-blue-600 flex-shrink-0" />
+                <p class="text-xs text-blue-700">
+                  Set custom reminder days for this document, or leave blank to use your default setting ({{ userDefaultReminderDays }} days).
+                </p>
+              </div>
+              
+              <div class="flex gap-3">
+                <button
+                  type="button"
+                  @click="reminderDaysBefore = null"
+                  :class="[
+                    'flex-1 px-4 py-3 rounded-xl font-medium transition-all duration-200 border-2',
+                    reminderDaysBefore === null
+                      ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white border-teal-500 shadow-md'
+                      : 'bg-white text-gray-700 border-gray-200 hover:border-teal-300'
+                  ]"
+                  :disabled="loading"
+                >
+                  <div class="text-sm">Use Default</div>
+                  <div class="text-xs opacity-75 mt-0.5">{{ userDefaultReminderDays }} days</div>
+                </button>
+                <button
+                  type="button"
+                  v-for="days in [7, 14, 30, 60]"
+                  :key="days"
+                  @click="reminderDaysBefore = days"
+                  :class="[
+                    'flex-1 px-4 py-3 rounded-xl font-medium transition-all duration-200 border-2',
+                    reminderDaysBefore === days
+                      ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white border-teal-500 shadow-md'
+                      : 'bg-white text-gray-700 border-gray-200 hover:border-teal-300'
+                  ]"
+                  :disabled="loading"
+                >
+                  {{ days }} days
+                </button>
+              </div>
+            </div>
+          </div>
+
           <!-- DOCUMENT NUMBER -->
           <div class="space-y-2">
             <label class="flex items-center gap-2 text-sm font-semibold text-gray-700">
@@ -342,7 +391,9 @@ import {
   Clock,
   Lightbulb,
   ShieldAlert,
-  Mail
+  Mail,
+  Bell,
+  Info
 } from "lucide-vue-next"
 
 const router = useRouter()
@@ -366,6 +417,7 @@ const user = ref(null)
 const isVerified = computed(() => user.value?.email_verified || false)
 const resending = ref(false)
 const verificationEmailSent = ref(false)
+const userDefaultReminderDays = computed(() => user.value?.notification_days_before || 7)
 
 // Form fields
 const name = ref("")
@@ -375,6 +427,7 @@ const documentNumber = ref("")
 const issuingAuthority = ref("")
 const notes = ref("")
 const file = ref(null)
+const reminderDaysBefore = ref(null) // null = use user default
 
 // State
 const loading = ref(false)
@@ -473,6 +526,11 @@ async function handleSubmit() {
     formData.append("issuing_authority", issuingAuthority.value.trim())
     formData.append("notes", notes.value.trim())
     formData.append("type", "document")
+    
+    // Add reminder days if custom value is set (null means use default)
+    if (reminderDaysBefore.value !== null) {
+      formData.append("reminder_days_before", reminderDaysBefore.value.toString())
+    }
 
     if (file.value) {
       formData.append("file", file.value)
