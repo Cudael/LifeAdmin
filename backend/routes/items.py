@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 limiter = Limiter(key_func=get_remote_address)
 
 # ✅ Constants for validation
-ALLOWED_CATEGORIES = ["Travel", "Health", "Finance", "Work", "Personal", "Subscriptions"]
+ALLOWED_CATEGORIES = ["Travel", "Health", "Finance", "Work", "Personal", "Legal", "Education", "Vehicle"]
 ALLOWED_ITEM_TYPES = ["document", "subscription"]
 
 

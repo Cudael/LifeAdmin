@@ -135,23 +135,6 @@
         <!-- FORM -->
         <form @submit.prevent="handleSubmit" class="space-y-6">
 
-          <!-- DOCUMENT NAME -->
-          <div class="space-y-2">
-            <label class="flex items-center gap-2 text-sm font-semibold text-gray-700">
-              <FileText :size="16" class="text-teal-600" />
-              Document Name
-              <span class="text-red-500">*</span>
-            </label>
-            <input
-              v-model="name"
-              type="text"
-              class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200 bg-white/50"
-              placeholder="e.g., Passport, Driver's License, Insurance Policy"
-              required
-              :disabled="loading"
-            />
-          </div>
-
           <!-- CATEGORY -->
           <div class="space-y-2">
             <label class="flex items-center gap-2 text-sm font-semibold text-gray-700">
@@ -159,10 +142,30 @@
               Category
               <span class="text-red-500">*</span>
             </label>
-            <Autocomplete
+            <select
               v-model="category"
-              :suggestions="documentCategorySuggestions"
-              placeholder="e.g., Passport, Driver's License, Insurance Policy"
+              class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200 bg-white/50 appearance-none cursor-pointer"
+              required
+              :disabled="loading"
+            >
+              <option value="" disabled>Select a category</option>
+              <option v-for="cat in categoryOptions" :key="cat" :value="cat">
+                {{ cat }}
+              </option>
+            </select>
+          </div>
+
+          <!-- DOCUMENT NAME -->
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <FileText :size="16" class="text-teal-600" />
+              Document Name
+              <span class="text-red-500">*</span>
+            </label>
+            <Autocomplete
+              v-model="name"
+              :suggestions="filteredDocumentNameSuggestions"
+              placeholder="e.g., Passport, Visa, or type your own"
               :required="true"
               :disabled="loading"
               color="teal"
@@ -398,18 +401,60 @@ import {
 
 const router = useRouter()
 
-// Document category suggestions
-const documentCategorySuggestions = [
-  { value: 'Passport', label: 'Passport', icon: '🛂', description: 'Travel document' },
-  { value: "Driver's License", label: "Driver's License", icon: '🚗', description: 'Vehicle permit' },
-  { value: 'Insurance Policy', label: 'Insurance Policy', icon: '🛡️', description: 'Health/life coverage' },
-  { value: 'Birth Certificate', label: 'Birth Certificate', icon: '👶', description: 'Official birth record' },
-  { value: 'Tax Return', label: 'Tax Return', icon: '💰', description: 'Annual tax filing' },
-  { value: 'Lease Agreement', label: 'Lease Agreement', icon: '🏠', description: 'Rental contract' },
-  { value: 'Work Permit', label: 'Work Permit', icon: '💼', description: 'Employment authorization' },
-  { value: 'Visa', label: 'Visa', icon: '✈️', description: 'Travel authorization' },
-  { value: 'Medical Record', label: 'Medical Record', icon: '🏥', description: 'Health documentation' },
-  { value: 'Warranty', label: 'Warranty', icon: '🔧', description: 'Product guarantee' }
+// Document name suggestions organized by category
+const documentNameSuggestions = [
+  // Travel
+  { value: 'Passport', label: 'Passport', icon: '🛂', description: 'Travel document', category: 'Travel' },
+  { value: 'Visa', label: 'Visa', icon: '✈️', description: 'Travel authorization', category: 'Travel' },
+  { value: 'Travel Insurance', label: 'Travel Insurance', icon: '🛡️', description: 'Travel coverage', category: 'Travel' },
+  { value: 'Flight Ticket', label: 'Flight Ticket', icon: '🎫', description: 'Air travel ticket', category: 'Travel' },
+  // Health
+  { value: 'Health Insurance Card', label: 'Health Insurance Card', icon: '🏥', description: 'Health coverage card', category: 'Health' },
+  { value: 'Medical Record', label: 'Medical Record', icon: '📋', description: 'Health documentation', category: 'Health' },
+  { value: 'Vaccination Certificate', label: 'Vaccination Certificate', icon: '💉', description: 'Immunization record', category: 'Health' },
+  { value: 'Prescription', label: 'Prescription', icon: '💊', description: 'Medical prescription', category: 'Health' },
+  // Finance
+  { value: 'Tax Return', label: 'Tax Return', icon: '💰', description: 'Annual tax filing', category: 'Finance' },
+  { value: 'Bank Statement', label: 'Bank Statement', icon: '🏦', description: 'Banking document', category: 'Finance' },
+  { value: 'Insurance Policy', label: 'Insurance Policy', icon: '🛡️', description: 'Insurance coverage', category: 'Finance' },
+  { value: 'Investment Document', label: 'Investment Document', icon: '📈', description: 'Investment record', category: 'Finance' },
+  // Work
+  { value: 'Work Permit', label: 'Work Permit', icon: '💼', description: 'Employment authorization', category: 'Work' },
+  { value: 'Employment Contract', label: 'Employment Contract', icon: '📝', description: 'Job agreement', category: 'Work' },
+  { value: 'Professional License', label: 'Professional License', icon: '🎓', description: 'Professional certification', category: 'Work' },
+  { value: 'Resume', label: 'Resume', icon: '📄', description: 'CV document', category: 'Work' },
+  // Personal
+  { value: 'Birth Certificate', label: 'Birth Certificate', icon: '👶', description: 'Official birth record', category: 'Personal' },
+  { value: 'ID Card', label: 'ID Card', icon: '🪪', description: 'Identification card', category: 'Personal' },
+  { value: 'Social Security Card', label: 'Social Security Card', icon: '🔐', description: 'SSN document', category: 'Personal' },
+  { value: 'Marriage Certificate', label: 'Marriage Certificate', icon: '💍', description: 'Marriage record', category: 'Personal' },
+  // Legal
+  { value: 'Lease Agreement', label: 'Lease Agreement', icon: '🏠', description: 'Rental contract', category: 'Legal' },
+  { value: 'Warranty', label: 'Warranty', icon: '🔧', description: 'Product guarantee', category: 'Legal' },
+  { value: 'Power of Attorney', label: 'Power of Attorney', icon: '⚖️', description: 'Legal authorization', category: 'Legal' },
+  { value: 'Will', label: 'Will', icon: '📜', description: 'Testament document', category: 'Legal' },
+  // Education
+  { value: 'Degree Certificate', label: 'Degree Certificate', icon: '🎓', description: 'Academic degree', category: 'Education' },
+  { value: 'Transcript', label: 'Transcript', icon: '📊', description: 'Academic record', category: 'Education' },
+  { value: 'Student ID', label: 'Student ID', icon: '🪪', description: 'Student identification', category: 'Education' },
+  { value: 'Enrollment Document', label: 'Enrollment Document', icon: '📝', description: 'School enrollment', category: 'Education' },
+  // Vehicle
+  { value: "Driver's License", label: "Driver's License", icon: '🚗', description: 'Driving permit', category: 'Vehicle' },
+  { value: 'Vehicle Registration', label: 'Vehicle Registration', icon: '🚙', description: 'Vehicle documents', category: 'Vehicle' },
+  { value: 'Car Insurance', label: 'Car Insurance', icon: '🛡️', description: 'Auto coverage', category: 'Vehicle' },
+  { value: 'Inspection Certificate', label: 'Inspection Certificate', icon: '✅', description: 'Vehicle inspection', category: 'Vehicle' }
+]
+
+// Category options
+const categoryOptions = [
+  'Travel',
+  'Health',
+  'Finance',
+  'Work',
+  'Personal',
+  'Legal',
+  'Education',
+  'Vehicle'
 ]
 
 // ✅ User state
@@ -449,6 +494,14 @@ const daysUntilExpiry = computed(() => {
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
   
   return diffDays
+})
+
+// Filter document name suggestions based on selected category
+const filteredDocumentNameSuggestions = computed(() => {
+  if (!category.value) {
+    return documentNameSuggestions // Show all if no category selected
+  }
+  return documentNameSuggestions.filter(suggestion => suggestion.category === category.value)
 })
 
 // ✅ Load user on mount
@@ -505,13 +558,13 @@ async function handleSubmit() {
     return
   }
 
-  if (!expirationDate.value) {
-    errorMessage.value = "Please select an expiration date"
+  if (!name.value.trim()) {
+    errorMessage.value = "Please enter a document name"
     return
   }
 
-  if (!name.value.trim()) {
-    errorMessage.value = "Please enter a document name"
+  if (!expirationDate.value) {
+    errorMessage.value = "Please select an expiration date"
     return
   }
 
