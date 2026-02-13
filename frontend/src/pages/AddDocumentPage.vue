@@ -445,7 +445,7 @@ const documentNameSuggestions = [
   { value: 'Inspection Certificate', label: 'Inspection Certificate', icon: '✅', description: 'Vehicle inspection', category: 'Vehicle' }
 ]
 
-// Category options
+// Category options (for documents only - subscriptions have their own categories)
 const categoryOptions = [
   'Travel',
   'Health',
