@@ -241,6 +241,7 @@ async def update_item_with_file(
     billing_cycle: Optional[str] = Form(None),
     price: Optional[float] = Form(None),
     document_number: Optional[str] = Form(None),
+    reminder_days_before: Optional[int] = Form(None),
     file: UploadFile = File(None),
     session: Session = Depends(get_session),
     user: User = Depends(require_verified_email)
@@ -289,6 +290,9 @@ async def update_item_with_file(
     # Update subscription fields
     db_item.billing_cycle = billing_cycle if billing_cycle else None
     db_item.price = price if price else None
+    
+    # Update reminder settings
+    db_item.reminder_days_before = reminder_days_before
     
     # Handle dates (convert empty strings to None)
     db_item.expiration_date = parse_date(expiration_date) if expiration_date else None
@@ -376,6 +380,7 @@ async def upload_item(
 
     document_number: Optional[str] = Form(None),
     notes: Optional[str] = Form(None),
+    reminder_days_before: Optional[int] = Form(None),
     file: UploadFile = File(None),
 
     session: Session = Depends(get_session),
@@ -423,6 +428,7 @@ async def upload_item(
         document_number=document_number.strip() if document_number else None,
         notes=notes.strip() if notes else None,
         file_path=file_path,
+        reminder_days_before=reminder_days_before,
         user_id=user.id
     )
 

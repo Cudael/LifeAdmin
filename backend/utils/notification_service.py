@@ -17,9 +17,6 @@ def check_expiring_items(session: Session):
     emails_sent = 0
     
     for user in users:
-        # Calculate the threshold date based on user preference
-        threshold_date = date.today() + timedelta(days=user.notification_days_before)
-        
         # Find ALL items for this user
         statement = select(Item).where(Item.user_id == user.id)
         all_items = session.exec(statement).all()
@@ -29,6 +26,10 @@ def check_expiring_items(session: Session):
             
             if not expiry:
                 continue  # Skip items without expiry dates
+            
+            # Use item-specific reminder days if set, otherwise fall back to user's default
+            reminder_days = item.reminder_days_before if item.reminder_days_before is not None else user.notification_days_before
+            threshold_date = date.today() + timedelta(days=reminder_days)
             
             # Check if expiring soon
             if date.today() <= expiry <= threshold_date:
