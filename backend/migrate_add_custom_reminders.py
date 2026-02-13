@@ -11,6 +11,9 @@ def migrate():
     
     try:
         # Add the column - NULL by default (falls back to user preference)
+        # SECURITY NOTE: Using f-string here is safe because col_name and col_type
+        # are hardcoded constants, not user input. SQLite ALTER TABLE does not
+        # support parameterized column names/types.
         cursor.execute(f"ALTER TABLE items ADD COLUMN {col_name} {col_type}")
         conn.commit()
         print(f"✅ Added column: {col_name}")
