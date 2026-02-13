@@ -159,22 +159,14 @@
               Category
               <span class="text-red-500">*</span>
             </label>
-            <div class="relative">
-              <select
-                v-model="category"
-                class="w-full px-4 py-3 pr-10 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200 bg-white/50 appearance-none cursor-pointer"
-                required
-                :disabled="loading"
-              >
-                <option disabled value="">Select a category</option>
-                <option value="Travel">🌍 Travel</option>
-                <option value="Health">❤️ Health</option>
-                <option value="Finance">💰 Finance</option>
-                <option value="Work">💼 Work</option>
-                <option value="Personal">👤 Personal</option>
-              </select>
-              <ChevronDown :size="20" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-            </div>
+            <Autocomplete
+              v-model="category"
+              :suggestions="documentCategorySuggestions"
+              placeholder="e.g., Passport, Driver's License, Insurance Policy"
+              :required="true"
+              :disabled="loading"
+              color="teal"
+            />
           </div>
 
           <!-- FILE UPLOADER -->
@@ -331,6 +323,7 @@ import { ref, computed, onMounted } from "vue"
 import { useRouter } from "vue-router"
 import DashboardLayout from "../layouts/DashboardLayout.vue"
 import FileUploader from "../components/FileUploader.vue"
+import Autocomplete from "../components/Autocomplete.vue"
 import { apiFetch } from "../utils/api"
 import {
   FileText,
@@ -346,7 +339,6 @@ import {
   AlertCircle,
   Loader2,
   ChevronRight,
-  ChevronDown,
   Clock,
   Lightbulb,
   ShieldAlert,
@@ -354,6 +346,20 @@ import {
 } from "lucide-vue-next"
 
 const router = useRouter()
+
+// Document category suggestions
+const documentCategorySuggestions = [
+  { value: 'Passport', label: 'Passport', icon: '🛂', description: 'Travel document' },
+  { value: 'Driver License', label: 'Driver License', icon: '🚗', description: 'Vehicle permit' },
+  { value: 'Insurance Policy', label: 'Insurance Policy', icon: '🏥', description: 'Health/life coverage' },
+  { value: 'Birth Certificate', label: 'Birth Certificate', icon: '👶', description: 'Official birth record' },
+  { value: 'Tax Return', label: 'Tax Return', icon: '💰', description: 'Annual tax filing' },
+  { value: 'Lease Agreement', label: 'Lease Agreement', icon: '🏠', description: 'Rental contract' },
+  { value: 'Work Permit', label: 'Work Permit', icon: '💼', description: 'Employment authorization' },
+  { value: 'Visa', label: 'Visa', icon: '✈️', description: 'Travel authorization' },
+  { value: 'Medical Record', label: 'Medical Record', icon: '🏥', description: 'Health documentation' },
+  { value: 'Warranty', label: 'Warranty', icon: '🔧', description: 'Product guarantee' }
+]
 
 // ✅ User state
 const user = ref(null)

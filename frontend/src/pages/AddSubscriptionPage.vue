@@ -159,12 +159,13 @@
               Provider
               <span class="text-gray-500 text-xs font-normal">(optional)</span>
             </label>
-            <input
+            <Autocomplete
               v-model="provider"
-              type="text"
-              class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-white/50"
-              placeholder="e.g., Netflix Inc., Spotify AB"
+              :suggestions="subscriptionProviderSuggestions"
+              placeholder="e.g., Netflix, Spotify, Gym Membership"
+              :required="false"
               :disabled="loading"
+              color="purple"
             />
           </div>
 
@@ -431,6 +432,7 @@ import { ref, computed, onMounted } from "vue"
 import { useRouter } from "vue-router"
 import DashboardLayout from "../layouts/DashboardLayout.vue"
 import FileUploader from "../components/FileUploader.vue"
+import Autocomplete from "../components/Autocomplete.vue"
 import { apiFetch } from "../utils/api"
 import {
   Repeat,
@@ -459,6 +461,22 @@ import {
 } from "lucide-vue-next"
 
 const router = useRouter()
+
+// Subscription provider suggestions
+const subscriptionProviderSuggestions = [
+  { value: 'Netflix', label: 'Netflix', icon: '🎬', description: 'Streaming service' },
+  { value: 'Spotify', label: 'Spotify', icon: '🎵', description: 'Music streaming' },
+  { value: 'Amazon Prime', label: 'Amazon Prime', icon: '📦', description: 'Shopping & streaming' },
+  { value: 'Gym Membership', label: 'Gym Membership', icon: '💪', description: 'Fitness center' },
+  { value: 'Disney+', label: 'Disney+', icon: '🏰', description: 'Streaming service' },
+  { value: 'Adobe Creative Cloud', label: 'Adobe Creative Cloud', icon: '🎨', description: 'Design tools' },
+  { value: 'Microsoft 365', label: 'Microsoft 365', icon: '📊', description: 'Office suite' },
+  { value: 'iCloud Storage', label: 'iCloud Storage', icon: '☁️', description: 'Cloud storage' },
+  { value: 'YouTube Premium', label: 'YouTube Premium', icon: '📺', description: 'Ad-free videos' },
+  { value: 'Dropbox', label: 'Dropbox', icon: '📁', description: 'File storage' },
+  { value: 'GitHub Pro', label: 'GitHub Pro', icon: '💻', description: 'Code hosting' },
+  { value: 'Notion', label: 'Notion', icon: '📝', description: 'Productivity tool' }
+]
 
 // ✅ User state
 const user = ref(null)
