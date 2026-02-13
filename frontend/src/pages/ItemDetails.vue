@@ -20,13 +20,15 @@ import {
   AlertCircle,
   ChevronRight,
   ArrowLeft,
-  File
+  File,
+  Bell
 } from "lucide-vue-next"
 
 const route = useRoute()
 const router = useRouter()
 
 const item = ref(null)
+const user = ref(null)
 const deleteModalOpen = ref(false)
 const loading = ref(true)
 
@@ -68,6 +70,29 @@ const statusColor = computed(() => {
 const isDocument = computed(() => item.value?.type === "document")
 const isSubscription = computed(() => item.value?.type === "subscription")
 
+const reminderDaysDisplay = computed(() => {
+  if (!item.value) return null
+  if (item.value.reminder_days_before !== null && item.value.reminder_days_before !== undefined) {
+    return item.value.reminder_days_before
+  }
+  return user.value?.notification_days_before || 7
+})
+
+const usingCustomReminder = computed(() => {
+  return item.value?.reminder_days_before !== null && item.value?.reminder_days_before !== undefined
+})
+
+async function loadUser() {
+  try {
+    const res = await apiFetch("/auth/me")
+    if (res.ok) {
+      user.value = await res.json()
+    }
+  } catch (err) {
+    console.error("Failed to load user:", err)
+  }
+}
+
 async function loadItem() {
   try {
     const res = await apiFetch(`/items/${route.params.id}`)
@@ -88,7 +113,10 @@ async function deleteItem() {
   router.push("/items")
 }
 
-onMounted(loadItem)
+onMounted(async () => {
+  await loadUser()
+  await loadItem()
+})
 </script>
 
 <template>
@@ -244,6 +272,27 @@ onMounted(loadItem)
               <p class="text-xs text-gray-500 uppercase tracking-wide font-semibold">Days Left</p>
               <p class="text-xl font-bold text-gray-900">
                 {{ item.expiration_date ? (daysLeft(item.expiration_date) < 0 ? 'Overdue' : daysLeft(item.expiration_date)) : "—" }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reminder Schedule -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border-2 border-gray-100 p-6 hover:shadow-xl transition-shadow duration-300">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center">
+              <Bell :size="24" class="text-white" />
+            </div>
+            <div class="flex-1">
+              <p class="text-xs text-gray-500 uppercase tracking-wide font-semibold">Reminder Schedule</p>
+              <p class="text-xl font-bold text-gray-900">
+                {{ reminderDaysDisplay }} days before
+              </p>
+              <p v-if="usingCustomReminder" class="text-xs text-blue-600 font-medium mt-1">
+                ✨ Custom reminder
+              </p>
+              <p v-else class="text-xs text-gray-500 mt-1">
+                Using account default
               </p>
             </div>
           </div>
