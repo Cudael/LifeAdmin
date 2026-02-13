@@ -135,6 +135,26 @@
         <!-- FORM -->
         <form @submit.prevent="handleSubmit" class="space-y-6">
 
+          <!-- CATEGORY -->
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <FolderOpen :size="16" class="text-purple-600" />
+              Category
+              <span class="text-red-500">*</span>
+            </label>
+            <select
+              v-model="category"
+              class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-white/50 appearance-none cursor-pointer"
+              required
+              :disabled="loading"
+            >
+              <option value="" disabled>Select a category</option>
+              <option v-for="cat in categoryOptions" :key="cat" :value="cat">
+                {{ cat }}
+              </option>
+            </select>
+          </div>
+
           <!-- SUBSCRIPTION NAME -->
           <div class="space-y-2">
             <label class="flex items-center gap-2 text-sm font-semibold text-gray-700">
@@ -508,7 +528,8 @@ import {
   ShieldAlert,
   Mail,
   Bell,
-  Info
+  Info,
+  FolderOpen
 } from "lucide-vue-next"
 
 const router = useRouter()
@@ -529,6 +550,19 @@ const subscriptionProviderSuggestions = [
   { value: 'Notion', label: 'Notion', icon: '📝', description: 'Productivity tool' }
 ]
 
+// Category options (broad classifications)
+const categoryOptions = [
+  'Travel',
+  'Health',
+  'Finance',
+  'Work',
+  'Personal',
+  'Subscriptions',
+  'Legal',
+  'Education',
+  'Vehicle'
+]
+
 // ✅ User state
 const user = ref(null)
 const isVerified = computed(() => user.value?.email_verified || false)
@@ -537,6 +571,7 @@ const verificationEmailSent = ref(false)
 const userDefaultReminderDays = computed(() => user.value?.notification_days_before || 7)
 
 // Form fields
+const category = ref("")
 const name = ref("")
 const provider = ref("")
 const subscriptionUrl = ref("")
@@ -638,6 +673,16 @@ async function handleSubmit() {
   successMessage.value = ""
 
   // Validation
+  if (!category.value) {
+    errorMessage.value = "Please select a category"
+    return
+  }
+
+  if (!name.value.trim()) {
+    errorMessage.value = "Please enter a subscription name"
+    return
+  }
+
   if (!billingCycle.value) {
     errorMessage.value = "Please select a billing cycle"
     return
@@ -653,23 +698,18 @@ async function handleSubmit() {
     return
   }
 
-  if (!name.value.trim()) {
-    errorMessage.value = "Please enter a subscription name"
-    return
-  }
-
   loading.value = true
 
   try {
     const formData = new FormData()
     formData.append("name", name.value.trim())
+    formData.append("category", category.value)
     formData.append("provider", provider.value.trim())
     formData.append("subscription_url", subscriptionUrl.value.trim())
     formData.append("price", price.value)
     formData.append("billing_cycle", billingCycle.value)
     formData.append("renewal_date", renewalDate.value)
     formData.append("notes", notes.value.trim())
-    formData.append("category", "Subscriptions")
     formData.append("type", "subscription")
     
     // Add reminder days if custom value is set (null means use default)
