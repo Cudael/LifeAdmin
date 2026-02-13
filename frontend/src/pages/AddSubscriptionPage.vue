@@ -162,13 +162,13 @@
               Subscription Name
               <span class="text-red-500">*</span>
             </label>
-            <input
+            <Autocomplete
               v-model="name"
-              type="text"
-              class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-white/50"
-              placeholder="e.g., Netflix, Spotify, Gym Membership"
-              required
+              :suggestions="subscriptionNameSuggestions"
+              placeholder="e.g., Netflix, Spotify, or type your own"
+              :required="true"
               :disabled="loading"
+              color="purple"
             />
           </div>
 
@@ -548,6 +548,50 @@ const subscriptionProviderSuggestions = [
   { value: 'Dropbox', label: 'Dropbox', icon: '📁', description: 'File storage' },
   { value: 'GitHub Pro', label: 'GitHub Pro', icon: '💻', description: 'Code hosting' },
   { value: 'Notion', label: 'Notion', icon: '📝', description: 'Productivity tool' }
+]
+
+// Subscription name suggestions (common subscription types)
+const subscriptionNameSuggestions = [
+  // Streaming Services
+  { value: 'Netflix', label: 'Netflix', icon: '🎬', description: 'Video streaming' },
+  { value: 'Disney+', label: 'Disney+', icon: '🏰', description: 'Family streaming' },
+  { value: 'HBO Max', label: 'HBO Max', icon: '📺', description: 'Premium content' },
+  { value: 'Amazon Prime Video', label: 'Amazon Prime Video', icon: '📦', description: 'Video streaming' },
+  { value: 'Apple TV+', label: 'Apple TV+', icon: '🍎', description: 'Apple streaming' },
+  { value: 'Hulu', label: 'Hulu', icon: '🎞️', description: 'TV & movies' },
+  { value: 'YouTube Premium', label: 'YouTube Premium', icon: '📺', description: 'Ad-free YouTube' },
+  
+  // Music Streaming
+  { value: 'Spotify', label: 'Spotify', icon: '🎵', description: 'Music streaming' },
+  { value: 'Apple Music', label: 'Apple Music', icon: '🎶', description: 'Music service' },
+  { value: 'YouTube Music', label: 'YouTube Music', icon: '🎧', description: 'Music streaming' },
+  { value: 'Tidal', label: 'Tidal', icon: '🎼', description: 'Hi-Fi music' },
+  
+  // Fitness & Health
+  { value: 'Gym Membership', label: 'Gym Membership', icon: '💪', description: 'Fitness center' },
+  { value: 'Peloton', label: 'Peloton', icon: '🚴', description: 'Home fitness' },
+  { value: 'ClassPass', label: 'ClassPass', icon: '🏃', description: 'Fitness classes' },
+  
+  // Software & Productivity
+  { value: 'Microsoft 365', label: 'Microsoft 365', icon: '📊', description: 'Office suite' },
+  { value: 'Adobe Creative Cloud', label: 'Adobe Creative Cloud', icon: '🎨', description: 'Design tools' },
+  { value: 'Notion', label: 'Notion', icon: '📝', description: 'Workspace' },
+  { value: 'Dropbox', label: 'Dropbox', icon: '📁', description: 'Cloud storage' },
+  { value: 'Google Workspace', label: 'Google Workspace', icon: '💼', description: 'Business tools' },
+  { value: 'iCloud+', label: 'iCloud+', icon: '☁️', description: 'Apple storage' },
+  { value: 'GitHub Pro', label: 'GitHub Pro', icon: '💻', description: 'Code hosting' },
+  
+  // News & Magazines
+  { value: 'New York Times', label: 'New York Times', icon: '📰', description: 'News subscription' },
+  { value: 'Medium', label: 'Medium', icon: '✍️', description: 'Articles & blogs' },
+  { value: 'Audible', label: 'Audible', icon: '🎧', description: 'Audiobooks' },
+  { value: 'Kindle Unlimited', label: 'Kindle Unlimited', icon: '📚', description: 'eBooks' },
+  
+  // Utilities
+  { value: 'Phone Plan', label: 'Phone Plan', icon: '📱', description: 'Mobile service' },
+  { value: 'Internet Service', label: 'Internet Service', icon: '🌐', description: 'Home internet' },
+  { value: 'VPN Service', label: 'VPN Service', icon: '🔒', description: 'Privacy & security' },
+  { value: 'Password Manager', label: 'Password Manager', icon: '🔐', description: 'Security tool' }
 ]
 
 // Category options (broad classifications)
