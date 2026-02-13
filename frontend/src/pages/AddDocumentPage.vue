@@ -552,7 +552,7 @@ async function handleSubmit() {
   errorMessage.value = ""
   successMessage.value = ""
 
-  // Validation
+  // Validation (in field order: Category → Document Name → Expiration Date)
   if (!category.value) {
     errorMessage.value = "Please select a category"
     return
