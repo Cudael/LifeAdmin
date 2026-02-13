@@ -21,6 +21,9 @@ class ItemBase(SQLModel):
     # Shared optional fields
     file_path: Optional[str] = None
     notes: Optional[str] = None
+    
+    # Custom reminder schedule (optional - falls back to user's default if not set)
+    reminder_days_before: Optional[int] = None
 
 
 class Item(ItemBase, table=True):
@@ -83,3 +86,6 @@ class ItemUpdate(SQLModel):
     # Shared
     file_path: Optional[str] = None
     notes: Optional[str] = None
+    
+    # Custom reminder schedule
+    reminder_days_before: Optional[int] = None

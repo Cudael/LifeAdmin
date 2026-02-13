@@ -18,11 +18,17 @@ import {
   Upload,
   ArrowLeft,
   Loader2,
-  ChevronRight
+  ChevronRight,
+  Bell,
+  Info
 } from "lucide-vue-next"
 
 const route = useRoute()
 const router = useRouter()
+
+// User state
+const user = ref(null)
+const userDefaultReminderDays = computed(() => user.value?.notification_days_before || 7)
 
 const loading = ref(true)
 const saving = ref(false)
@@ -62,7 +68,8 @@ async function loadItem() {
     item.value = {
       ...data,
       expiration_date: formatDateInput(data.expiration_date),
-      renewal_date: formatDateInput(data.renewal_date)
+      renewal_date: formatDateInput(data.renewal_date),
+      reminder_days_before: data.reminder_days_before
     }
 
     loading.value = false
@@ -70,6 +77,17 @@ async function loadItem() {
     console.error(err)
     errorMessage.value = "Something went wrong"
     loading.value = false
+  }
+}
+
+async function loadUser() {
+  try {
+    const res = await apiFetch("/auth/me")
+    if (res.ok) {
+      user.value = await res.json()
+    }
+  } catch (err) {
+    console.error("Failed to load user:", err)
   }
 }
 
@@ -86,6 +104,11 @@ async function saveItem() {
     formData.append("expiration_date", item.value.expiration_date || "")
     formData.append("renewal_date", item.value.renewal_date || "")
     formData.append("notes", item.value.notes || "")
+    
+    // Add reminder days if set (null means use default)
+    if (item.value.reminder_days_before !== null && item.value.reminder_days_before !== undefined) {
+      formData.append("reminder_days_before", item.value.reminder_days_before.toString())
+    }
 
     if (file.value) {
       formData.append("file", file.value)
@@ -139,7 +162,10 @@ async function deleteItem() {
   }
 }
 
-onMounted(loadItem)
+onMounted(async () => {
+  await loadUser()
+  await loadItem()
+})
 </script>
 
 <template>
@@ -350,6 +376,54 @@ onMounted(loadItem)
                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
                 :disabled="saving"
               />
+            </div>
+
+            <!-- REMINDER SCHEDULE -->
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                <Bell :size="16" :class="isDocument ? 'text-teal-600' : 'text-purple-600'" />
+                Reminder Schedule
+                <span class="text-gray-500 text-xs font-normal">(optional)</span>
+              </label>
+              <div class="space-y-3">
+                <div class="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <Info :size="16" class="text-blue-600 flex-shrink-0" />
+                  <p class="text-xs text-blue-700">
+                    Custom reminder for this item, or leave as default to use your account setting ({{ userDefaultReminderDays }} days).
+                  </p>
+                </div>
+                
+                <div class="flex gap-2">
+                  <button
+                    type="button"
+                    @click="item.reminder_days_before = null"
+                    :class="[
+                      'flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 border-2',
+                      item.reminder_days_before === null
+                        ? `bg-gradient-to-r ${isDocument ? 'from-teal-500 to-cyan-500 border-teal-500' : 'from-purple-500 to-pink-500 border-purple-500'} text-white shadow-md`
+                        : 'bg-white text-gray-700 border-gray-200 hover:border-teal-300'
+                    ]"
+                    :disabled="saving"
+                  >
+                    Default ({{ userDefaultReminderDays }}d)
+                  </button>
+                  <button
+                    type="button"
+                    v-for="days in [7, 14, 30, 60]"
+                    :key="days"
+                    @click="item.reminder_days_before = days"
+                    :class="[
+                      'flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 border-2',
+                      item.reminder_days_before === days
+                        ? `bg-gradient-to-r ${isDocument ? 'from-teal-500 to-cyan-500 border-teal-500' : 'from-purple-500 to-pink-500 border-purple-500'} text-white shadow-md`
+                        : 'bg-white text-gray-700 border-gray-200 hover:border-teal-300'
+                    ]"
+                    :disabled="saving"
+                  >
+                    {{ days }}d
+                  </button>
+                </div>
+              </div>
             </div>
 
           </div>
