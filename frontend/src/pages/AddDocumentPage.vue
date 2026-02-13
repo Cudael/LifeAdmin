@@ -350,8 +350,8 @@ const router = useRouter()
 // Document category suggestions
 const documentCategorySuggestions = [
   { value: 'Passport', label: 'Passport', icon: '🛂', description: 'Travel document' },
-  { value: 'Driver License', label: 'Driver License', icon: '🚗', description: 'Vehicle permit' },
-  { value: 'Insurance Policy', label: 'Insurance Policy', icon: '🏥', description: 'Health/life coverage' },
+  { value: "Driver's License", label: "Driver's License", icon: '🚗', description: 'Vehicle permit' },
+  { value: 'Insurance Policy', label: 'Insurance Policy', icon: '🛡️', description: 'Health/life coverage' },
   { value: 'Birth Certificate', label: 'Birth Certificate', icon: '👶', description: 'Official birth record' },
   { value: 'Tax Return', label: 'Tax Return', icon: '💰', description: 'Annual tax filing' },
   { value: 'Lease Agreement', label: 'Lease Agreement', icon: '🏠', description: 'Rental contract' },

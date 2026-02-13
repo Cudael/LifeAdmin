@@ -73,6 +73,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"])
 
+const BLUR_DELAY = 200 // Delay in milliseconds to allow click events on suggestions to fire
 const inputValue = ref(props.modelValue)
 const showSuggestions = ref(false)
 const selectedIndex = ref(0)
@@ -135,7 +136,7 @@ function onBlur() {
   // Delay to allow click events on suggestions to fire first
   setTimeout(() => {
     showSuggestions.value = false
-  }, 200)
+  }, BLUR_DELAY)
 }
 
 // Navigate down in suggestions
