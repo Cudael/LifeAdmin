@@ -19,7 +19,12 @@ import {
   Award,
   Star,
   MessageCircle,
-  Mail
+  Mail,
+  Briefcase,
+  Home,
+  AlertCircle,
+  DollarSign,
+  FolderOpen
 } from "lucide-vue-next"
 
 const isLoggedIn = computed(() => !!accessToken.value)
@@ -32,7 +37,7 @@ const stats = ref({
 })
 
 const animateStats = () => {
-  const targets = { users: 1200, documents: 15000, reminders: 8500 }
+  const targets = { users: 500, documents: 5000, reminders: 2500 }
   const duration = 2000
   const steps = 60
   const increment = duration / steps
@@ -74,25 +79,16 @@ onMounted(() => {
 
         <!-- Base dark background -->
         <div class="absolute inset-0 z-0 bg-[#0a0c12]"></div>
-
-        <!-- Animated gradient orbs -->
-        <div class="absolute inset-0 z-0 opacity-[0.5] bg-[url('https://www.transparenttextures.com/patterns/axiom-pattern.png')]"></div>
         
-        <!-- Teal atmospheric gradient (main accent) -->
-        <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_20%_30%,rgba(0,255,200,0.22),transparent_60%)] animate-pulse-slow"></div>
+        <!-- Simplified gradient overlays -->
+        <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_20%_30%,rgba(20,184,166,0.15),transparent_60%)] animate-pulse-slow"></div>
+        <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_80%_70%,rgba(6,182,212,0.12),transparent_65%)] animate-pulse-slower"></div>
 
-        <!-- Soft blue-teal drift from the opposite side -->
-        <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_80%_70%,rgba(0,180,255,0.18),transparent_65%)] animate-pulse-slower"></div>
-
-        <!-- Fog layer (cinematic depth) -->
-        <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.02),transparent_75%)]"></div>
-
-        <!-- Floating particles effect -->
+        <!-- Subtle floating particles -->
         <div class="absolute inset-0 z-0">
-          <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-teal-400 rounded-full opacity-20 animate-float"></div>
-          <div class="absolute top-1/3 right-1/4 w-3 h-3 bg-cyan-400 rounded-full opacity-30 animate-float-delayed"></div>
-          <div class="absolute bottom-1/3 left-1/3 w-2 h-2 bg-blue-400 rounded-full opacity-25 animate-float"></div>
-          <div class="absolute top-1/2 right-1/3 w-2 h-2 bg-teal-300 rounded-full opacity-30 animate-float"></div>
+          <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-teal-400 rounded-full opacity-15 animate-float"></div>
+          <div class="absolute top-1/3 right-1/4 w-2 h-2 bg-cyan-400 rounded-full opacity-20 animate-float-delayed"></div>
+          <div class="absolute bottom-1/3 left-1/3 w-2 h-2 bg-blue-400 rounded-full opacity-15 animate-float"></div>
         </div>
 
         <!-- Content -->
@@ -290,19 +286,25 @@ onMounted(() => {
           <div class="grid md:grid-cols-3 gap-12">
 
             <div class="group p-10 bg-white rounded-3xl border-2 border-teal-200 shadow-lg hover:shadow-2xl hover:border-teal-400 transition-all duration-300 hover:-translate-y-2">
-              <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">👔</div>
+              <div class="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Briefcase :size="32" class="text-teal-600" />
+              </div>
               <h3 class="text-2xl font-semibold mb-3 text-teal-600">Busy Professionals</h3>
               <p class="text-gray-600 leading-relaxed">Keep track of IDs, insurance, certifications, and work documents without the stress.</p>
             </div>
 
             <div class="group p-10 bg-white rounded-3xl border-2 border-teal-200 shadow-lg hover:shadow-2xl hover:border-teal-400 transition-all duration-300 hover:-translate-y-2">
-              <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">👨‍👩‍👧‍👦</div>
+              <div class="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Home :size="32" class="text-teal-600" />
+              </div>
               <h3 class="text-2xl font-semibold mb-3 text-teal-600">Families</h3>
               <p class="text-gray-600 leading-relaxed">Manage passports, warranties, medical documents, and school deadlines all in one place.</p>
             </div>
 
             <div class="group p-10 bg-white rounded-3xl border-2 border-teal-200 shadow-lg hover:shadow-2xl hover:border-teal-400 transition-all duration-300 hover:-translate-y-2">
-              <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">💼</div>
+              <div class="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Award :size="32" class="text-teal-600" />
+              </div>
               <h3 class="text-2xl font-semibold mb-3 text-teal-600">Small Business Owners</h3>
               <p class="text-gray-600 leading-relaxed">Track licenses, contracts, receipts, and compliance documents effortlessly.</p>
             </div>
@@ -337,18 +339,24 @@ onMounted(() => {
 
           <!-- Problem cards -->
           <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div class="p-6 bg-white rounded-2xl border border-red-200 shadow-sm">
-              <div class="text-3xl mb-3">😰</div>
+            <div class="p-6 bg-white rounded-2xl border border-red-200 shadow-sm hover:shadow-md transition-shadow">
+              <div class="w-12 h-12 mx-auto mb-3 bg-red-100 rounded-xl flex items-center justify-center">
+                <AlertCircle :size="24" class="text-red-600" />
+              </div>
               <p class="text-gray-700 font-medium">Missing renewal deadlines</p>
             </div>
 
-            <div class="p-6 bg-white rounded-2xl border border-orange-200 shadow-sm">
-              <div class="text-3xl mb-3">💸</div>
+            <div class="p-6 bg-white rounded-2xl border border-orange-200 shadow-sm hover:shadow-md transition-shadow">
+              <div class="w-12 h-12 mx-auto mb-3 bg-orange-100 rounded-xl flex items-center justify-center">
+                <DollarSign :size="24" class="text-orange-600" />
+              </div>
               <p class="text-gray-700 font-medium">Paying fines for late renewals</p>
             </div>
 
-            <div class="p-6 bg-white rounded-2xl border border-yellow-200 shadow-sm">
-              <div class="text-3xl mb-3">📁</div>
+            <div class="p-6 bg-white rounded-2xl border border-yellow-200 shadow-sm hover:shadow-md transition-shadow">
+              <div class="w-12 h-12 mx-auto mb-3 bg-yellow-100 rounded-xl flex items-center justify-center">
+                <FolderOpen :size="24" class="text-yellow-600" />
+              </div>
               <p class="text-gray-700 font-medium">Lost or disorganized documents</p>
             </div>
           </div>

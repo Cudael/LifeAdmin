@@ -15,6 +15,9 @@ import ItemDetails from '../pages/ItemDetails.vue'
 import ProfilePage from '../pages/ProfilePage.vue'
 import CalendarPage from '../pages/CalendarPage.vue'
 import VerifyEmailPage from '../pages/VerifyEmailPage.vue'
+import PrivacyPolicyPage from '../pages/PrivacyPolicyPage.vue'
+import TermsOfServicePage from '../pages/TermsOfServicePage.vue'
+import CookiePolicyPage from '../pages/CookiePolicyPage.vue'
 
 const routes = [
   // Public routes
@@ -22,6 +25,21 @@ const routes = [
     path: '/', 
     name: 'Landing',
     component: LandingPage 
+  },
+  {
+    path: '/privacy',
+    name: 'Privacy',
+    component: PrivacyPolicyPage
+  },
+  {
+    path: '/terms',
+    name: 'Terms',
+    component: TermsOfServicePage
+  },
+  {
+    path: '/cookies',
+    name: 'Cookies',
+    component: CookiePolicyPage
   },
 
   // Guest-only routes (redirect to dashboard if logged in)
