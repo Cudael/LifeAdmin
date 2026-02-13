@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 /* ---------------------------------------
+   Global Styles
+---------------------------------------- */
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ---------------------------------------
    Custom Animations for Landing Page
 ---------------------------------------- */
 
