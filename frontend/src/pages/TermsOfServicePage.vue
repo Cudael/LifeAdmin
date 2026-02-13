@@ -339,10 +339,3 @@ import { FileText, AlertTriangle, Shield, Ban, Scale, Mail } from "lucide-vue-ne
     <AppFooter />
   </div>
 </template>
-
-<style scoped>
-/* Smooth scroll behavior */
-html {
-  scroll-behavior: smooth;
-}
-</style>

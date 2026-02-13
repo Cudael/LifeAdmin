@@ -343,10 +343,3 @@ import { Cookie, Settings, BarChart, Shield, CheckCircle, Mail } from "lucide-vu
     <AppFooter />
   </div>
 </template>
-
-<style scoped>
-/* Smooth scroll behavior */
-html {
-  scroll-behavior: smooth;
-}
-</style>

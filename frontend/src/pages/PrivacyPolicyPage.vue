@@ -250,10 +250,3 @@ import { Shield, Lock, Eye, Database, Mail, UserCheck } from "lucide-vue-next"
     <AppFooter />
   </div>
 </template>
-
-<style scoped>
-/* Smooth scroll behavior */
-html {
-  scroll-behavior: smooth;
-}
-</style>
