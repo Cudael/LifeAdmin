@@ -103,7 +103,7 @@
         <div v-if="recentItems.length === 0" class="text-center py-12">
           <Package :size="48" class="text-gray-300 mx-auto mb-3" />
           <p class="text-gray-500 text-sm">No recent items yet</p>
-          <RouterLink to="/add-document" class="text-teal-600 text-sm font-medium hover:underline mt-2 inline-block">
+          <RouterLink to="/add-item" class="text-teal-600 text-sm font-medium hover:underline mt-2 inline-block">
             Add your first item
           </RouterLink>
         </div>
@@ -435,7 +435,7 @@ const recommended = computed(() => {
     actions.push({
       id: 4,
       text: "Add your first item to get started",
-      link: "/add-document",
+      link: "/add-item",
       cta: "Add Item"
     })
   }

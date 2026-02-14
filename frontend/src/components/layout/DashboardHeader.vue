@@ -87,26 +87,14 @@
               class="absolute right-0 mt-2 w-56 bg-white border-2 border-gray-200 rounded-2xl shadow-2xl py-2 z-[60]"
             >
               <RouterLink
-                to="/add-document"
+                to="/add-item"
                 @click="quickAddOpen = false"
                 class="dropdown-item"
               >
-                <FileText :size="18" />
+                <Plus :size="18" />
                 <div>
-                  <p class="font-semibold">Add Document</p>
-                  <p class="text-xs text-gray-500">Passport, ID, Insurance...</p>
-                </div>
-              </RouterLink>
-
-              <RouterLink
-                to="/add-subscription"
-                @click="quickAddOpen = false"
-                class="dropdown-item"
-              >
-                <Repeat :size="18" />
-                <div>
-                  <p class="font-semibold">Add Subscription</p>
-                  <p class="text-xs text-gray-500">Netflix, Spotify, Gym...</p>
+                  <p class="font-semibold">Add Item</p>
+                  <p class="text-xs text-gray-500">Documents, subscriptions & more</p>
                 </div>
               </RouterLink>
             </div>
@@ -411,21 +399,12 @@
         <div class="border-t border-gray-200 my-2"></div>
 
         <RouterLink
-          to="/add-document"
+          to="/add-item"
           @click="mobileMenuOpen = false"
           class="mobile-nav-link"
         >
-          <FileText :size="18" />
-          Add Document
-        </RouterLink>
-
-        <RouterLink
-          to="/add-subscription"
-          @click="mobileMenuOpen = false"
-          class="mobile-nav-link"
-        >
-          <Repeat :size="18" />
-          Add Subscription
+          <Plus :size="18" />
+          Add Item
         </RouterLink>
       </nav>
     </div>
