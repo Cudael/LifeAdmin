@@ -5,6 +5,7 @@ from typing import Optional
 from datetime import datetime
 import os
 import logging
+import json
 
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -381,13 +382,20 @@ async def upload_item(
     document_number: Optional[str] = Form(None),
     notes: Optional[str] = Form(None),
     reminder_days_before: Optional[int] = Form(None),
+    
+    # New fields for dynamic support
+    item_type_id: Optional[int] = Form(None),
+    item_type_name: Optional[str] = Form(None),
+    dynamic_fields: Optional[str] = Form(None),  # JSON string
+    
     file: UploadFile = File(None),
 
     session: Session = Depends(get_session),
     user: User = Depends(require_verified_email)
 ):
     """
-    Create a new item with file upload
+    Create a new item with file upload.
+    Supports both legacy fields and new dynamic_fields JSON.
     """
     
     # ✅ Validate input
@@ -409,6 +417,13 @@ async def upload_item(
         if not is_valid:
             raise HTTPException(status_code=400, detail=error_msg)
     
+    # ✅ Validate dynamic_fields JSON if provided
+    if dynamic_fields:
+        try:
+            json.loads(dynamic_fields)
+        except (json.JSONDecodeError, ValueError):
+            raise HTTPException(status_code=400, detail="Invalid JSON format for dynamic_fields")
+    
     # Parse dates
     expiration_date_parsed = parse_date(expiration_date)
     renewal_date_parsed = parse_date(renewal_date)
@@ -421,6 +436,8 @@ async def upload_item(
         name=name.strip(),
         category=category,
         type=type,
+        item_type_id=item_type_id,
+        item_type_name=item_type_name,
         expiration_date=expiration_date_parsed,
         renewal_date=renewal_date_parsed,
         billing_cycle=billing_cycle if billing_cycle else None,
@@ -429,6 +446,7 @@ async def upload_item(
         notes=notes.strip() if notes else None,
         file_path=file_path,
         reminder_days_before=reminder_days_before,
+        dynamic_fields=dynamic_fields if dynamic_fields else "{}",
         user_id=user.id
     )
 

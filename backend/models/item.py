@@ -2,18 +2,23 @@
 from sqlmodel import SQLModel, Field
 from datetime import date, datetime
 from typing import Optional
+import json
 
 class ItemBase(SQLModel):
     # Shared fields
     name: str
     category: str
     type: str  # "document" or "subscription"
+    
+    # Item type reference (optional - links to ItemType for dynamic fields)
+    item_type_id: Optional[int] = None
+    item_type_name: Optional[str] = None  # Denormalized for display
 
-    # Document fields
+    # Legacy document fields (kept for backward compatibility)
     expiration_date: Optional[date] = None
     document_number: Optional[str] = None
 
-    # Subscription fields
+    # Legacy subscription fields (kept for backward compatibility)
     renewal_date: Optional[date] = None
     billing_cycle: Optional[str] = None
     price: Optional[float] = None
@@ -24,6 +29,9 @@ class ItemBase(SQLModel):
     
     # Custom reminder schedule (optional - falls back to user's default if not set)
     reminder_days_before: Optional[int] = None
+    
+    # Dynamic fields stored as JSON (new approach)
+    dynamic_fields: Optional[str] = Field(default="{}")  # JSON string
 
 
 class Item(ItemBase, table=True):
@@ -36,9 +44,37 @@ class Item(ItemBase, table=True):
     created_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
     updated_at: Optional[datetime] = None
     
+    # Helper method to get dynamic fields as dict
+    def get_dynamic_fields(self) -> dict:
+        """Parse and return dynamic fields"""
+        try:
+            return json.loads(self.dynamic_fields or "{}")
+        except (json.JSONDecodeError, ValueError) as e:
+            import logging
+            logging.getLogger(__name__).warning(f"Failed to parse dynamic_fields for item {self.id}: {e}")
+            return {}
+    
+    def set_dynamic_fields(self, fields: dict):
+        """Set dynamic fields from dict"""
+        self.dynamic_fields = json.dumps(fields)
+    
     # Helper method to get the relevant expiry date
     def get_expiry_date(self) -> Optional[date]:
         """Returns the appropriate expiry date based on item type"""
+        # First check dynamic fields
+        dyn_fields = self.get_dynamic_fields()
+        if "expiration_date" in dyn_fields:
+            try:
+                return date.fromisoformat(dyn_fields["expiration_date"])
+            except:
+                pass
+        if "renewal_date" in dyn_fields:
+            try:
+                return date.fromisoformat(dyn_fields["renewal_date"])
+            except:
+                pass
+        
+        # Fall back to legacy fields
         if self.type == "document":
             return self.expiration_date
         elif self.type == "subscription":
@@ -73,12 +109,16 @@ class ItemUpdate(SQLModel):
     name: Optional[str] = None
     category: Optional[str] = None
     type: Optional[str] = None
+    
+    # Item type reference
+    item_type_id: Optional[int] = None
+    item_type_name: Optional[str] = None
 
-    # Document
+    # Legacy document fields
     expiration_date: Optional[date] = None
     document_number: Optional[str] = None
 
-    # Subscription
+    # Legacy subscription fields
     renewal_date: Optional[date] = None
     billing_cycle: Optional[str] = None
     price: Optional[float] = None
@@ -89,3 +129,6 @@ class ItemUpdate(SQLModel):
     
     # Custom reminder schedule
     reminder_days_before: Optional[int] = None
+    
+    # Dynamic fields
+    dynamic_fields: Optional[str] = None

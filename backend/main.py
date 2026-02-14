@@ -17,6 +17,7 @@ from routes.auth import router as auth_router
 from routes.items import router as items_router
 from routes.oauth import router as oauth_router
 from routes.notifications import router as notifications_router
+from routes.item_types import router as item_types_router
 
 load_dotenv()
 
@@ -199,6 +200,7 @@ def health_check():
 # ✅ Register routes
 app.include_router(auth_router)
 app.include_router(items_router)
+app.include_router(item_types_router)
 app.include_router(oauth_router)
 app.include_router(notifications_router)
 
