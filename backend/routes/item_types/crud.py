@@ -1,15 +1,14 @@
-# backend/routes/item_types.py
+# backend/routes/item_types/crud.py
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
-from typing import List, Optional
-import json
+from typing import Optional
 
 from models.item_type import ItemType
 from models.user import User
 from database import get_session
 from utils.auth import get_current_user
 
-router = APIRouter(prefix="/item-types", tags=["Item Types"])
+router = APIRouter()
 
 
 @router.get("")
