@@ -2,6 +2,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyc
+*.pyo
+*.pyd
 *.so
 .Python
 env/
@@ -9,14 +12,14 @@ venv/
 ENV/
 backend/venv/
 backend/__pycache__/
-*.pyc
-*.pyo
 
 # Database
 backend/database.db
 backend/*.db
+backend/*.db-journal
 backend/backups/
 *.sqlite3
+*.db-journal
 
 # Uploads & Media
 backend/uploads/
