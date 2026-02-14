@@ -13,7 +13,7 @@
       v-if="loading"
       :is="LoaderIcon"
       :size="iconSize"
-      class="animate-spin"
+      class="spinner-rotate"
     />
     <slot v-else />
   </button>
@@ -93,7 +93,7 @@ function handleClick(event) {
   to { transform: rotate(360deg); }
 }
 
-.animate-spin {
+.spinner-rotate {
   animation: spin 1s linear infinite;
 }
 </style>

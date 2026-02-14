@@ -2,7 +2,7 @@
   <div class="flex items-center justify-center">
     <div
       :class="[
-        'rounded-full border-4 border-t-transparent animate-spin',
+        'rounded-full border-4 border-t-transparent spinner-rotate',
         sizeClasses,
         colorClasses
       ]"
@@ -54,7 +54,7 @@ const colorClasses = computed(() => {
   to { transform: rotate(360deg); }
 }
 
-.animate-spin {
+.spinner-rotate {
   animation: spin 0.8s linear infinite;
 }
 </style>
