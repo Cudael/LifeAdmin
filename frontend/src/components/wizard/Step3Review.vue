@@ -124,13 +124,19 @@ function formatFieldValue(field, value) {
     try {
       const date = new Date(value)
       return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-    } catch {
+    } catch (error) {
+      console.warn('Failed to parse date:', value, error)
       return value
     }
   }
   
   if (field.field_type === 'number') {
-    return parseFloat(value).toFixed(2)
+    try {
+      return parseFloat(value).toFixed(2)
+    } catch (error) {
+      console.warn('Failed to parse number:', value, error)
+      return value
+    }
   }
   
   return value

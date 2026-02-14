@@ -5,6 +5,7 @@ from typing import Optional
 from datetime import datetime
 import os
 import logging
+import json
 
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -415,6 +416,13 @@ async def upload_item(
         is_valid, error_msg = validate_file(file)
         if not is_valid:
             raise HTTPException(status_code=400, detail=error_msg)
+    
+    # ✅ Validate dynamic_fields JSON if provided
+    if dynamic_fields:
+        try:
+            json.loads(dynamic_fields)
+        except (json.JSONDecodeError, ValueError):
+            raise HTTPException(status_code=400, detail="Invalid JSON format for dynamic_fields")
     
     # Parse dates
     expiration_date_parsed = parse_date(expiration_date)

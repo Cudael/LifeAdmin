@@ -49,7 +49,9 @@ class Item(ItemBase, table=True):
         """Parse and return dynamic fields"""
         try:
             return json.loads(self.dynamic_fields or "{}")
-        except:
+        except (json.JSONDecodeError, ValueError) as e:
+            import logging
+            logging.getLogger(__name__).warning(f"Failed to parse dynamic_fields for item {self.id}: {e}")
             return {}
     
     def set_dynamic_fields(self, fields: dict):

@@ -53,7 +53,7 @@
         <input
           v-else-if="field.field_type === 'number'"
           type="number"
-          step="0.01"
+          step="any"
           :value="dynamicFields[field.name]"
           @input="updateField(field.name, $event.target.value)"
           :placeholder="field.placeholder || `Enter ${field.label.toLowerCase()}`"

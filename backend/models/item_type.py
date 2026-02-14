@@ -43,7 +43,9 @@ class ItemType(ItemTypeBase, table=True):
         """Parse and return field definitions"""
         try:
             return json.loads(self.fields_config)
-        except:
+        except (json.JSONDecodeError, ValueError) as e:
+            import logging
+            logging.getLogger(__name__).warning(f"Failed to parse fields_config for item_type {self.id}: {e}")
             return []
     
     def set_fields(self, fields: List[dict]):
