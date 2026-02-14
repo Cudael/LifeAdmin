@@ -7,7 +7,6 @@ import ForgotPasswordPage from '../pages/ForgotPasswordPage.vue'
 import ResetPasswordPage from '../pages/ResetPasswordPage.vue'
 import AuthCallback from '../pages/AuthCallback.vue'
 import DashboardPage from '../pages/DashboardPage.vue'
-import AddDocumentPage from '../pages/AddDocumentPage.vue'
 import EditItemPage from '../pages/EditItemPage.vue'
 import SettingsPage from '../pages/SettingsPage.vue'
 import ItemsPage from '../pages/ItemsPage.vue'
@@ -88,21 +87,9 @@ const routes = [
     meta: { requiresAuth: true } 
   },
   { 
-    path: '/add-document', 
-    name: 'AddDocument',
-    component: AddDocumentPage, 
-    meta: { requiresAuth: true } 
-  },
-  { 
     path: '/add-item', 
     name: 'AddItem',
     component: () => import('../pages/AddItemWizard.vue'), 
-    meta: { requiresAuth: true } 
-  },
-  { 
-    path: '/add-subscription', 
-    name: 'AddSubscription', 
-    component: () => import('../pages/AddSubscriptionPage.vue'), 
     meta: { requiresAuth: true } 
   },
   { 
