@@ -94,6 +94,12 @@ const routes = [
     meta: { requiresAuth: true } 
   },
   { 
+    path: '/add-item', 
+    name: 'AddItem',
+    component: () => import('../pages/AddItemWizard.vue'), 
+    meta: { requiresAuth: true } 
+  },
+  { 
     path: '/add-subscription', 
     name: 'AddSubscription', 
     component: () => import('../pages/AddSubscriptionPage.vue'), 

@@ -241,22 +241,13 @@ onMounted(async () => {
         <!-- Action Buttons (Left Side) -->
         <div class="flex items-center gap-3">
           
-          <!-- Add Document -->
+          <!-- Add Item (New Wizard) -->
           <RouterLink
-            to="/add-document"
+            to="/add-item"
             class="group px-5 py-2.5 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl font-semibold shadow-lg shadow-teal-500/30 hover:shadow-xl hover:shadow-teal-500/40 hover:scale-105 transition-all duration-200 flex items-center gap-2"
           >
             <PlusCircle :size="18" class="group-hover:rotate-90 transition-transform duration-200" />
-            Add Document
-          </RouterLink>
-
-          <!-- Add Subscription -->
-          <RouterLink
-            to="/add-subscription"
-            class="group px-5 py-2.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40 hover:scale-105 transition-all duration-200 flex items-center gap-2"
-          >
-            <PlusCircle :size="18" class="group-hover:rotate-90 transition-transform duration-200" />
-            Add Subscription
+            Add Item
           </RouterLink>
 
         </div>

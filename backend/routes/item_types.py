@@ -54,6 +54,30 @@ def list_item_types(
     return {"item_types": result, "total": len(result)}
 
 
+@router.get("/categories")
+def get_categories(
+    session: Session = Depends(get_session),
+    user: User = Depends(get_current_user)
+):
+    """
+    Get list of all available categories with count of types in each.
+    """
+    query = select(ItemType.category, ItemType.item_class).where(ItemType.is_active == True).distinct()
+    results = session.exec(query).all()
+    
+    # Group by category
+    categories = {}
+    for category, item_class in results:
+        if category not in categories:
+            categories[category] = {"documents": 0, "subscriptions": 0}
+        if item_class == "document":
+            categories[category]["documents"] += 1
+        elif item_class == "subscription":
+            categories[category]["subscriptions"] += 1
+    
+    return {"categories": categories}
+
+
 @router.get("/{item_type_id}")
 def get_item_type(
     item_type_id: int,
@@ -79,27 +103,3 @@ def get_item_type(
         "is_active": item_type.is_active,
         "created_at": item_type.created_at.isoformat() if item_type.created_at else None
     }
-
-
-@router.get("/categories")
-def get_categories(
-    session: Session = Depends(get_session),
-    user: User = Depends(get_current_user)
-):
-    """
-    Get list of all available categories with count of types in each.
-    """
-    query = select(ItemType.category, ItemType.item_class).where(ItemType.is_active == True).distinct()
-    results = session.exec(query).all()
-    
-    # Group by category
-    categories = {}
-    for category, item_class in results:
-        if category not in categories:
-            categories[category] = {"documents": 0, "subscriptions": 0}
-        if item_class == "document":
-            categories[category]["documents"] += 1
-        elif item_class == "subscription":
-            categories[category]["subscriptions"] += 1
-    
-    return {"categories": categories}
