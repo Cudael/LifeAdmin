@@ -11,7 +11,7 @@ from utils.auth import get_current_user
 router = APIRouter()
 
 
-@router.get("")
+@router.get("/")
 def list_item_types(
     category: Optional[str] = None,
     item_class: Optional[str] = None,  # "document" or "subscription"

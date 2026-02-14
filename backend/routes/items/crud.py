@@ -40,7 +40,7 @@ def require_verified_email(user: User = Depends(get_current_user)) -> User:
     return user
 
 
-@router.post("")
+@router.post("/")
 @limiter.limit("30/minute")
 async def create_item(
     request: Request,

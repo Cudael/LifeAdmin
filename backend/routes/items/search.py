@@ -13,7 +13,7 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 
-@router.get("")
+@router.get("/")
 def list_items(
     skip: int = Query(0, ge=0, description="Number of items to skip"),
     limit: int = Query(100, ge=1, le=500, description="Max number of items to return"),
@@ -21,7 +21,7 @@ def list_items(
     item_type: Optional[str] = Query(None, description="Filter by type (document/subscription)"),
     search: Optional[str] = Query(None, description="Search in name and notes"),
     sort_by: Optional[str] = Query("created_at", description="Sort field"),
-    sort_order: Optional[str] = Query("desc", regex="^(asc|desc)$", description="Sort order"),
+    sort_order: Optional[str] = Query("desc", pattern="^(asc|desc)$", description="Sort order"),
     session: Session = Depends(get_session),
     user: User = Depends(get_current_user)
 ):
