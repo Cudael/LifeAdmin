@@ -21,6 +21,12 @@ export function setTokens(access, refresh) {
     access: access ? 'Yes' : 'No',
     refresh: refresh ? 'Yes' : 'No'
   })
+  
+  // Start automatic token refresh when tokens are set
+  // Import dynamically to avoid circular dependency
+  import('./tokenRefresh').then(module => {
+    module.startTokenRefresh()
+  })
 }
 
 export function clearTokens() {
@@ -31,6 +37,11 @@ export function clearTokens() {
   localStorage.removeItem(REFRESH_TOKEN_KEY)
   
   console.log('🗑️ Tokens cleared')
+  
+  // Stop automatic token refresh when tokens are cleared
+  import('./tokenRefresh').then(module => {
+    module.stopTokenRefresh()
+  })
 }
 
 export function getAccessToken() {

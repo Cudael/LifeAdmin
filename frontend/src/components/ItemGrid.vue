@@ -38,7 +38,7 @@
         <!-- Uploaded file -->
         <img
           v-else-if="item.file_path"
-          :src="`http://localhost:8000${item.file_path}`"
+          :src="`${BASE_URL}${item.file_path}`"
           class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           :alt="item.name"
         />
@@ -201,7 +201,7 @@
           <!-- View Document Button -->
           <a
             v-if="item.file_path"
-            :href="`http://localhost:8000${item.file_path}`"
+            :href="`${BASE_URL}${item.file_path}`"
             target="_blank"
             class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl text-sm font-semibold hover:shadow-lg hover:shadow-teal-500/30 transition-all duration-200"
             @click.stop
@@ -237,6 +237,7 @@
 </template>
 
 <script setup>
+import { BASE_URL } from "../utils/api"
 import { 
   Calendar, 
   AlertTriangle, 

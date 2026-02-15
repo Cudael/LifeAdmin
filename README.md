@@ -84,6 +84,10 @@ npm install
 # Copy environment template
 cp .env.example .env
 
+# IMPORTANT: Edit .env and set VITE_API_URL to your backend URL
+# For local development: http://localhost:8000
+# For production: https://your-backend-url.com
+
 # Start the frontend
 npm run dev
 \`\`\`
@@ -93,6 +97,9 @@ Frontend will run at: http://localhost:5173
 ## Environment Variables
 
 See `.env.example` files in `backend/` and `frontend/` directories for required environment variables.
+
+### Required Frontend Variables:
+- `VITE_API_URL` - Backend API URL (e.g., `http://localhost:8000` for local dev, or your production backend URL)
 
 ### Required Backend Variables:
 - `SECRET_KEY` - JWT secret (generate with: `python -c "import secrets; print(secrets.token_urlsafe(32))"`)
