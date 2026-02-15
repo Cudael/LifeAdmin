@@ -3,8 +3,8 @@ import { accessToken, refreshToken, setTokens, clearTokens } from "./auth"
 
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000"
 
-// Refresh interval: refresh token every 6 days (before 7-day expiration)
-const REFRESH_INTERVAL_MS = 1000 * 60 * 60 * 24 * 6 // 6 days in milliseconds
+// Check interval: check if token needs refresh every hour
+const CHECK_INTERVAL_MS = 1000 * 60 * 60 // 1 hour in milliseconds
 
 let refreshIntervalId = null
 
@@ -83,22 +83,25 @@ export function startTokenRefresh() {
     return
   }
 
-  console.log('🚀 Starting automatic token refresh (every 6 days)')
+  console.log('🚀 Starting automatic token refresh check (every hour)')
   
   // Check immediately if we should refresh
   if (shouldRefreshToken(accessToken.value)) {
     performTokenRefresh()
   }
   
-  // Set up periodic refresh
+  // Set up periodic check - check every hour if token needs refresh
   refreshIntervalId = setInterval(() => {
     if (accessToken.value && refreshToken.value) {
-      performTokenRefresh()
+      // Only refresh if token will expire soon (within 1 day)
+      if (shouldRefreshToken(accessToken.value)) {
+        performTokenRefresh()
+      }
     } else {
       console.log('⏭️ No tokens available, stopping refresh')
       stopTokenRefresh()
     }
-  }, REFRESH_INTERVAL_MS)
+  }, CHECK_INTERVAL_MS)
 }
 
 // Stop automatic token refresh
