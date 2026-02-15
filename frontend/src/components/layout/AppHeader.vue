@@ -27,6 +27,7 @@
             to="/" 
             class="nav-link group"
             :class="{ 'text-teal-600 font-semibold': $route.path === '/' }"
+            @click="scrollToTop"
           >
             <span class="relative">
               Home
@@ -185,7 +186,7 @@
 
           <a 
             href="/#features" 
-            @click="closeMobile" 
+            @click="smoothScrollMobile" 
             class="mobile-nav-link"
           >
             <Sparkles :size="20" />
@@ -194,7 +195,7 @@
 
           <a 
             href="/#pricing" 
-            @click="closeMobile" 
+            @click="smoothScrollMobile" 
             class="mobile-nav-link"
           >
             <DollarSign :size="20" />
@@ -203,7 +204,7 @@
 
           <a 
             href="/#faq" 
-            @click="closeMobile" 
+            @click="smoothScrollMobile" 
             class="mobile-nav-link"
           >
             <HelpCircle :size="20" />
@@ -325,8 +326,26 @@ function smoothScroll(event) {
     const id = href.replace('/#', '')
     const element = document.getElementById(id)
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+      const headerOffset = 80 // Account for fixed header
+      const elementPosition = element.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      })
     }
+  }
+}
+
+function scrollToTop(event) {
+  // Only scroll to top if already on landing page
+  if (router.currentRoute.value.path === '/') {
+    event.preventDefault()
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
   }
 }
 
@@ -338,6 +357,13 @@ function logout() {
 
 function closeMobile() {
   mobileOpen.value = false
+}
+
+function smoothScrollMobile(event) {
+  closeMobile()
+  setTimeout(() => {
+    smoothScroll(event)
+  }, 300) // Wait for mobile menu to close
 }
 
 onMounted(() => {
