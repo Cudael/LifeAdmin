@@ -24,10 +24,12 @@ if not SECRET_KEY:
 
 ALGORITHM = "HS256"
 
-# ✅ Security: Reduced token lifetime (30 minutes for access token)
-# Shorter-lived tokens reduce the impact of token theft
-ACCESS_TOKEN_EXPIRE_MINUTES = 30  # 30 minutes (was 24 hours)
-REFRESH_TOKEN_EXPIRE_DAYS = 30
+# ✅ Token expiration times (configurable via environment variables)
+# Longer-lived tokens provide better UX by keeping users logged in
+# Access token: Default 7 days (was 30 minutes)
+# Refresh token: Default 30 days
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60 * 24 * 7))  # 7 days
+REFRESH_TOKEN_EXPIRE_DAYS = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS", 30))  # 30 days
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
