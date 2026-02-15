@@ -1,9 +1,9 @@
 <script setup>
-import { MessageCircle, Mail, ArrowRight } from "lucide-vue-next"
+import { MessageCircle, Mail, ArrowRight, ChevronDown } from "lucide-vue-next"
 </script>
 
 <template>
-  <section id="faq" class="py-32 bg-gradient-to-b from-[#f7fdfc] to-white relative overflow-hidden">
+  <section id="faq" class="py-16 bg-gradient-to-b from-[#f7fdfc] to-white relative overflow-hidden">
     
     <!-- Decorative shapes -->
     <div class="absolute top-10 left-10 w-96 h-96 bg-teal-100 rounded-full opacity-10 blur-3xl"></div>
@@ -12,7 +12,7 @@ import { MessageCircle, Mail, ArrowRight } from "lucide-vue-next"
     <div class="max-w-screen-xl mx-auto px-6 relative z-10">
 
       <!-- Label -->
-      <div class="text-center mb-16">
+      <div class="text-center mb-12">
         <div class="inline-flex items-center gap-2 px-4 py-2 bg-teal-100 text-teal-700 rounded-full mb-4 text-sm font-semibold">
           <MessageCircle :size="16" />
           FAQ
@@ -34,7 +34,7 @@ import { MessageCircle, Mail, ArrowRight } from "lucide-vue-next"
           <summary class="flex justify-between items-center cursor-pointer text-lg font-semibold text-gray-900 list-none">
             <span>How does LifeAdmin remind me about upcoming expirations?</span>
             <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 ml-4 group-open:bg-teal-500 transition-colors">
-              <span class="text-teal-600 text-2xl group-open:text-white group-open:rotate-180 transition-transform">⌄</span>
+              <ChevronDown :size="20" class="text-teal-600 group-open:text-white group-open:rotate-180 transition-transform" />
             </div>
           </summary>
 
@@ -49,7 +49,7 @@ import { MessageCircle, Mail, ArrowRight } from "lucide-vue-next"
           <summary class="flex justify-between items-center cursor-pointer text-lg font-semibold text-gray-900 list-none">
             <span>Is my data secure?</span>
             <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 ml-4 group-open:bg-teal-500 transition-colors">
-              <span class="text-teal-600 text-2xl group-open:text-white group-open:rotate-180 transition-transform">⌄</span>
+              <ChevronDown :size="20" class="text-teal-600 group-open:text-white group-open:rotate-180 transition-transform" />
             </div>
           </summary>
           <div class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
@@ -63,7 +63,7 @@ import { MessageCircle, Mail, ArrowRight } from "lucide-vue-next"
           <summary class="flex justify-between items-center cursor-pointer text-lg font-semibold text-gray-900 list-none">
             <span>What's included in the free plan?</span>
             <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 ml-4 group-open:bg-teal-500 transition-colors">
-              <span class="text-teal-600 text-2xl group-open:text-white group-open:rotate-180 transition-transform">⌄</span>
+              <ChevronDown :size="20" class="text-teal-600 group-open:text-white group-open:rotate-180 transition-transform" />
             </div>
           </summary>
           <div class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
@@ -77,7 +77,7 @@ import { MessageCircle, Mail, ArrowRight } from "lucide-vue-next"
           <summary class="flex justify-between items-center cursor-pointer text-lg font-semibold text-gray-900 list-none">
             <span>Can I cancel my Premium subscription anytime?</span>
             <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 ml-4 group-open:bg-teal-500 transition-colors">
-              <span class="text-teal-600 text-2xl group-open:text-white group-open:rotate-180 transition-transform">⌄</span>
+              <ChevronDown :size="20" class="text-teal-600 group-open:text-white group-open:rotate-180 transition-transform" />
             </div>
           </summary>
           <div class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
@@ -91,7 +91,7 @@ import { MessageCircle, Mail, ArrowRight } from "lucide-vue-next"
           <summary class="flex justify-between items-center cursor-pointer text-lg font-semibold text-gray-900 list-none">
             <span>Do you offer refunds?</span>
             <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 ml-4 group-open:bg-teal-500 transition-colors">
-              <span class="text-teal-600 text-2xl group-open:text-white group-open:rotate-180 transition-transform">⌄</span>
+              <ChevronDown :size="20" class="text-teal-600 group-open:text-white group-open:rotate-180 transition-transform" />
             </div>
           </summary>
           <div class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
@@ -105,7 +105,7 @@ import { MessageCircle, Mail, ArrowRight } from "lucide-vue-next"
           <summary class="flex justify-between items-center cursor-pointer text-lg font-semibold text-gray-900 list-none">
             <span>What types of items can I track?</span>
             <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 ml-4 group-open:bg-teal-500 transition-colors">
-              <span class="text-teal-600 text-2xl group-open:text-white group-open:rotate-180 transition-transform">⌄</span>
+              <ChevronDown :size="20" class="text-teal-600 group-open:text-white group-open:rotate-180 transition-transform" />
             </div>
           </summary>
           <div class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
@@ -119,7 +119,7 @@ import { MessageCircle, Mail, ArrowRight } from "lucide-vue-next"
           <summary class="flex justify-between items-center cursor-pointer text-lg font-semibold text-gray-900 list-none">
             <span>Can I share items with family members?</span>
             <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 ml-4 group-open:bg-teal-500 transition-colors">
-              <span class="text-teal-600 text-2xl group-open:text-white group-open:rotate-180 transition-transform">⌄</span>
+              <ChevronDown :size="20" class="text-teal-600 group-open:text-white group-open:rotate-180 transition-transform" />
             </div>
           </summary>
           <div class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
@@ -133,7 +133,7 @@ import { MessageCircle, Mail, ArrowRight } from "lucide-vue-next"
           <summary class="flex justify-between items-center cursor-pointer text-lg font-semibold text-gray-900 list-none">
             <span>Do you have a mobile app?</span>
             <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 ml-4 group-open:bg-teal-500 transition-colors">
-              <span class="text-teal-600 text-2xl group-open:text-white group-open:rotate-180 transition-transform">⌄</span>
+              <ChevronDown :size="20" class="text-teal-600 group-open:text-white group-open:rotate-180 transition-transform" />
             </div>
           </summary>
           <div class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
@@ -147,7 +147,7 @@ import { MessageCircle, Mail, ArrowRight } from "lucide-vue-next"
     </div>
 
     <!-- Still have a question? -->
-    <div class="max-w-screen-md mx-auto px-6 text-center mt-24 relative z-10">
+    <div class="max-w-screen-md mx-auto px-6 text-center mt-16 relative z-10">
 
       <div class="p-12 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-3xl shadow-2xl text-white">
         <Mail :size="48" class="mx-auto mb-6 opacity-90" />

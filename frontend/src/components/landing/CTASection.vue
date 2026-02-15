@@ -3,7 +3,7 @@ import { ArrowRight, CheckCircle2 } from "lucide-vue-next"
 </script>
 
 <template>
-  <section class="py-28 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
+  <section class="py-16 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
     
     <!-- Decorative gradient -->
     <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(20,184,166,0.1),transparent_70%)]"></div>

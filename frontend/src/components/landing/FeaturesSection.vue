@@ -11,14 +11,14 @@ import {
 </script>
 
 <template>
-  <section id="features" class="py-28 bg-gradient-to-b from-white to-[#f7fdfc] relative overflow-hidden">
+  <section id="features" class="py-16 bg-gradient-to-b from-white to-[#f7fdfc] relative overflow-hidden">
     
     <!-- Decorative gradient -->
     <div class="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(20,184,166,0.05),transparent_50%)]"></div>
 
     <div class="max-w-screen-xl mx-auto px-6 relative z-10">
 
-      <div class="text-center mb-20">
+      <div class="text-center mb-12">
         <div class="inline-flex items-center gap-2 px-4 py-2 bg-teal-100 text-teal-700 rounded-full mb-4 text-sm font-semibold">
           <Sparkles :size="16" />
           Powerful Features
@@ -27,10 +27,7 @@ import {
         <h2 class="text-5xl font-extrabold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-4">
           Everything You Need
         </h2>
-        <div class="w-16 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 mx-auto mb-6"></div>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-          A complete toolkit to manage every aspect of your life admin, all in one beautiful dashboard.
-        </p>
+        <div class="w-16 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 mx-auto"></div>
       </div>
 
       <div class="grid md:grid-cols-3 gap-12">

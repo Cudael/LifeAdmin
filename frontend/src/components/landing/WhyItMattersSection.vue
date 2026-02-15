@@ -3,7 +3,7 @@ import { TrendingUp, AlertCircle, DollarSign, FolderOpen } from "lucide-vue-next
 </script>
 
 <template>
-  <section class="py-28 bg-gradient-to-b from-[#f7fdfc] to-white relative overflow-hidden">
+  <section class="py-16 bg-gradient-to-b from-[#f7fdfc] to-white relative overflow-hidden">
     
     <!-- Decorative gradient -->
     <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(20,184,166,0.05),transparent_70%)]"></div>
@@ -15,7 +15,7 @@ import { TrendingUp, AlertCircle, DollarSign, FolderOpen } from "lucide-vue-next
         The Problem
       </div>
 
-      <h2 class="text-5xl font-extrabold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-6">
+      <h2 class="text-5xl font-extrabold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-4">
         Why It Matters
       </h2>
       <div class="w-16 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 mx-auto mb-8"></div>

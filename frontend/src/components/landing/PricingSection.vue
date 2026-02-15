@@ -11,7 +11,7 @@ import {
 </script>
 
 <template>
-  <section id="pricing" class="py-32 bg-gradient-to-b from-white to-[#f7fdfc] relative overflow-hidden">
+  <section id="pricing" class="py-16 bg-gradient-to-b from-white to-[#f7fdfc] relative overflow-hidden">
     
     <!-- Decorative gradient -->
     <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(20,184,166,0.05),transparent_70%)]"></div>
@@ -31,10 +31,6 @@ import {
 
       <!-- Underline -->
       <div class="w-16 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 mx-auto mb-12"></div>
-
-      <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-20">
-        Simple, transparent pricing. No hidden fees. Cancel anytime.
-      </p>
 
       <!-- Pricing Grid -->
       <div class="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
@@ -185,43 +181,6 @@ import {
         <div class="text-left">
           <p class="font-semibold text-gray-900">30-day money-back guarantee</p>
           <p class="text-sm text-gray-600">No questions asked. Full refund if you're not satisfied.</p>
-        </div>
-      </div>
-
-      <!-- WHY PREMIUM -->
-      <div class="mt-24 max-w-3xl mx-auto text-center">
-        <h3 class="text-4xl font-bold text-gray-900 mb-6">Why Go Premium?</h3>
-        <p class="text-lg text-gray-600 leading-relaxed mb-10">
-          Premium gives you unlimited tracking, faster reminders, and powerful insights that help you stay ahead of every deadline. 
-          If you rely on LifeAdmin to manage important documents, subscriptions, or IDs — Premium pays for itself instantly.
-        </p>
-
-        <div class="grid md:grid-cols-3 gap-10">
-
-          <div class="group p-6 bg-white rounded-2xl border-2 border-teal-200 shadow-lg hover:shadow-xl hover:border-teal-400 transition-all duration-300">
-            <div class="w-14 h-14 mx-auto mb-4 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Zap :size="28" class="text-teal-600" />
-            </div>
-            <p class="font-semibold text-gray-900 mb-2 text-lg">Faster Reminders</p>
-            <p class="text-gray-600 text-sm">Get notified earlier so you never miss a renewal.</p>
-          </div>
-
-          <div class="group p-6 bg-white rounded-2xl border-2 border-teal-200 shadow-lg hover:shadow-xl hover:border-teal-400 transition-all duration-300">
-            <div class="w-14 h-14 mx-auto mb-4 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <TrendingUp :size="28" class="text-teal-600" />
-            </div>
-            <p class="font-semibold text-gray-900 mb-2 text-lg">Advanced Insights</p>
-            <p class="text-gray-600 text-sm">See patterns, upcoming renewals, and risk areas.</p>
-          </div>
-
-          <div class="group p-6 bg-white rounded-2xl border-2 border-teal-200 shadow-lg hover:shadow-xl hover:border-teal-400 transition-all duration-300">
-            <div class="w-14 h-14 mx-auto mb-4 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <CheckCircle2 :size="28" class="text-teal-600" />
-            </div>
-            <p class="font-semibold text-gray-900 mb-2 text-lg">Unlimited Everything</p>
-            <p class="text-gray-600 text-sm">No limits on items, uploads, or reminders.</p>
-          </div>
-
         </div>
       </div>
 

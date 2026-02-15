@@ -3,7 +3,7 @@ import { Users, Briefcase, Home, Award } from "lucide-vue-next"
 </script>
 
 <template>
-  <section class="py-28 bg-gradient-to-b from-white to-[#f7fdfc] relative overflow-hidden">
+  <section class="py-16 bg-gradient-to-b from-white to-[#f7fdfc] relative overflow-hidden">
     
     <!-- Decorative shapes -->
     <div class="absolute top-20 right-10 w-72 h-72 bg-teal-100 rounded-full opacity-20 blur-3xl"></div>
@@ -19,10 +19,7 @@ import { Users, Briefcase, Home, Award } from "lucide-vue-next"
       <h2 class="text-5xl font-extrabold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-4">
         Who It's For
       </h2>
-      <div class="w-16 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 mx-auto mb-6"></div>
-      <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-16">
-        LifeAdmin is built for anyone who wants clarity, control, and peace of mind.
-      </p>
+      <div class="w-16 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 mx-auto mb-12"></div>
 
       <div class="grid md:grid-cols-3 gap-12">
 

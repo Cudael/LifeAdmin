@@ -7,7 +7,6 @@ import WhoItsForSection from "../components/landing/WhoItsForSection.vue"
 import WhyItMattersSection from "../components/landing/WhyItMattersSection.vue"
 import SecuritySection from "../components/landing/SecuritySection.vue"
 import FeaturesSection from "../components/landing/FeaturesSection.vue"
-import TestimonialsSection from "../components/landing/TestimonialsSection.vue"
 import PricingSection from "../components/landing/PricingSection.vue"
 import FAQSection from "../components/landing/FAQSection.vue"
 import CTASection from "../components/landing/CTASection.vue"
@@ -24,7 +23,6 @@ import CTASection from "../components/landing/CTASection.vue"
       <WhyItMattersSection />
       <SecuritySection />
       <FeaturesSection />
-      <TestimonialsSection />
       <PricingSection />
       <FAQSection />
       <CTASection />
