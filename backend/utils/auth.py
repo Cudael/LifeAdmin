@@ -28,8 +28,15 @@ ALGORITHM = "HS256"
 # Longer-lived tokens provide better UX by keeping users logged in
 # Access token: Default 7 days (was 30 minutes)
 # Refresh token: Default 30 days
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60 * 24 * 7))  # 7 days
-REFRESH_TOKEN_EXPIRE_DAYS = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS", 30))  # 30 days
+try:
+    ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60 * 24 * 7))  # 7 days
+except ValueError:
+    raise ValueError("❌ ACCESS_TOKEN_EXPIRE_MINUTES must be a valid integer")
+
+try:
+    REFRESH_TOKEN_EXPIRE_DAYS = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS", 30))  # 30 days
+except ValueError:
+    raise ValueError("❌ REFRESH_TOKEN_EXPIRE_DAYS must be a valid integer")
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")

@@ -7,6 +7,7 @@ const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000"
 const CHECK_INTERVAL_MS = 1000 * 60 * 60 // 1 hour in milliseconds
 
 let refreshIntervalId = null
+let isRefreshing = false // Flag to prevent concurrent refresh attempts
 
 // Decode JWT to check expiration (without verification)
 function decodeToken(token) {
@@ -41,10 +42,18 @@ function shouldRefreshToken(token) {
 
 // Perform token refresh
 async function performTokenRefresh() {
+  // Prevent concurrent refresh attempts
+  if (isRefreshing) {
+    console.log('⏭️ Refresh already in progress, skipping')
+    return false
+  }
+  
   if (!refreshToken.value) {
     console.log('⏭️ No refresh token available, skipping refresh')
     return false
   }
+
+  isRefreshing = true
 
   try {
     console.log('🔄 Attempting automatic token refresh...')
@@ -69,6 +78,8 @@ async function performTokenRefresh() {
   } catch (error) {
     console.error('❌ Token refresh error:', error)
     return false
+  } finally {
+    isRefreshing = false
   }
 }
 
