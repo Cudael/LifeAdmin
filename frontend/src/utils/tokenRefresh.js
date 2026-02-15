@@ -3,8 +3,12 @@ import { accessToken, refreshToken, setTokens, clearTokens } from "./auth"
 
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000"
 
+// Time constants for readability
+const HOUR_IN_MS = 1000 * 60 * 60 // 1 hour in milliseconds
+const DAY_IN_SECONDS = 60 * 60 * 24 // 1 day in seconds
+
 // Check interval: check if token needs refresh every hour
-const CHECK_INTERVAL_MS = 1000 * 60 * 60 // 1 hour in milliseconds
+const CHECK_INTERVAL_MS = HOUR_IN_MS
 
 let refreshIntervalId = null
 let isRefreshing = false // Flag to prevent concurrent refresh attempts
@@ -37,7 +41,7 @@ function shouldRefreshToken(token) {
   const timeUntilExpiry = decoded.exp - now
   
   // Refresh if less than 1 day remaining
-  return timeUntilExpiry < (60 * 60 * 24)
+  return timeUntilExpiry < DAY_IN_SECONDS
 }
 
 // Perform token refresh
