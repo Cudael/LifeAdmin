@@ -77,13 +77,19 @@
           </ul>
         </div>
 
-        <!-- Legal & Support -->
+        <!-- Company & Support -->
         <div>
           <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
             <HelpCircle :size="20" class="text-blue-400" />
-            Legal & Support
+            Company & Support
           </h3>
           <ul class="space-y-3">
+            <li>
+              <RouterLink to="/about" class="footer-link">About Us</RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/contact" class="footer-link">Contact Support</RouterLink>
+            </li>
             <li>
               <RouterLink to="/privacy" class="footer-link">Privacy Policy</RouterLink>
             </li>
@@ -92,9 +98,6 @@
             </li>
             <li>
               <RouterLink to="/cookies" class="footer-link">Cookie Policy</RouterLink>
-            </li>
-            <li>
-              <RouterLink to="/contact" class="footer-link">Contact Support</RouterLink>
             </li>
           </ul>
         </div>
@@ -105,37 +108,21 @@
       <div class="border-t border-white/10 mb-8"></div>
 
       <!-- Bottom Section -->
-      <div class="flex flex-col md:flex-row items-center justify-center gap-2 text-gray-400 text-sm">
-        <Copyright :size="16" />
-        <span>{{ currentYear }} LifeAdmin. All rights reserved.</span>
-        <span class="hidden md:inline">•</span>
-        <span class="hidden md:inline">Built with ❤️ by Elvis</span>
-      </div>
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-gray-400 text-sm">
+        <div class="flex items-center gap-2">
+          <Copyright :size="16" />
+          <span>{{ currentYear }} LifeAdmin. All rights reserved.</span>
+        </div>
 
-      <!-- Additional Info -->
-      <div class="mt-8 pt-8 border-t border-white/10">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-400">
-          
-          <div class="flex items-center gap-6">
-            <div class="flex items-center gap-2">
-              <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-              <span>All systems operational</span>
-            </div>
-            <span class="hidden md:inline">•</span>
-            <span class="hidden md:inline">99.9% uptime</span>
-          </div>
-
-          <!-- Language Selector (optional) -->
-          <div class="flex items-center gap-2">
-            <Globe :size="16" />
-            <select class="bg-white/10 border border-white/20 rounded-lg px-3 py-1 text-sm text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
-              <option value="en">English</option>
-              <option value="de">Deutsch</option>
-              <option value="es">Español</option>
-              <option value="fr">Français</option>
-            </select>
-          </div>
-
+        <!-- Language Selector -->
+        <div class="flex items-center gap-2">
+          <Globe :size="16" />
+          <select class="bg-white/10 border border-white/20 rounded-lg px-3 py-1 text-sm text-white focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+          </select>
         </div>
       </div>
 

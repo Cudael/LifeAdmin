@@ -18,6 +18,7 @@ import PrivacyPolicyPage from '../pages/PrivacyPolicyPage.vue'
 import TermsOfServicePage from '../pages/TermsOfServicePage.vue'
 import CookiePolicyPage from '../pages/CookiePolicyPage.vue'
 import ContactPage from '../pages/ContactPage.vue'
+import AboutPage from '../pages/AboutPage.vue'
 
 const routes = [
   // Public routes
@@ -45,6 +46,11 @@ const routes = [
     path: '/contact',
     name: 'Contact',
     component: ContactPage
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: AboutPage
   },
 
   // Guest-only routes (redirect to dashboard if logged in)
