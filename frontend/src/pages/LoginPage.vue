@@ -41,7 +41,7 @@
 <script setup>
 import { ref, onMounted } from "vue"
 import { useRouter, useRoute } from "vue-router"
-import { apiFetch } from "../utils/api"
+import { apiFetch, BASE_URL } from "../utils/api"
 import { setTokens } from "../utils/auth"
 import AuthLayout from "../components/auth/AuthLayout.vue"
 import AuthErrorAlert from "../components/auth/AuthErrorAlert.vue"
@@ -102,6 +102,6 @@ async function handleLogin() {
 function signInWithGoogle() {
   loading.value = true
   errorMessage.value = ""
-  window.location.href = 'http://localhost:8000/auth/google'
+  window.location.href = `${BASE_URL}/auth/google`
 }
 </script>

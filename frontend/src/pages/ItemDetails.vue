@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref, computed } from "vue"
 import { useRoute, useRouter } from "vue-router"
-import { apiFetch } from "../utils/api"
+import { apiFetch, BASE_URL } from "../utils/api"
 import DashboardLayout from "../layouts/DashboardLayout.vue"
 import DeleteModal from "../components/DeleteModal.vue"
 import {
@@ -337,7 +337,7 @@ onMounted(async () => {
               </div>
             </div>
             <a
-              :href="`http://localhost:8000${item.file_path}`"
+              :href="`${BASE_URL}${item.file_path}`"
               target="_blank"
               class="group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl font-semibold hover:from-teal-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
