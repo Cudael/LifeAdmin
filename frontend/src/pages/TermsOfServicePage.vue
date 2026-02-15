@@ -8,7 +8,7 @@ import { FileText, AlertTriangle, Shield, Ban, Scale, Mail } from "lucide-vue-ne
   <div class="bg-white min-h-screen flex flex-col">
     <AppHeader />
 
-    <main class="flex-1">
+    <main class="flex-1 pt-20">
       <!-- Header Section -->
       <section class="bg-gradient-to-br from-cyan-50 via-blue-50 to-white py-20">
         <div class="max-w-4xl mx-auto px-6">

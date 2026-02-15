@@ -156,6 +156,22 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    // If there's a saved position (browser back/forward), use it
+    if (savedPosition) {
+      return savedPosition
+    }
+    // If navigating to a hash (anchor), scroll to that element with offset for fixed header
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: 'smooth',
+        top: 80, // Offset for fixed header
+      }
+    }
+    // Otherwise scroll to top of the page
+    return { top: 0, behavior: 'smooth' }
+  },
 })
 
 // Global auth guard

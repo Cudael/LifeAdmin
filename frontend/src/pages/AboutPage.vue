@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
     <AppHeader />
     
-    <main class="max-w-5xl mx-auto px-6 py-16">
+    <main class="max-w-5xl mx-auto px-6 py-16 pt-36">
       <!-- Header -->
       <div class="text-center mb-16">
         <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
