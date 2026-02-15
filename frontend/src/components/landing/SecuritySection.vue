@@ -17,7 +17,7 @@ import { Shield, CheckCircle2 } from "lucide-vue-next"
           Security First
         </div>
 
-        <h2 class="text-5xl font-extrabold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-4">
+        <h2 class="text-5xl font-extrabold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-4 pb-1">
           Security & Trust
         </h2>
         <div class="w-16 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 mx-auto"></div>

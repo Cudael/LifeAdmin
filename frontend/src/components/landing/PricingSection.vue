@@ -25,7 +25,7 @@ import {
       </div>
 
       <!-- Title -->
-      <h2 class="text-5xl font-extrabold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-4">
+      <h2 class="text-5xl font-extrabold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-4 pb-1">
         Choose the Plan That Fits You
       </h2>
 
