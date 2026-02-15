@@ -170,11 +170,10 @@ const handleSubmit = async () => {
   showError.value = false
 
   try {
-    // Simulate form submission
-    // In a real application, you would send this to your backend
+    // TODO: Implement actual backend integration for contact form
+    // For now, just show success message (simulate form submission)
     await new Promise(resolve => setTimeout(resolve, 1000))
     
-    // For now, just show success message
     showSuccess.value = true
     
     // Reset form
