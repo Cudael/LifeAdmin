@@ -85,7 +85,19 @@ async def register(
     
     send_verification_email(new_user.email, new_user.full_name, verification_link)
 
+    # Generate tokens for immediate login after registration
+    access_token = create_access_token(data={"sub": str(new_user.id)})
+    refresh_token_val = create_refresh_token(data={"sub": str(new_user.id)})
+
     return {
         "message": "User registered successfully. Please check your email to verify your account.",
-        "email_sent": True
+        "email_sent": True,
+        "access_token": access_token,
+        "refresh_token": refresh_token_val,
+        "user": {
+            "id": new_user.id,
+            "email": new_user.email,
+            "full_name": new_user.full_name,
+            "email_verified": new_user.email_verified
+        }
     }
