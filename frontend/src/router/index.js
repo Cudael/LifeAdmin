@@ -17,6 +17,7 @@ import VerifyEmailPage from '../pages/VerifyEmailPage.vue'
 import PrivacyPolicyPage from '../pages/PrivacyPolicyPage.vue'
 import TermsOfServicePage from '../pages/TermsOfServicePage.vue'
 import CookiePolicyPage from '../pages/CookiePolicyPage.vue'
+import ContactPage from '../pages/ContactPage.vue'
 
 const routes = [
   // Public routes
@@ -39,6 +40,11 @@ const routes = [
     path: '/cookies',
     name: 'Cookies',
     component: CookiePolicyPage
+  },
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: ContactPage
   },
 
   // Guest-only routes (redirect to dashboard if logged in)

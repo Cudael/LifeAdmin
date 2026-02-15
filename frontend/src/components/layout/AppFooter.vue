@@ -10,7 +10,7 @@
     <!-- Main Footer Content -->
     <div class="relative z-10 max-w-7xl mx-auto px-6 py-16">
       
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
         
         <!-- Brand Section -->
         <div class="space-y-4">
@@ -72,63 +72,29 @@
               <a href="/#pricing" class="footer-link">Pricing</a>
             </li>
             <li>
-              <RouterLink to="/demo" class="footer-link">Demo</RouterLink>
-            </li>
-            <li>
-              <RouterLink to="/changelog" class="footer-link">Changelog</RouterLink>
-            </li>
-            <li>
-              <RouterLink to="/roadmap" class="footer-link">Roadmap</RouterLink>
+              <a href="/#faq" class="footer-link">FAQ</a>
             </li>
           </ul>
         </div>
 
-        <!-- Company -->
-        <div>
-          <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
-            <Building :size="20" class="text-cyan-400" />
-            Company
-          </h3>
-          <ul class="space-y-3">
-            <li>
-              <RouterLink to="/about" class="footer-link">About Us</RouterLink>
-            </li>
-            <li>
-              <RouterLink to="/blog" class="footer-link">Blog</RouterLink>
-            </li>
-            <li>
-              <RouterLink to="/careers" class="footer-link">Careers</RouterLink>
-            </li>
-            <li>
-              <RouterLink to="/contact" class="footer-link">Contact</RouterLink>
-            </li>
-            <li>
-              <RouterLink to="/press" class="footer-link">Press Kit</RouterLink>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Support -->
+        <!-- Legal & Support -->
         <div>
           <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
             <HelpCircle :size="20" class="text-blue-400" />
-            Support
+            Legal & Support
           </h3>
           <ul class="space-y-3">
             <li>
-              <RouterLink to="/help" class="footer-link">Help Center</RouterLink>
+              <RouterLink to="/privacy" class="footer-link">Privacy Policy</RouterLink>
             </li>
             <li>
-              <a href="/#faq" class="footer-link">FAQ</a>
+              <RouterLink to="/terms" class="footer-link">Terms of Service</RouterLink>
             </li>
             <li>
-              <RouterLink to="/documentation" class="footer-link">Documentation</RouterLink>
+              <RouterLink to="/cookies" class="footer-link">Cookie Policy</RouterLink>
             </li>
             <li>
               <RouterLink to="/contact" class="footer-link">Contact Support</RouterLink>
-            </li>
-            <li>
-              <RouterLink to="/status" class="footer-link">System Status</RouterLink>
             </li>
           </ul>
         </div>
@@ -139,29 +105,11 @@
       <div class="border-t border-white/10 mb-8"></div>
 
       <!-- Bottom Section -->
-      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-        
-        <!-- Copyright -->
-        <div class="flex items-center gap-2 text-gray-400 text-sm">
-          <Copyright :size="16" />
-          <span>{{ currentYear }} LifeAdmin. All rights reserved.</span>
-          <span class="hidden md:inline">•</span>
-          <span class="hidden md:inline">Built with ❤️ by Elvis</span>
-        </div>
-
-        <!-- Legal Links -->
-        <div class="flex items-center gap-6 text-sm">
-          <RouterLink to="/privacy" class="footer-link">
-            Privacy Policy
-          </RouterLink>
-          <RouterLink to="/terms" class="footer-link">
-            Terms of Service
-          </RouterLink>
-          <RouterLink to="/cookies" class="footer-link">
-            Cookie Policy
-          </RouterLink>
-        </div>
-
+      <div class="flex flex-col md:flex-row items-center justify-center gap-2 text-gray-400 text-sm">
+        <Copyright :size="16" />
+        <span>{{ currentYear }} LifeAdmin. All rights reserved.</span>
+        <span class="hidden md:inline">•</span>
+        <span class="hidden md:inline">Built with ❤️ by Elvis</span>
       </div>
 
       <!-- Additional Info -->
@@ -210,7 +158,6 @@ import { ref, computed, onMounted, onUnmounted } from "vue"
 import {
   Sparkles,
   Package,
-  Building,
   HelpCircle,
   Copyright,
   Globe,
@@ -244,15 +191,6 @@ onUnmounted(() => {
 
 <style scoped>
 .footer-link {
-  @apply text-gray-400 hover:text-white transition-colors duration-200 inline-flex items-center gap-1;
-}
-
-.footer-link::before {
-  content: '';
-  @apply w-0 h-0.5 bg-gradient-to-r from-teal-400 to-cyan-400 transition-all duration-300;
-}
-
-.footer-link:hover::before {
-  @apply w-full;
+  @apply text-gray-400 hover:text-white transition-colors duration-200;
 }
 </style>
