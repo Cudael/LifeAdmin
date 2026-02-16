@@ -125,8 +125,17 @@ For production deployment with Google OAuth and reverse proxy setup, see [PRODUC
 - ✅ Configure Google Cloud Console with production redirect URIs
 - ✅ Set `OAUTH_REDIRECT_URI` in backend `.env`
 - ✅ Set `VITE_API_URL=/api` in frontend `.env`
-- ✅ Configure Nginx reverse proxy
+- ✅ Configure Nginx reverse proxy (use `./nginx-check.sh` to verify)
 - ✅ Enable `SECURE_COOKIES=true` for HTTPS
+
+**Nginx Configuration Helper:**
+```bash
+# Verify your Nginx configuration for OAuth
+chmod +x nginx-check.sh
+./nginx-check.sh
+```
+
+This script checks that OAuth routes are properly configured in Nginx and will catch common configuration issues.
 
 ## Stripe Payment Setup
 
