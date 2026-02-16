@@ -33,7 +33,13 @@ oauth.register(
 @router.get('/google')
 async def google_login(request: Request):
     """Initiate Google OAuth flow"""
-    redirect_uri = request.url_for('google_callback')
+    # Use environment variable for production, fallback to dynamic generation
+    redirect_uri = os.getenv('OAUTH_REDIRECT_URI')
+    
+    if not redirect_uri:
+        redirect_uri = request.url_for('google_callback')
+    
+    logger.info(f"🔐 Google OAuth initiated with redirect URI: {redirect_uri}")
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
 @router.get('/google/callback')
