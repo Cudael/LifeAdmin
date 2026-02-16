@@ -1,4 +1,7 @@
 <script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { loadStripe } from '@stripe/stripe-js'
 import { 
   CheckCircle2, 
   ArrowRight,
@@ -8,6 +11,54 @@ import {
   TrendingUp,
   Award
 } from "lucide-vue-next"
+
+const router = useRouter()
+const isLoading = ref(false)
+const errorMessage = ref("")
+
+const API_URL = import.meta.env.VITE_API_URL || "/api"
+
+async function handleUpgradeClick() {
+  try {
+    isLoading.value = true
+    errorMessage.value = ""
+    
+    // Check if user is logged in
+    const token = localStorage.getItem("token")
+    if (!token) {
+      router.push("/login?redirect=/subscription")
+      return
+    }
+    
+    // Get Stripe publishable key
+    const configResponse = await fetch(`${API_URL}/payments/config`)
+    const config = await configResponse.json()
+    
+    // Create checkout session
+    const response = await fetch(`${API_URL}/payments/create-checkout-session`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
+    })
+    
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.detail || "Failed to create checkout session")
+    }
+    
+    const { url } = await response.json()
+    
+    // Redirect to Stripe checkout
+    window.location.href = url
+    
+  } catch (error) {
+    console.error("Upgrade error:", error)
+    errorMessage.value = error.message || "Failed to start checkout. Please try again."
+    isLoading.value = false
+  }
+}
 </script>
 
 <template>
@@ -121,13 +172,18 @@ import {
             </li>
           </ul>
 
-          <RouterLink
-            to="/register"
-            class="group block text-center px-7 py-4 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl text-lg font-bold shadow-lg hover:shadow-2xl hover:from-teal-400 hover:to-cyan-400 transition-all items-center justify-center gap-2"
+          <button
+            @click="handleUpgradeClick"
+            :disabled="isLoading"
+            class="group block text-center px-7 py-4 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl text-lg font-bold shadow-lg hover:shadow-2xl hover:from-teal-400 hover:to-cyan-400 transition-all items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed w-full"
           >
-            Upgrade Monthly
-            <ArrowRight :size="20" class="group-hover:translate-x-1 transition-transform" />
-          </RouterLink>
+            <span v-if="isLoading">Processing...</span>
+            <span v-else class="flex items-center justify-center gap-2">
+              Upgrade Monthly
+              <ArrowRight :size="20" class="group-hover:translate-x-1 transition-transform" />
+            </span>
+          </button>
+          <p v-if="errorMessage" class="text-red-600 text-sm mt-2 text-center">{{ errorMessage }}</p>
         </div>
 
         <!-- PREMIUM YEARLY -->
