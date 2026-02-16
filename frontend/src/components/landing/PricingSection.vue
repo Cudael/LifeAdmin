@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { loadStripe } from '@stripe/stripe-js'
 import { 
   CheckCircle2, 
   ArrowRight,
@@ -29,10 +28,6 @@ async function handleUpgradeClick() {
       router.push("/login?redirect=/subscription")
       return
     }
-    
-    // Get Stripe publishable key
-    const configResponse = await fetch(`${API_URL}/payments/config`)
-    const config = await configResponse.json()
     
     // Create checkout session
     const response = await fetch(`${API_URL}/payments/create-checkout-session`, {

@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Header
 from fastapi.responses import JSONResponse
 from sqlmodel import Session, select
 from typing import Optional
+from datetime import datetime
 import os
 import logging
 import stripe
@@ -206,7 +207,6 @@ async def handle_subscription_created(data: dict, session: Session):
         user.subscription_status = status
         user.subscription_plan = "premium"
         if current_period_end:
-            from datetime import datetime
             user.subscription_current_period_end = datetime.fromtimestamp(current_period_end)
         
         session.add(user)
@@ -229,7 +229,6 @@ async def handle_subscription_updated(data: dict, session: Session):
     if user:
         user.subscription_status = status
         if current_period_end:
-            from datetime import datetime
             user.subscription_current_period_end = datetime.fromtimestamp(current_period_end)
         
         session.add(user)
@@ -270,7 +269,6 @@ async def handle_invoice_payment_succeeded(data: dict, session: Session):
     
     if user:
         if period_end:
-            from datetime import datetime
             user.subscription_current_period_end = datetime.fromtimestamp(period_end)
         
         session.add(user)
