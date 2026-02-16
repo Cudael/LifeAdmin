@@ -18,6 +18,7 @@ from routes.items import router as items_router
 from routes.oauth import router as oauth_router
 from routes.notifications import router as notifications_router
 from routes.item_types import router as item_types_router
+from routes.payments import router as payments_router
 
 load_dotenv()
 
@@ -203,6 +204,7 @@ app.include_router(items_router)
 app.include_router(item_types_router)
 app.include_router(oauth_router)
 app.include_router(notifications_router)
+app.include_router(payments_router)
 
 
 # ✅ Global exception handler

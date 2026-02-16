@@ -19,6 +19,7 @@ import TermsOfServicePage from '../pages/TermsOfServicePage.vue'
 import CookiePolicyPage from '../pages/CookiePolicyPage.vue'
 import ContactPage from '../pages/ContactPage.vue'
 import AboutPage from '../pages/AboutPage.vue'
+import SubscriptionPage from '../pages/SubscriptionPage.vue'
 
 const routes = [
   // Public routes
@@ -140,6 +141,12 @@ const routes = [
     path: '/settings', 
     name: 'Settings', 
     component: SettingsPage, 
+    meta: { requiresAuth: true } 
+  },
+  { 
+    path: '/subscription', 
+    name: 'Subscription', 
+    component: SubscriptionPage, 
     meta: { requiresAuth: true } 
   },
 

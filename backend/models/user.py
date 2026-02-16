@@ -40,6 +40,26 @@ class User(SQLModel, table=True):
     language: str = Field(default="en")  # Language preference
     timezone: str = Field(default="UTC")  # Timezone preference
 
+    # Subscription fields
+    stripe_customer_id: Optional[str] = Field(default=None, index=True)
+    stripe_subscription_id: Optional[str] = None
+    subscription_status: Optional[str] = None  # active, canceled, past_due, trialing
+    subscription_plan: str = Field(default="free")  # free, premium
+    subscription_current_period_end: Optional[datetime] = None
+
     # Timestamps
     created_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
     updated_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
+    
+    def is_premium(self) -> bool:
+        """Check if user has active premium subscription"""
+        return (
+            self.subscription_plan == "premium" 
+            and self.subscription_status in ["active", "trialing"]
+        )
+    
+    def can_add_items(self, current_item_count: int) -> bool:
+        """Check if user can add more items (free users limited to 20)"""
+        if self.is_premium():
+            return True
+        return current_item_count < 20

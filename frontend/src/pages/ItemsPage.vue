@@ -1,7 +1,8 @@
 <script setup>
 import { ref, computed, onMounted } from "vue"
-import { useRoute } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 import { useItemsStore } from "../stores/items"
+import { useAuthStore } from "../stores/auth"
 import { apiFetch } from "../utils/api"
 
 import DashboardLayout from "../layouts/DashboardLayout.vue"
@@ -13,10 +14,12 @@ import ItemsInsights from "../components/items/ItemsInsights.vue"
 import ItemsFilters from "../components/items/ItemsFilters.vue"
 import ItemsEmptyState from "../components/items/ItemsEmptyState.vue"
 
-import { FileText, Repeat, Layers, Heart, Wallet, Briefcase, User, Plane, Home } from "lucide-vue-next"
+import { FileText, Repeat, Layers, Heart, Wallet, Briefcase, User, Plane, Home, AlertTriangle } from "lucide-vue-next"
 
 const itemsStore = useItemsStore()
+const authStore = useAuthStore()
 const route = useRoute()
+const router = useRouter()
 
 // UI State
 const activeCategory = ref("All")
@@ -119,6 +122,14 @@ const hasActiveFilters = computed(() => {
   return activeStatFilter.value !== 'all' || activeCategory.value !== 'All' || search.value
 })
 
+const showLimitWarning = computed(() => {
+  return !authStore.isPremium && totalItems.value >= 15
+})
+
+const isAtLimit = computed(() => {
+  return !authStore.isPremium && totalItems.value >= 20
+})
+
 // Methods
 const setCategory = (cat) => activeCategory.value = cat
 const setFilter = (filter) => activeStatFilter.value = filter
@@ -149,6 +160,9 @@ onMounted(async () => {
   const res = await apiFetch("/items")
   const data = await res.json()
   itemsStore.setItems(data.items || data)
+  
+  // Fetch subscription status
+  await authStore.fetchSubscriptionStatus()
   
   // Apply filter from query parameter
   const filterParam = route.query.filter
@@ -205,8 +219,54 @@ onMounted(async () => {
       :totalItems="totalItems"
       :documentsCount="documentsCount"
       :subscriptionsCount="subscriptionsCount"
+      :isPremium="authStore.isPremium"
       @filter="setFilter"
     />
+
+    <!-- ITEM LIMIT WARNING -->
+    <div v-if="showLimitWarning" class="mb-6">
+      <div 
+        :class="[
+          'p-4 rounded-xl border-2 flex items-start gap-3',
+          isAtLimit 
+            ? 'bg-red-50 border-red-200' 
+            : 'bg-yellow-50 border-yellow-200'
+        ]"
+      >
+        <AlertTriangle 
+          :size="24" 
+          :class="isAtLimit ? 'text-red-600' : 'text-yellow-600'" 
+          class="flex-shrink-0 mt-0.5"
+        />
+        <div class="flex-1">
+          <h4 
+            :class="[
+              'font-semibold mb-1',
+              isAtLimit ? 'text-red-900' : 'text-yellow-900'
+            ]"
+          >
+            {{ isAtLimit ? 'Item Limit Reached' : 'Approaching Item Limit' }}
+          </h4>
+          <p 
+            :class="[
+              'text-sm mb-3',
+              isAtLimit ? 'text-red-700' : 'text-yellow-700'
+            ]"
+          >
+            {{ isAtLimit 
+              ? 'You have reached the free plan limit of 20 items. Upgrade to Premium for unlimited items.' 
+              : `You are using ${totalItems}/20 items on the free plan. Upgrade to Premium for unlimited items.` 
+            }}
+          </p>
+          <button
+            @click="router.push('/subscription')"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-lg font-semibold shadow-md hover:shadow-lg hover:from-teal-400 hover:to-cyan-400 transition-all text-sm"
+          >
+            Upgrade to Premium
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- ITEMS GRID -->
     <div v-if="filteredItems.length > 0">

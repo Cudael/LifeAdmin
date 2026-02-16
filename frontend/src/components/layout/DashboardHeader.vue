@@ -46,6 +46,15 @@
             Settings
           </RouterLink>
 
+          <RouterLink
+            to="/subscription"
+            class="nav-link"
+            :class="{ 'nav-link-active': $route.path === '/subscription' }"
+          >
+            <CreditCard :size="18" />
+            Subscription
+          </RouterLink>
+
           <router-link
             to="/calendar"
             class="nav-link"
@@ -299,6 +308,15 @@
                 <span>Settings</span>
               </RouterLink>
 
+              <RouterLink
+                to="/subscription"
+                @click="menuOpen = false"
+                class="dropdown-item"
+              >
+                <CreditCard :size="18" />
+                <span>Subscription</span>
+              </RouterLink>
+
               <div class="border-t border-gray-100 my-2"></div>
 
               <button
@@ -396,6 +414,16 @@
           Settings
         </RouterLink>
 
+        <RouterLink
+          to="/subscription"
+          @click="mobileMenuOpen = false"
+          class="mobile-nav-link"
+          :class="{ 'mobile-nav-link-active': $route.path === '/subscription' }"
+        >
+          <CreditCard :size="18" />
+          Subscription
+        </RouterLink>
+
         <div class="border-t border-gray-200 my-2"></div>
 
         <RouterLink
@@ -429,7 +457,9 @@ import {
   Menu,
   X,
   ChevronDown,
-  Bell
+  Bell,
+  CreditCard,
+  Calendar
 } from "lucide-vue-next"
 
 const props = defineProps({

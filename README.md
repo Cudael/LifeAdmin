@@ -10,6 +10,8 @@ A modern document and subscription management system built with FastAPI and Vue.
 - ✉️ Email verification
 - 🔑 Google OAuth integration
 - 📊 Dashboard with statistics
+- 💰 Premium subscriptions via Stripe
+- 🚀 Free tier (20 items) and Premium tier (unlimited)
 - 🔔 Email notifications (coming soon)
 
 ## Tech Stack
@@ -19,6 +21,7 @@ A modern document and subscription management system built with FastAPI and Vue.
 - SQLModel + SQLite
 - JWT Authentication
 - Email verification
+- Stripe payment integration
 
 **Frontend:**
 - Vue 3 + Vite
@@ -100,14 +103,36 @@ See `.env.example` files in `backend/` and `frontend/` directories for required 
 
 ### Required Frontend Variables:
 - `VITE_API_URL` - Backend API URL (e.g., `http://localhost:8000` for local dev, or your production backend URL)
+- `VITE_STRIPE_PUBLISHABLE_KEY` - Stripe publishable key (for payment processing)
 
 ### Required Backend Variables:
 - `SECRET_KEY` - JWT secret (generate with: `python -c "import secrets; print(secrets.token_urlsafe(32))"`)
 - `FRONTEND_URL` - Frontend URL for CORS
+- `STRIPE_SECRET_KEY` - Stripe secret key (required for payments)
+- `STRIPE_PUBLISHABLE_KEY` - Stripe publishable key
+- `STRIPE_PRICE_ID_PREMIUM` - Stripe price ID for Premium plan
 
 ### Optional Backend Variables:
 - `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` - For Google OAuth
 - `SMTP_*` - For email verification and notifications
+- `STRIPE_WEBHOOK_SECRET` - Stripe webhook signature secret (for production)
+
+## Stripe Payment Setup
+
+Remindes supports premium subscriptions via Stripe. For detailed setup instructions, see [STRIPE_SETUP.md](STRIPE_SETUP.md).
+
+**Quick setup:**
+1. Get API keys from [Stripe Dashboard](https://dashboard.stripe.com/apikeys)
+2. Add keys to `backend/.env` and `frontend/.env`
+3. Create a product in Stripe Dashboard (€2.99/month)
+4. Run migration: `python backend/migrations/006_add_subscriptions.py`
+5. Set up webhook: `https://your-domain.com/api/payments/webhooks/stripe`
+
+**Features:**
+- Free tier: 20 items limit
+- Premium tier: Unlimited items + priority features
+- Secure payment processing via Stripe Checkout
+- Automatic subscription management via webhooks
 
 ## API Documentation
 
