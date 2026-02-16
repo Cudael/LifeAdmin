@@ -17,6 +17,10 @@ const props = defineProps({
   subscriptionsCount: {
     type: Number,
     required: true
+  },
+  isPremium: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -112,8 +116,16 @@ function handleFilter(filter) {
     <div class="grid grid-cols-2 lg:grid-cols-3 gap-3">
       
       <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-gray-200/50 hover:shadow-md transition-shadow">
-        <p class="text-xs text-gray-500 mb-1">Total</p>
-        <p class="text-2xl font-bold text-gray-900">{{ totalItems }}</p>
+        <p class="text-xs text-gray-500 mb-1">Total Items</p>
+        <p class="text-2xl font-bold text-gray-900">
+          {{ isPremium ? totalItems : `${totalItems}/20` }}
+        </p>
+        <p v-if="!isPremium" class="text-xs text-gray-500 mt-1">
+          Free plan limit
+        </p>
+        <p v-else class="text-xs text-teal-600 mt-1">
+          Unlimited
+        </p>
       </div>
 
       <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-teal-200/50 hover:shadow-md transition-shadow">
