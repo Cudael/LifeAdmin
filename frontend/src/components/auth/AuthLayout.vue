@@ -18,7 +18,7 @@
             <Lock :size="32" class="text-white" />
           </div>
           <h1 class="text-2xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
-            LifeAdmin
+            Remindes
           </h1>
         </RouterLink>
       </div>

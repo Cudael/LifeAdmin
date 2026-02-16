@@ -1,6 +1,6 @@
 # Database Migrations
 
-This directory contains database migration scripts for the LifeAdmin application.
+This directory contains database migration scripts for the Remindes application.
 
 ## Running Migrations
 

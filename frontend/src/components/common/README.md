@@ -1,6 +1,6 @@
 # Common Reusable UI Components
 
-This directory contains reusable UI components that follow the LifeAdmin design system.
+This directory contains reusable UI components that follow the Remindes design system.
 
 ## Components
 
@@ -186,7 +186,7 @@ import Card from '@/components/common/Card.vue'
 
 ## Design System
 
-All components follow the LifeAdmin design system:
+All components follow the Remindes design system:
 
 - **Primary Color:** Gradient from teal-500 to cyan-500
 - **Border Radius:** Rounded corners (rounded-xl, rounded-2xl)

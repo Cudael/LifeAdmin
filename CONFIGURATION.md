@@ -1,6 +1,6 @@
-# Configuration Guide for LifeAdmin
+# Configuration Guide for Remindes
 
-This guide explains how to properly configure LifeAdmin after the recent updates that fixed login/registration issues and implemented persistent login.
+This guide explains how to properly configure Remindes after the recent updates that fixed login/registration issues and implemented persistent login.
 
 ## Quick Start
 
@@ -87,7 +87,7 @@ This guide explains how to properly configure LifeAdmin after the recent updates
 
 ### Understanding Token Expiration
 
-LifeAdmin uses two types of tokens:
+Remindes uses two types of tokens:
 
 1. **Access Token:** Used for API authentication. Default: 7 days
 2. **Refresh Token:** Used to generate new access tokens. Default: 30 days

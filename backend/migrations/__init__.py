@@ -1,7 +1,7 @@
 """
 Database Migrations Package
 
-This package contains database migration scripts for the LifeAdmin application.
+This package contains database migration scripts for the Remindes application.
 Each migration is numbered sequentially and should be run in order.
 
 Migration files follow the naming convention: {number}_{description}.py

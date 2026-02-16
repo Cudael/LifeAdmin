@@ -10,7 +10,7 @@ SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
 SMTP_USER = os.getenv("SMTP_USER")
 SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
 SMTP_FROM = os.getenv("SMTP_FROM", SMTP_USER)
-SMTP_FROM_NAME = os.getenv("SMTP_FROM_NAME", "LifeAdmin")
+SMTP_FROM_NAME = os.getenv("SMTP_FROM_NAME", "Remindes")
 
 def send_expiry_notification_email(
     to_email: str,
@@ -45,7 +45,7 @@ Days Remaining: {days_until_expiry} day{'s' if days_until_expiry != 1 else ''}
 Please take action to renew or update this item.
 
 ---
-LifeAdmin - Never miss an important date
+Remindes - Never miss an important date
         """
         
         # HTML version
@@ -152,7 +152,7 @@ LifeAdmin - Never miss an important date
     <div class="container">
         <div class="content">
             <div class="header">
-                <div class="logo">✨ LifeAdmin</div>
+                <div class="logo">✨ Remindes</div>
                 <p style="color: #6b7280; margin-top: 5px;">Never miss an important date</p>
             </div>
             
@@ -193,7 +193,7 @@ LifeAdmin - Never miss an important date
             <p style="color: #6b7280;">Please take action to renew or update this item before it expires.</p>
             
             <div class="footer">
-                <p>You're receiving this email because you have email notifications enabled in LifeAdmin.</p>
+                <p>You're receiving this email because you have email notifications enabled in Remindes.</p>
                 <p style="margin-top: 10px;">
                     <a href="{os.getenv('FRONTEND_URL', 'http://localhost:5173')}/settings" style="color: #14b8a6;">Manage notification preferences</a>
                 </p>
@@ -257,7 +257,7 @@ Days Overdue: {days_expired} day{'s' if days_expired != 1 else ''}
 Please take immediate action to renew or update this item.
 
 ---
-LifeAdmin - Never miss an important date
+Remindes - Never miss an important date
         """
         
         # HTML version
@@ -364,7 +364,7 @@ LifeAdmin - Never miss an important date
     <div class="container">
         <div class="content">
             <div class="header">
-                <div class="logo">✨ LifeAdmin</div>
+                <div class="logo">✨ Remindes</div>
                 <p style="color: #6b7280; margin-top: 5px;">Never miss an important date</p>
             </div>
             
@@ -405,7 +405,7 @@ LifeAdmin - Never miss an important date
             <p style="color: #6b7280;">Please renew or update this item as soon as possible.</p>
             
             <div class="footer">
-                <p>You're receiving this email because you have email notifications enabled in LifeAdmin.</p>
+                <p>You're receiving this email because you have email notifications enabled in Remindes.</p>
                 <p style="margin-top: 10px;">
                     <a href="{os.getenv('FRONTEND_URL', 'http://localhost:5173')}/settings" style="color: #14b8a6;">Manage notification preferences</a>
                 </p>

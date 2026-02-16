@@ -1,6 +1,6 @@
 # Component Organization
 
-This document describes the component structure of the LifeAdmin frontend.
+This document describes the component structure of the Remindes frontend.
 
 ## Overview
 

@@ -19,7 +19,7 @@
               <Sparkles :size="24" class="text-white" />
             </div>
             <span class="text-2xl font-bold bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">
-              LifeAdmin
+              Remindes
             </span>
           </div>
           <p class="text-gray-400 leading-relaxed">
@@ -111,7 +111,7 @@
       <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-gray-400 text-sm">
         <div class="flex items-center gap-2">
           <Copyright :size="16" />
-          <span>{{ currentYear }} LifeAdmin. All rights reserved.</span>
+          <span>{{ currentYear }} Remindes. All rights reserved.</span>
         </div>
 
         <!-- Language Selector -->

@@ -33,7 +33,7 @@ import { Shield, Lock, Eye, Database, Mail, UserCheck } from "lucide-vue-next"
           <!-- Introduction -->
           <div class="mb-12">
             <p class="text-lg text-gray-700 leading-relaxed mb-6">
-              At LifeAdmin, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service. Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the site.
+              At Remindes, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service. Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the site.
             </p>
           </div>
 
@@ -169,7 +169,7 @@ import { Shield, Lock, Eye, Database, Mail, UserCheck } from "lucide-vue-next"
                 <li><strong>Withdraw Consent:</strong> Withdraw consent where processing is based on consent</li>
               </ul>
               <p class="mt-4">
-                To exercise these rights, please contact us at <a href="mailto:privacy@lifeadmin.com" class="text-teal-600 hover:text-teal-700 font-medium">privacy@lifeadmin.com</a>.
+                To exercise these rights, please contact us at <a href="mailto:privacy@remindes.com" class="text-teal-600 hover:text-teal-700 font-medium">privacy@remindes.com</a>.
               </p>
             </div>
           </div>
@@ -237,8 +237,8 @@ import { Shield, Lock, Eye, Database, Mail, UserCheck } from "lucide-vue-next"
                 If you have any questions about this Privacy Policy, please contact us:
               </p>
               <ul class="space-y-2">
-                <li>Email: <a href="mailto:privacy@lifeadmin.com" class="text-teal-600 hover:text-teal-700 font-medium">privacy@lifeadmin.com</a></li>
-                <li>Email: <a href="mailto:support@lifeadmin.com" class="text-teal-600 hover:text-teal-700 font-medium">support@lifeadmin.com</a></li>
+                <li>Email: <a href="mailto:privacy@remindes.com" class="text-teal-600 hover:text-teal-700 font-medium">privacy@remindes.com</a></li>
+                <li>Email: <a href="mailto:support@remindes.com" class="text-teal-600 hover:text-teal-700 font-medium">support@remindes.com</a></li>
               </ul>
             </div>
           </div>

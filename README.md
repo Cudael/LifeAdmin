@@ -1,4 +1,4 @@
-# LifeAdmin
+# Remindes
 
 A modern document and subscription management system built with FastAPI and Vue.js.
 
@@ -37,8 +37,8 @@ A modern document and subscription management system built with FastAPI and Vue.
 ### 1. Clone the repository
 
 \`\`\`bash
-git clone https://github.com/YOUR_USERNAME/lifeadmin.git
-cd lifeadmin
+git clone https://github.com/YOUR_USERNAME/remindes.git
+cd remindes
 \`\`\`
 
 ### 2. Backend Setup
@@ -118,7 +118,7 @@ Once the backend is running, visit:
 ## Project Structure
 
 \`\`\`
-lifeadmin/
+remindes/
 ├── backend/
 │   ├── models/          # Database models
 │   ├── routes/          # API endpoints

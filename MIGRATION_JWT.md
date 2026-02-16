@@ -83,7 +83,7 @@ The only changes required:
 
 ## Migration Steps (For Existing Deployments)
 
-If you're running LifeAdmin in production:
+If you're running Remindes in production:
 
 ### 1. Update Dependencies
 ```bash
