@@ -49,6 +49,18 @@ async def create_item(
     user: User = Depends(require_verified_email)
 ):
     """Create a new item (JSON payload)"""
+    # Check item count limit for free users
+    from sqlmodel import select, func
+    statement = select(func.count(Item.id)).where(Item.user_id == user.id)
+    item_count = session.exec(statement).one()
+    
+    if not user.can_add_items(item_count):
+        logger.warning(f"⚠️ Free user {user.email} attempted to exceed 20 item limit")
+        raise HTTPException(
+            status_code=403,
+            detail="Free plan limited to 20 items. Upgrade to Premium for unlimited items."
+        )
+    
     db_item = Item.from_orm(item)
     db_item.user_id = user.id
     session.add(db_item)
@@ -273,6 +285,18 @@ async def upload_item(
     Create a new item with file upload.
     Supports both legacy fields and new dynamic_fields JSON.
     """
+    
+    # Check item count limit for free users
+    from sqlmodel import select, func
+    statement = select(func.count(Item.id)).where(Item.user_id == user.id)
+    item_count = session.exec(statement).one()
+    
+    if not user.can_add_items(item_count):
+        logger.warning(f"⚠️ Free user {user.email} attempted to exceed 20 item limit")
+        raise HTTPException(
+            status_code=403,
+            detail="Free plan limited to 20 items. Upgrade to Premium for unlimited items."
+        )
     
     # Validate input
     if not name or len(name.strip()) < 2:
