@@ -1,6 +1,6 @@
 # Backend Routes Structure
 
-This document describes the modular route structure of the LifeAdmin API.
+This document describes the modular route structure of the Remindes API.
 
 ## Overview
 

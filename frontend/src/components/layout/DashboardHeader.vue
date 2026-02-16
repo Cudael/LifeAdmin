@@ -12,7 +12,7 @@
             <Sparkles :size="18" class="text-white" />
           </div>
           <span class="text-xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
-            LifeAdmin
+            Remindes
           </span>
         </RouterLink>
 

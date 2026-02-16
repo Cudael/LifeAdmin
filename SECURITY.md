@@ -2,7 +2,7 @@
 
 ## Overview
 
-LifeAdmin takes security seriously. This document outlines our security practices, known limitations, and how to report vulnerabilities.
+Remindes takes security seriously. This document outlines our security practices, known limitations, and how to report vulnerabilities.
 
 ## Recent Security Updates
 
@@ -221,7 +221,7 @@ Security updates will be announced via:
 
 ## Compliance
 
-LifeAdmin is designed with the following regulations in mind:
+Remindes is designed with the following regulations in mind:
 - **GDPR**: User data deletion, data export, consent management
 - **CCPA**: Data access and deletion rights
 - **SOC 2**: Logging, access controls, encryption

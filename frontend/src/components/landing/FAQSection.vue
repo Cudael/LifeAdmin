@@ -32,14 +32,14 @@ import { MessageCircle, Mail, ArrowRight, ChevronDown } from "lucide-vue-next"
         <!-- FAQ ITEM -->
         <details class="group bg-white border-2 border-teal-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
           <summary class="flex justify-between items-center cursor-pointer text-lg font-semibold text-gray-900 list-none">
-            <span>How does LifeAdmin remind me about upcoming expirations?</span>
+            <span>How does Remindes remind me about upcoming expirations?</span>
             <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 ml-4 group-open:bg-teal-500 transition-colors">
               <ChevronDown :size="20" class="text-teal-600 group-open:text-white group-open:rotate-180 transition-transform" />
             </div>
           </summary>
 
           <div class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
-            LifeAdmin sends you smart reminders days or weeks before something expires. 
+            Remindes sends you smart reminders days or weeks before something expires. 
             You choose how early you want to be notified via email, push notifications, or both.
           </div>
         </details>
@@ -68,7 +68,7 @@ import { MessageCircle, Mail, ArrowRight, ChevronDown } from "lucide-vue-next"
           </summary>
           <div class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
             The free plan includes tracking for up to 20 items, smart reminders, and secure document storage up to 100MB.
-            It's perfect for getting started and seeing if LifeAdmin is right for you.
+            It's perfect for getting started and seeing if Remindes is right for you.
           </div>
         </details>
 
@@ -171,10 +171,10 @@ import { MessageCircle, Mail, ArrowRight, ChevronDown } from "lucide-vue-next"
           </RouterLink>
 
           <a
-            href="mailto:support@lifeadmin.com"
+            href="mailto:support@remindes.com"
             class="px-10 py-4 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white rounded-full text-lg font-medium hover:bg-white/20 transition-all duration-300"
           >
-            support@lifeadmin.com
+            support@remindes.com
           </a>
         </div>
 

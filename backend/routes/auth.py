@@ -1029,7 +1029,7 @@ def send_password_reset_email(to_email: str, user_name: str, reset_link: str):
         return
     
     msg = MIMEMultipart('alternative')
-    msg['Subject'] = 'Reset Your LifeAdmin Password'
+    msg['Subject'] = 'Reset Your Remindes Password'
     msg['From'] = from_email
     msg['To'] = to_email
     
@@ -1055,7 +1055,7 @@ def send_password_reset_email(to_email: str, user_name: str, reset_link: str):
             </div>
             <div class="content">
                 <p>Hi {user_name},</p>
-                <p>We received a request to reset your LifeAdmin password. Click the button below to create a new password:</p>
+                <p>We received a request to reset your Remindes password. Click the button below to create a new password:</p>
                 <div style="text-align: center;">
                     <a href="{reset_link}" class="button">Reset Password</a>
                 </div>
@@ -1065,7 +1065,7 @@ def send_password_reset_email(to_email: str, user_name: str, reset_link: str):
                 </p>
                 <p><strong>⏰ This link will expire in 1 hour.</strong></p>
                 <p>If you didn't request a password reset, you can safely ignore this email.</p>
-                <p>Best regards,<br>The LifeAdmin Team</p>
+                <p>Best regards,<br>The Remindes Team</p>
             </div>
             <div class="footer">
                 <p>This is an automated email. Please do not reply.</p>
@@ -1100,7 +1100,7 @@ def send_verification_email(to_email: str, user_name: str, verification_link: st
         return
     
     msg = MIMEMultipart('alternative')
-    msg['Subject'] = 'Verify Your LifeAdmin Email Address'
+    msg['Subject'] = 'Verify Your Remindes Email Address'
     msg['From'] = from_email
     msg['To'] = to_email
     
@@ -1126,7 +1126,7 @@ def send_verification_email(to_email: str, user_name: str, verification_link: st
             </div>
             <div class="content">
                 <p>Hi {user_name},</p>
-                <p>Welcome to LifeAdmin! Please verify your email address to get started:</p>
+                <p>Welcome to Remindes! Please verify your email address to get started:</p>
                 <div style="text-align: center;">
                     <a href="{verification_link}" class="button">Verify Email Address</a>
                 </div>
@@ -1136,7 +1136,7 @@ def send_verification_email(to_email: str, user_name: str, verification_link: st
                 </p>
                 <p><strong>⏰ This link will expire in 24 hours.</strong></p>
                 <p>If you didn't create an account, you can safely ignore this email.</p>
-                <p>Best regards,<br>The LifeAdmin Team</p>
+                <p>Best regards,<br>The Remindes Team</p>
             </div>
             <div class="footer">
                 <p>This is an automated email. Please do not reply.</p>

@@ -36,7 +36,7 @@ logger = logging.getLogger(__name__)
 limiter = Limiter(key_func=get_remote_address)
 
 app = FastAPI(
-    title="LifeAdmin API",
+    title="Remindes API",
     description="Document and subscription management system",
     version="1.0.0"
 )
@@ -146,20 +146,20 @@ async def log_requests(request: Request, call_next):
 @app.on_event("startup")
 async def startup_event():
     """Initialize database and log startup"""
-    logger.info("🚀 LifeAdmin API starting up...")
+    logger.info("🚀 Remindes API starting up...")
     create_db_and_tables()
     logger.info(f"✅ Database initialized")
     logger.info(f"✅ CORS enabled for: {', '.join(FRONTEND_ORIGINS)}")
     logger.info(f"✅ File uploads: 10MB limit")
     logger.info(f"✅ Rate limiting: Enabled")
-    logger.info("🎉 LifeAdmin API ready!")
+    logger.info("🎉 Remindes API ready!")
 
 
 # ✅ Shutdown event
 @app.on_event("shutdown")
 async def shutdown_event():
     """Log shutdown"""
-    logger.info("👋 LifeAdmin API shutting down...")
+    logger.info("👋 Remindes API shutting down...")
 
 
 # ✅ Health check endpoint
@@ -167,7 +167,7 @@ async def shutdown_event():
 def read_root():
     """Health check endpoint"""
     return {
-        "message": "LifeAdmin API is running",
+        "message": "Remindes API is running",
         "status": "ok",
         "version": "1.0.0"
     }

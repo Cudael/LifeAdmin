@@ -16,7 +16,7 @@
             <Sparkles :size="20" class="text-white" />
           </div>
           <span class="text-xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
-            LifeAdmin
+            Remindes
           </span>
         </RouterLink>
 
@@ -160,7 +160,7 @@
               <Sparkles :size="20" class="text-white" />
             </div>
             <span class="text-xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
-              LifeAdmin
+              Remindes
             </span>
           </div>
           <button
@@ -274,7 +274,7 @@
 
         <!-- Mobile Footer -->
         <div class="p-6 border-t border-gray-200 text-center text-sm text-gray-500">
-          <p>© 2026 LifeAdmin</p>
+          <p>© 2026 Remindes</p>
           <p class="mt-1">All rights reserved</p>
         </div>
 

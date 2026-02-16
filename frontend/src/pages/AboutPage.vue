@@ -6,7 +6,7 @@
       <!-- Header -->
       <div class="text-center mb-16">
         <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          About LifeAdmin
+          About Remindes
         </h1>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto">
           Simplifying life administration through intelligent organization and timely reminders.
@@ -24,7 +24,7 @@
           <h2 class="text-3xl font-bold text-gray-900">Our Mission</h2>
         </div>
         <p class="text-lg text-gray-700 leading-relaxed mb-4">
-          Life's administrative tasks shouldn't be overwhelming. At LifeAdmin, we believe everyone deserves peace of mind when it comes to managing important documents, subscriptions, and deadlines.
+          Life's administrative tasks shouldn't be overwhelming. At Remindes, we believe everyone deserves peace of mind when it comes to managing important documents, subscriptions, and deadlines.
         </p>
         <p class="text-lg text-gray-700 leading-relaxed">
           Our mission is to provide an intelligent, user-friendly platform that helps you stay on top of life's essential details—so you can focus on what truly matters.
@@ -42,7 +42,7 @@
           <h2 class="text-3xl font-bold text-gray-900">Our Story</h2>
         </div>
         <p class="text-lg text-gray-700 leading-relaxed mb-4">
-          LifeAdmin was born from a simple realization: missed deadlines, expired documents, and forgotten subscriptions are universal pain points that cost people time, money, and stress.
+          Remindes was born from a simple realization: missed deadlines, expired documents, and forgotten subscriptions are universal pain points that cost people time, money, and stress.
         </p>
         <p class="text-lg text-gray-700 leading-relaxed">
           We built this platform to solve these everyday challenges with smart tracking, automated reminders, and secure document storage—all in one beautiful, easy-to-use dashboard.

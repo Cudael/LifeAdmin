@@ -33,7 +33,7 @@ import { FileText, AlertTriangle, Shield, Ban, Scale, Mail } from "lucide-vue-ne
           <!-- Introduction -->
           <div class="mb-12">
             <p class="text-lg text-gray-700 leading-relaxed mb-6">
-              Welcome to LifeAdmin. By accessing or using our service, you agree to be bound by these Terms of Service. Please read them carefully. If you do not agree to these terms, please do not use our service.
+              Welcome to Remindes. By accessing or using our service, you agree to be bound by these Terms of Service. Please read them carefully. If you do not agree to these terms, please do not use our service.
             </p>
           </div>
 
@@ -48,7 +48,7 @@ import { FileText, AlertTriangle, Shield, Ban, Scale, Mail } from "lucide-vue-ne
 
             <div class="space-y-4 text-gray-700 leading-relaxed">
               <p>
-                By creating an account or using LifeAdmin, you agree to these Terms of Service and our Privacy Policy. These terms constitute a legally binding agreement between you and LifeAdmin.
+                By creating an account or using Remindes, you agree to these Terms of Service and our Privacy Policy. These terms constitute a legally binding agreement between you and Remindes.
               </p>
               <p>
                 If you are using the service on behalf of an organization, you represent that you have the authority to bind that organization to these terms.
@@ -61,7 +61,7 @@ import { FileText, AlertTriangle, Shield, Ban, Scale, Mail } from "lucide-vue-ne
             <h2 class="text-3xl font-bold text-gray-900 mb-6">Description of Service</h2>
             <div class="space-y-4 text-gray-700 leading-relaxed">
               <p>
-                LifeAdmin is a document and subscription management platform that helps you:
+                Remindes is a document and subscription management platform that helps you:
               </p>
               <ul class="list-disc pl-6 space-y-2">
                 <li>Store and organize important documents</li>
@@ -80,7 +80,7 @@ import { FileText, AlertTriangle, Shield, Ban, Scale, Mail } from "lucide-vue-ne
             <h2 class="text-3xl font-bold text-gray-900 mb-6">User Accounts</h2>
             <div class="space-y-4 text-gray-700 leading-relaxed">
               <p>
-                To use LifeAdmin, you must create an account. You agree to:
+                To use Remindes, you must create an account. You agree to:
               </p>
               <ul class="list-disc pl-6 space-y-2">
                 <li>Provide accurate, current, and complete information during registration</li>
@@ -90,7 +90,7 @@ import { FileText, AlertTriangle, Shield, Ban, Scale, Mail } from "lucide-vue-ne
                 <li>Be responsible for all activities that occur under your account</li>
               </ul>
               <p class="mt-4">
-                You must be at least 13 years old to use LifeAdmin. If you are under 18, you must have permission from a parent or guardian.
+                You must be at least 13 years old to use Remindes. If you are under 18, you must have permission from a parent or guardian.
               </p>
             </div>
           </div>
@@ -105,7 +105,7 @@ import { FileText, AlertTriangle, Shield, Ban, Scale, Mail } from "lucide-vue-ne
             </div>
 
             <div class="space-y-4 text-gray-700 leading-relaxed">
-              <p>You agree to use LifeAdmin only for lawful purposes and in accordance with these Terms. You agree NOT to:</p>
+              <p>You agree to use Remindes only for lawful purposes and in accordance with these Terms. You agree NOT to:</p>
               <ul class="list-disc pl-6 space-y-2">
                 <li>Violate any applicable laws or regulations</li>
                 <li>Infringe on the intellectual property rights of others</li>
@@ -126,7 +126,7 @@ import { FileText, AlertTriangle, Shield, Ban, Scale, Mail } from "lucide-vue-ne
             <h2 class="text-3xl font-bold text-gray-900 mb-6">User Content</h2>
             <div class="space-y-4 text-gray-700 leading-relaxed">
               <p>
-                You retain all rights to the content you upload to LifeAdmin, including documents, notes, and other materials ("User Content"). By uploading User Content, you grant us a limited license to:
+                You retain all rights to the content you upload to Remindes, including documents, notes, and other materials ("User Content"). By uploading User Content, you grant us a limited license to:
               </p>
               <ul class="list-disc pl-6 space-y-2">
                 <li>Store, process, and display your User Content to provide the service</li>
@@ -174,7 +174,7 @@ import { FileText, AlertTriangle, Shield, Ban, Scale, Mail } from "lucide-vue-ne
             <h2 class="text-3xl font-bold text-gray-900 mb-6">Intellectual Property</h2>
             <div class="space-y-4 text-gray-700 leading-relaxed">
               <p>
-                The LifeAdmin service, including its design, features, text, graphics, logos, and software, is owned by LifeAdmin and protected by copyright, trademark, and other intellectual property laws.
+                The Remindes service, including its design, features, text, graphics, logos, and software, is owned by Remindes and protected by copyright, trademark, and other intellectual property laws.
               </p>
               <p>
                 You may not copy, modify, distribute, sell, or lease any part of our service without our express written permission.
@@ -187,7 +187,7 @@ import { FileText, AlertTriangle, Shield, Ban, Scale, Mail } from "lucide-vue-ne
             <h2 class="text-3xl font-bold text-gray-900 mb-6">Payment and Subscriptions</h2>
             <div class="space-y-4 text-gray-700 leading-relaxed">
               <p>
-                Some features of LifeAdmin may require a paid subscription. By purchasing a subscription, you agree to:
+                Some features of Remindes may require a paid subscription. By purchasing a subscription, you agree to:
               </p>
               <ul class="list-disc pl-6 space-y-2">
                 <li>Provide accurate and current billing information</li>
@@ -253,7 +253,7 @@ import { FileText, AlertTriangle, Shield, Ban, Scale, Mail } from "lucide-vue-ne
             <h2 class="text-3xl font-bold text-gray-900 mb-6">Limitation of Liability</h2>
             <div class="space-y-4 text-gray-700 leading-relaxed">
               <p class="uppercase font-semibold">
-                To the maximum extent permitted by law, LifeAdmin shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of profits, data, or other intangible losses.
+                To the maximum extent permitted by law, Remindes shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of profits, data, or other intangible losses.
               </p>
               <p>
                 Our total liability to you for any claims arising from these terms or your use of the service shall not exceed the amount you paid us in the 12 months before the claim, or $100, whichever is greater.
@@ -266,7 +266,7 @@ import { FileText, AlertTriangle, Shield, Ban, Scale, Mail } from "lucide-vue-ne
             <h2 class="text-3xl font-bold text-gray-900 mb-6">Indemnification</h2>
             <div class="space-y-4 text-gray-700 leading-relaxed">
               <p>
-                You agree to indemnify, defend, and hold harmless LifeAdmin and its officers, directors, employees, and agents from any claims, liabilities, damages, losses, and expenses (including legal fees) arising from:
+                You agree to indemnify, defend, and hold harmless Remindes and its officers, directors, employees, and agents from any claims, liabilities, damages, losses, and expenses (including legal fees) arising from:
               </p>
               <ul class="list-disc pl-6 space-y-2">
                 <li>Your use of the service</li>
@@ -326,8 +326,8 @@ import { FileText, AlertTriangle, Shield, Ban, Scale, Mail } from "lucide-vue-ne
                 If you have any questions about these Terms of Service, please contact us:
               </p>
               <ul class="space-y-2">
-                <li>Email: <a href="mailto:legal@lifeadmin.com" class="text-cyan-600 hover:text-cyan-700 font-medium">legal@lifeadmin.com</a></li>
-                <li>Email: <a href="mailto:support@lifeadmin.com" class="text-cyan-600 hover:text-cyan-700 font-medium">support@lifeadmin.com</a></li>
+                <li>Email: <a href="mailto:legal@remindes.com" class="text-cyan-600 hover:text-cyan-700 font-medium">legal@remindes.com</a></li>
+                <li>Email: <a href="mailto:support@remindes.com" class="text-cyan-600 hover:text-cyan-700 font-medium">support@remindes.com</a></li>
               </ul>
             </div>
           </div>

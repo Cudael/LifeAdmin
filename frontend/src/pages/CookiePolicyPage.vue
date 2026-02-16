@@ -33,7 +33,7 @@ import { Cookie, Settings, BarChart, Shield, CheckCircle, Mail } from "lucide-vu
           <!-- Introduction -->
           <div class="mb-12">
             <p class="text-lg text-gray-700 leading-relaxed mb-6">
-              This Cookie Policy explains how LifeAdmin uses cookies and similar tracking technologies when you visit our website. By using our service, you consent to the use of cookies as described in this policy.
+              This Cookie Policy explains how Remindes uses cookies and similar tracking technologies when you visit our website. By using our service, you consent to the use of cookies as described in this policy.
             </p>
           </div>
 
@@ -330,8 +330,8 @@ import { Cookie, Settings, BarChart, Shield, CheckCircle, Mail } from "lucide-vu
                 If you have any questions about our use of cookies, please contact us:
               </p>
               <ul class="space-y-2">
-                <li>Email: <a href="mailto:privacy@lifeadmin.com" class="text-purple-600 hover:text-purple-700 font-medium">privacy@lifeadmin.com</a></li>
-                <li>Email: <a href="mailto:support@lifeadmin.com" class="text-purple-600 hover:text-purple-700 font-medium">support@lifeadmin.com</a></li>
+                <li>Email: <a href="mailto:privacy@remindes.com" class="text-purple-600 hover:text-purple-700 font-medium">privacy@remindes.com</a></li>
+                <li>Email: <a href="mailto:support@remindes.com" class="text-purple-600 hover:text-purple-700 font-medium">support@remindes.com</a></li>
               </ul>
             </div>
           </div>

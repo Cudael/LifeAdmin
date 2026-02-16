@@ -112,8 +112,8 @@
             </svg>
           </div>
           <h3 class="font-semibold text-gray-900 mb-2">Email</h3>
-          <a href="mailto:support@lifeadmin.com" class="text-teal-600 hover:text-teal-700">
-            support@lifeadmin.com
+          <a href="mailto:support@remindes.com" class="text-teal-600 hover:text-teal-700">
+            support@remindes.com
           </a>
         </div>
 
