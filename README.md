@@ -117,6 +117,17 @@ See `.env.example` files in `backend/` and `frontend/` directories for required 
 - `SMTP_*` - For email verification and notifications
 - `STRIPE_WEBHOOK_SECRET` - Stripe webhook signature secret (for production)
 
+## Production Deployment
+
+For production deployment with Google OAuth and reverse proxy setup, see [PRODUCTION_SETUP.md](PRODUCTION_SETUP.md).
+
+**Quick production checklist:**
+- ✅ Configure Google Cloud Console with production redirect URIs
+- ✅ Set `OAUTH_REDIRECT_URI` in backend `.env`
+- ✅ Set `VITE_API_URL=/api` in frontend `.env`
+- ✅ Configure Nginx reverse proxy
+- ✅ Enable `SECURE_COOKIES=true` for HTTPS
+
 ## Stripe Payment Setup
 
 Remindes supports premium subscriptions via Stripe. For detailed setup instructions, see [STRIPE_SETUP.md](STRIPE_SETUP.md).
