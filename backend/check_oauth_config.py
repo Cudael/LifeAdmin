@@ -38,10 +38,10 @@ def check_oauth_config():
         
         # Validate redirect URI format
         if not redirect_uri.startswith('http'):
-            issues.append(f"❌ OAUTH_REDIRECT_URI must start with http:// or https://")
+            issues.append("❌ OAUTH_REDIRECT_URI must start with http:// or https://")
         
         if not redirect_uri.endswith('/auth/google/callback'):
-            issues.append(f"❌ OAUTH_REDIRECT_URI must end with /auth/google/callback")
+            issues.append("❌ OAUTH_REDIRECT_URI must end with /auth/google/callback")
     
     if not frontend_url:
         issues.append("❌ FRONTEND_URL is not set")
