@@ -131,6 +131,28 @@ This creates a SQLite database (`database.db`) with all required tables:
 - `email_verification_tokens` - Email verification tokens
 - `password_reset_tokens` - Password reset tokens
 
+### 4. Seed Item Types (Required)
+
+After initializing the database, you must run the migration to seed item types with categories:
+
+```bash
+cd backend
+python migrations/002_add_dynamic_fields.py
+```
+
+This seeds the database with 26 item type templates across 9 categories:
+- **Travel**: Passport, Visa
+- **Vehicle**: Driver's License, Vehicle Registration, Auto Insurance
+- **Personal**: ID Card
+- **Health**: Health Insurance Card
+- **Legal**: Warranty, Lease Agreement, Property Deed, Legal Contract
+- **Financial**: Credit Card, Bank Account, Tax Document
+- **Professional**: Professional Certificate, Professional License, Professional Membership
+- **Property**: Property-related documents
+- **Subscriptions**: Netflix, Spotify, Gym Membership, GitHub, Dropbox, Adobe Creative Cloud, Microsoft 365, Generic Subscription
+
+**Note**: Without this step, the "Add Item" feature will not show any categories!
+
 ---
 
 ## Frontend Setup

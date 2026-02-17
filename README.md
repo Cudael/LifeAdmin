@@ -71,12 +71,15 @@ cp .env.example .env
 # Edit .env and fill in your values
 # At minimum, set SECRET_KEY (see .env.example for how to generate)
 
-# Run database migrations
-python migrate.py
+# Initialize database
+python init_db.py
+
+# Seed item types and categories (REQUIRED)
+python migrations/002_add_dynamic_fields.py
 
 # Start the backend
 uvicorn main:app --reload
-\`\`\`
+```
 
 Backend will run at: http://localhost:8000
 

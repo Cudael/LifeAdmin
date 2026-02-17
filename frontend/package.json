@@ -9,7 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@stripe/stripe-js": "^4.11.0",
+    "@stripe/stripe-js": "^8.7.0",
+    "axios": "^1.13.5",
     "lucide-vue-next": "^0.563.0",
     "pinia": "^3.0.4",
     "vue": "^3.5.24",
