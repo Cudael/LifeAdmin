@@ -6,7 +6,7 @@ from authlib.integrations.starlette_client import OAuth
 import os
 import logging
 from dotenv import load_dotenv
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from database import get_session
 from models.user import User
@@ -113,7 +113,6 @@ async def google_callback(request: Request, session: Session = Depends(get_sessi
         refresh_token = create_refresh_token({"sub": str(user.id)})
         
         # Update refresh token in database
-        from datetime import timedelta
         user.refresh_token = refresh_token
         user.refresh_token_expires = datetime.utcnow() + timedelta(days=30)
         session.add(user)

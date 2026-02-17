@@ -1,4 +1,4 @@
-# LifeAdmin Complete Setup Guide
+# LifeAdmin (Remindes) - Complete Setup Guide
 
 ## Table of Contents
 1. [Prerequisites](#prerequisites)
@@ -87,7 +87,7 @@ SMTP_PORT=587
 SMTP_USER=your-email@gmail.com
 SMTP_PASSWORD=your-app-password  # Use App Password for Gmail
 SMTP_FROM_EMAIL=your-email@gmail.com
-SMTP_FROM_NAME=LifeAdmin
+SMTP_FROM_NAME=Remindes
 
 # ================================
 # STRIPE PAYMENT (Optional)
@@ -186,7 +186,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your_publishable_key
 1. Click **+ CREATE CREDENTIALS** → **OAuth client ID**
 2. If prompted, configure the OAuth consent screen:
    - User Type: **External**
-   - App name: **LifeAdmin** (or your app name)
+   - App name: **Remindes** (or your app name)
    - User support email: Your email
    - Developer contact: Your email
    - Click **Save and Continue**
@@ -196,7 +196,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your_publishable_key
 
 3. Create OAuth Client ID:
    - Application type: **Web application**
-   - Name: **LifeAdmin Web Client**
+   - Name: **Remindes Web Client**
 
 ### Step 3: Configure Redirect URIs
 
@@ -293,7 +293,7 @@ Serve `frontend/dist/` with a web server (Nginx, Apache, etc.)
 
 ### Authentication Methods
 
-LifeAdmin supports two authentication methods:
+Remindes supports two authentication methods:
 
 1. **Email/Password Authentication**
    - User registers with email and password
