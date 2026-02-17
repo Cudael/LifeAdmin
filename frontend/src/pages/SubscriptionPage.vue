@@ -200,7 +200,7 @@ const showSuccess = ref(false)
 const showCanceled = ref(false)
 const itemCount = ref(0)
 
-const API_URL = import.meta.env.VITE_API_URL || "/api"
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000"
 
 // Computed properties from auth store
 const isPremium = computed(() => authStore.isPremium)
