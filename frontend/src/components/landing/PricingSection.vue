@@ -15,7 +15,7 @@ const router = useRouter()
 const isLoading = ref(false)
 const errorMessage = ref("")
 
-const API_URL = import.meta.env.VITE_API_URL || "/api"
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000"
 
 async function handleUpgradeClick() {
   try {
