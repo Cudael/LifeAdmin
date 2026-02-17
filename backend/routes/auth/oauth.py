@@ -10,7 +10,7 @@ from datetime import datetime
 
 from database import get_session
 from models.user import User
-from utils.auth import create_access_token
+from utils.auth import create_access_token, create_refresh_token
 
 load_dotenv()
 
@@ -108,15 +108,23 @@ async def google_callback(request: Request, session: Session = Depends(get_sessi
             session.add(user)
             session.commit()
         
-        # Create JWT token (same format as your login)
+        # Create JWT tokens (same format as regular login)
         access_token = create_access_token({"sub": str(user.id)})
+        refresh_token = create_refresh_token({"sub": str(user.id)})
         
-        logger.info(f"OAuth token created for user: {email}")
+        # Update refresh token in database
+        from datetime import timedelta
+        user.refresh_token = refresh_token
+        user.refresh_token_expires = datetime.utcnow() + timedelta(days=30)
+        session.add(user)
+        session.commit()
         
-        # Redirect to frontend with token
+        logger.info(f"OAuth tokens created for user: {email}")
+        
+        # Redirect to frontend with both tokens
         frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173")
         return RedirectResponse(
-            url=f"{frontend_url}/auth/callback?token={access_token}"
+            url=f"{frontend_url}/auth/callback?token={access_token}&refresh_token={refresh_token}"
         )
         
     except Exception as e:

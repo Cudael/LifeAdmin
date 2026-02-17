@@ -19,11 +19,13 @@ const errorMessage = ref('')
 
 onMounted(async () => {
   try {
-    // Get token from URL
+    // Get tokens from URL
     const urlParams = new URLSearchParams(window.location.search)
     const token = urlParams.get('token')
+    const refreshToken = urlParams.get('refresh_token')
     
     console.log('OAuth callback - Token received:', token ? 'Yes' : 'No')
+    console.log('OAuth callback - Refresh token received:', refreshToken ? 'Yes' : 'No')
     
     if (!token) {
       console.error('No token received from OAuth callback')
@@ -34,8 +36,8 @@ onMounted(async () => {
       return
     }
     
-    // Save tokens
-    setTokens(token, token) // Use same token for both access and refresh for now
+    // Save tokens (use access token for both if refresh token not provided for backwards compatibility)
+    setTokens(token, refreshToken || token)
     
     console.log('Tokens saved, redirecting to dashboard...')
     
