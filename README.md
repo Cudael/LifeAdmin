@@ -1,6 +1,8 @@
-# Remindes
+# LifeAdmin (Remindes)
 
 A modern document and subscription management system built with FastAPI and Vue.js.
+
+> 📘 **Complete Setup Guide:** See [SETUP.md](./SETUP.md) for detailed installation and configuration instructions.
 
 ## Features
 
@@ -35,13 +37,15 @@ A modern document and subscription management system built with FastAPI and Vue.
 - Node.js 16+
 - npm or yarn
 
-## Installation
+## Quick Start
+
+> 📘 **For detailed setup instructions including Google OAuth, email configuration, and production deployment, see [SETUP.md](./SETUP.md)**
 
 ### 1. Clone the repository
 
 \`\`\`bash
-git clone https://github.com/YOUR_USERNAME/remindes.git
-cd remindes
+git clone https://github.com/Cudael/LifeAdmin.git
+cd LifeAdmin
 \`\`\`
 
 ### 2. Backend Setup
