@@ -223,7 +223,7 @@
           <!-- View Details Button -->
           <RouterLink
             :to="`/items/${item.id}`"
-            class="flex items-center justify-center p-2.5 bg-gray-800 text-gray-300 rounded-xl hover:bg-gray-800 transition-colors"
+            class="flex items-center justify-center p-2.5 bg-gray-800 text-gray-300 rounded-xl hover:bg-gray-700 transition-colors"
             title="View details"
             @click.stop
           >

@@ -165,8 +165,8 @@ const hasNotifications = computed(() => {
   const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
   
   return itemsStore.items.some(item => {
-    if (!item.expiry_date) return false
-    const expiryDate = new Date(item.expiry_date)
+    if (!item.expiration_date) return false
+    const expiryDate = new Date(item.expiration_date)
     return expiryDate <= thirtyDaysFromNow
   })
 })

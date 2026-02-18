@@ -80,15 +80,15 @@ function handleFilter(filter) {
       </div>
 
       <!-- Files Uploaded -->
-      <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-teal-200/50 hover:shadow-md transition-shadow">
+      <div class="bg-teal-900/20 backdrop-blur-sm rounded-xl p-3 border border-teal-800 hover:shadow-md transition-shadow">
         <div class="flex items-center gap-2 mb-1">
           <Upload :size="14" class="text-teal-400" />
           <p class="text-xs text-gray-300 font-medium">Files Uploaded</p>
         </div>
-        <p class="text-2xl font-bold text-teal-600">
+        <p class="text-2xl font-bold text-teal-400">
           {{ insights.filesUploaded }}
         </p>
-        <p class="mt-1 text-xs text-gray-500">
+        <p class="mt-1 text-xs text-gray-400">
           {{ totalItems > 0 
             ? Math.round((insights.filesUploaded / totalItems) * 100) 
             : 0 
