@@ -17,14 +17,11 @@ from utils.auth import get_current_user
 from utils.dates import parse_date
 from utils.file import save_upload
 from utils.file_validation import validate_file
+from utils.item_validation import validate_item_fields
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
 limiter = Limiter(key_func=get_remote_address)
-
-# Constants for validation
-ALLOWED_CATEGORIES = ["Travel", "Health", "Finance", "Work", "Personal", "Subscriptions", "Legal", "Education", "Vehicle"]
-ALLOWED_ITEM_TYPES = ["document", "subscription"]
 
 
 def require_verified_email(user: User = Depends(get_current_user)) -> User:
@@ -155,17 +152,10 @@ async def update_item_with_file(
         raise HTTPException(status_code=403, detail="Not authorized to update this item")
     
     # Validate input
-    if not name or len(name.strip()) < 2:
-        raise HTTPException(status_code=400, detail="Name must be at least 2 characters")
-    
     if len(name) > 200:
         raise HTTPException(status_code=400, detail="Name must not exceed 200 characters")
     
-    if category not in ALLOWED_CATEGORIES:
-        raise HTTPException(status_code=400, detail=f"Invalid category. Allowed: {', '.join(ALLOWED_CATEGORIES)}")
-    
-    if type not in ALLOWED_ITEM_TYPES:
-        raise HTTPException(status_code=400, detail=f"Invalid type. Allowed: {', '.join(ALLOWED_ITEM_TYPES)}")
+    validate_item_fields(name, type, category)
     
     # Validate file if provided
     if file and file.filename:
@@ -299,17 +289,10 @@ async def upload_item(
         )
     
     # Validate input
-    if not name or len(name.strip()) < 2:
-        raise HTTPException(status_code=400, detail="Name must be at least 2 characters")
-    
     if len(name) > 200:
         raise HTTPException(status_code=400, detail="Name must not exceed 200 characters")
     
-    if category not in ALLOWED_CATEGORIES:
-        raise HTTPException(status_code=400, detail=f"Invalid category. Allowed: {', '.join(ALLOWED_CATEGORIES)}")
-    
-    if type not in ALLOWED_ITEM_TYPES:
-        raise HTTPException(status_code=400, detail=f"Invalid type. Allowed: {', '.join(ALLOWED_ITEM_TYPES)}")
+    validate_item_fields(name, type, category)
     
     # Validate file if provided
     if file and file.filename:

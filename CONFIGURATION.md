@@ -47,8 +47,8 @@ This guide explains how to properly configure Remindes after the recent updates 
    FRONTEND_URL=http://localhost:5173
    
    # Optional: Configure token expiration
-   # ACCESS_TOKEN_EXPIRE_MINUTES=10080  # 7 days (default)
-   # REFRESH_TOKEN_EXPIRE_DAYS=30       # 30 days (default)
+   # ACCESS_TOKEN_EXPIRE_MINUTES=30   # 30 minutes (recommended for security)
+   # REFRESH_TOKEN_EXPIRE_DAYS=30     # 30 days (default)
    ```
 
 3. **Run the backend:**
@@ -89,7 +89,7 @@ This guide explains how to properly configure Remindes after the recent updates 
 
 Remindes uses two types of tokens:
 
-1. **Access Token:** Used for API authentication. Default: 7 days
+1. **Access Token:** Used for API authentication. Default: 30 minutes (recommended for security)
 2. **Refresh Token:** Used to generate new access tokens. Default: 30 days
 
 ### Customizing Token Expiration
@@ -97,11 +97,11 @@ Remindes uses two types of tokens:
 Edit your backend `.env` file:
 
 ```env
-# Keep users logged in for 30 days
-ACCESS_TOKEN_EXPIRE_MINUTES=43200  # 30 days in minutes
+# Default (recommended for security)
+ACCESS_TOKEN_EXPIRE_MINUTES=30  # 30 minutes
 
-# Allow refresh tokens to work for 90 days
-REFRESH_TOKEN_EXPIRE_DAYS=90
+# Allow refresh tokens to work for 30 days
+REFRESH_TOKEN_EXPIRE_DAYS=30
 ```
 
 **Important Notes:**

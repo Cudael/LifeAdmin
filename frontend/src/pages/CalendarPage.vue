@@ -17,6 +17,7 @@
             <button
               @click="previousMonth"
               class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              aria-label="Previous month"
             >
               <ChevronLeft :size="24" class="text-gray-600" />
             </button>
@@ -29,6 +30,7 @@
             <button
               @click="nextMonth"
               class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              aria-label="Next month"
             >
               <ChevronRight :size="24" class="text-gray-600" />
             </button>
@@ -47,6 +49,7 @@
               @click="toggleView"
               class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
               :title="viewMode === 'month' ? 'Switch to List View' : 'Switch to Calendar View'"
+              :aria-label="viewMode === 'month' ? 'Switch to list view' : 'Switch to calendar view'"
             >
               <LayoutGrid v-if="viewMode === 'list'" :size="20" class="text-gray-600" />
               <List v-else :size="20" class="text-gray-600" />

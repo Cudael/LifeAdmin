@@ -6,14 +6,43 @@ const props = defineProps({
   existingFile: String
 })
 
-const emit = defineEmits(["update:modelValue"])
+const emit = defineEmits(["update:modelValue", "error"])
 
 const dragOver = ref(false)
 const fileName = ref(props.modelValue?.name || null)
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
+const ALLOWED_TYPES = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png']
+
+function validateFile(file) {
+  // Check file type
+  if (!ALLOWED_TYPES.includes(file.type)) {
+    return { 
+      valid: false, 
+      error: 'Invalid file type. Please upload PDF, JPG, or PNG files only.' 
+    }
+  }
+  
+  // Check file size
+  if (file.size > MAX_FILE_SIZE) {
+    return { 
+      valid: false, 
+      error: `File too large. Maximum size is ${MAX_FILE_SIZE / 1024 / 1024}MB.` 
+    }
+  }
+  
+  return { valid: true }
+}
+
 function handleFile(e) {
   const file = e.target.files[0]
   if (file) {
+    const validation = validateFile(file)
+    if (!validation.valid) {
+      emit("error", validation.error)
+      e.target.value = '' // Clear the input
+      return
+    }
     emit("update:modelValue", file)
     fileName.value = file.name
   }
@@ -25,6 +54,11 @@ function handleDrop(e) {
 
   const file = e.dataTransfer.files[0]
   if (file) {
+    const validation = validateFile(file)
+    if (!validation.valid) {
+      emit("error", validation.error)
+      return
+    }
     emit("update:modelValue", file)
     fileName.value = file.name
   }

@@ -11,12 +11,14 @@
         <button
           @click="previousMonth"
           class="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+          aria-label="Previous month"
         >
           <ChevronLeft :size="16" class="text-gray-600" />
         </button>
         <button
           @click="nextMonth"
           class="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+          aria-label="Next month"
         >
           <ChevronRight :size="16" class="text-gray-600" />
         </button>
@@ -26,11 +28,11 @@
     <!-- Day headers -->
     <div class="grid grid-cols-7 gap-1 mb-2">
       <div
-        v-for="day in ['S', 'M', 'T', 'W', 'T', 'F', 'S']"
-        :key="day"
+        v-for="(day, index) in DAY_NAMES"
+        :key="`day-${index}`"
         class="text-center text-xs font-semibold text-gray-500 py-1"
       >
-        {{ day }}
+        {{ day.charAt(0) }}
       </div>
     </div>
 
@@ -87,6 +89,7 @@
 <script setup>
 import { ref, computed } from "vue"
 import { useRouter } from "vue-router"
+import { useItemStatus } from "../composables/useItemStatus"
 import {
   Calendar,
   ChevronLeft,
@@ -102,6 +105,9 @@ const props = defineProps({
 
 const router = useRouter()
 const currentDate = ref(new Date())
+const { daysLeft } = useItemStatus()
+
+const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 const currentMonth = computed(() => {
   return currentDate.value.toLocaleDateString('en-US', { 
@@ -159,19 +165,13 @@ const calendarDays = computed(() => {
 const expiringSoonCount = computed(() => {
   return props.items.filter(item => {
     if (!item.expiration_date) return false
-    const daysUntil = getDaysUntil(item.expiration_date)
-    return daysUntil >= 0 && daysUntil <= 30
+    const days = daysLeft(item.expiration_date)
+    return days !== null && days >= 0 && days <= 30
   }).length
 })
 
 function getDaysUntil(dateString) {
-  if (!dateString) return null
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-  const expiryDate = new Date(dateString)
-  expiryDate.setHours(0, 0, 0, 0)
-  const diffTime = expiryDate - today
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+  return daysLeft(dateString)
 }
 
 function getItemDotColor(day) {

@@ -115,3 +115,12 @@ if __name__ == "__main__":
 4. **One change per migration** - Keep migrations focused
 5. **Make migrations idempotent** - Safe to run multiple times if possible
 6. **Document everything** - Update this README with each new migration
+
+## Non-Interactive Initialization (Docker / CI)
+
+To run `init_db.py` without an interactive prompt (e.g., in Docker or CI pipelines):
+```bash
+python init_db.py --force
+```
+
+This will skip the confirmation prompt and overwrite the existing database automatically.

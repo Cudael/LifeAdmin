@@ -25,10 +25,9 @@ if not SECRET_KEY:
 ALGORITHM = "HS256"
 
 # ✅ Token expiration times (configurable via environment variables)
-# Longer-lived tokens provide better UX by keeping users logged in
-# Access token: Default 7 days (was 30 minutes)
+# Access token: Default 30 minutes (recommended for security)
 # Refresh token: Default 30 days
-DEFAULT_ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days in minutes
+DEFAULT_ACCESS_TOKEN_EXPIRE_MINUTES = 30  # 30 minutes
 DEFAULT_REFRESH_TOKEN_EXPIRE_DAYS = 30  # 30 days
 
 try:

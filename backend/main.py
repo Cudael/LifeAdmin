@@ -22,11 +22,13 @@ from routes.payments import router as payments_router
 load_dotenv()
 
 # ✅ Setup logging
+from logging.handlers import RotatingFileHandler
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('app.log'),
+        RotatingFileHandler('app.log', maxBytes=10_000_000, backupCount=5),
         logging.StreamHandler()
     ]
 )

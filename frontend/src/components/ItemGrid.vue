@@ -132,15 +132,15 @@
                 <div 
                   :class="[
                     'h-full transition-all duration-500',
-                    daysLeft(item) < 0 ? 'bg-red-500' : 
-                    daysLeft(item) < 7 ? 'bg-orange-500' : 
-                    daysLeft(item) < 30 ? 'bg-yellow-500' : 'bg-green-500'
+                    daysLeft(item.renewal_date) < 0 ? 'bg-red-500' : 
+                    daysLeft(item.renewal_date) < 7 ? 'bg-orange-500' : 
+                    daysLeft(item.renewal_date) < 30 ? 'bg-yellow-500' : 'bg-green-500'
                   ]"
-                  :style="{ width: getProgressWidth(daysLeft(item)) }"
+                  :style="{ width: getProgressWidth(daysLeft(item.renewal_date)) }"
                 ></div>
               </div>
               <span class="text-xs font-medium text-gray-600 whitespace-nowrap">
-                {{ Math.abs(daysLeft(item)) }} days {{ daysLeft(item) < 0 ? 'overdue' : 'left' }}
+                {{ Math.abs(daysLeft(item.renewal_date)) }} days {{ daysLeft(item.renewal_date) < 0 ? 'overdue' : 'left' }}
               </span>
             </div>
 
@@ -179,15 +179,15 @@
                 <div 
                   :class="[
                     'h-full transition-all duration-500',
-                    daysLeft(item) < 0 ? 'bg-red-500' : 
-                    daysLeft(item) < 7 ? 'bg-orange-500' : 
-                    daysLeft(item) < 30 ? 'bg-yellow-500' : 'bg-green-500'
+                    daysLeft(item.expiration_date) < 0 ? 'bg-red-500' : 
+                    daysLeft(item.expiration_date) < 7 ? 'bg-orange-500' : 
+                    daysLeft(item.expiration_date) < 30 ? 'bg-yellow-500' : 'bg-green-500'
                   ]"
-                  :style="{ width: getProgressWidth(daysLeft(item)) }"
+                  :style="{ width: getProgressWidth(daysLeft(item.expiration_date)) }"
                 ></div>
               </div>
               <span class="text-xs font-medium text-gray-600 whitespace-nowrap">
-                {{ Math.abs(daysLeft(item)) }} days {{ daysLeft(item) < 0 ? 'overdue' : 'left' }}
+                {{ Math.abs(daysLeft(item.expiration_date)) }} days {{ daysLeft(item.expiration_date) < 0 ? 'overdue' : 'left' }}
               </span>
             </div>
 
@@ -238,6 +238,7 @@
 
 <script setup>
 import { BASE_URL } from "../utils/api"
+import { useItemStatus } from "../composables/useItemStatus"
 import { 
   Calendar, 
   AlertTriangle, 
@@ -266,6 +267,8 @@ const emit = defineEmits(['delete'])
 function handleDelete(item) {
   emit('delete', item)
 }
+
+const { daysLeft } = useItemStatus()
 
 /* -----------------------------
    STATUS LOGIC (ENHANCED)
@@ -348,24 +351,6 @@ function expirationStatus(item) {
     iconClass: "",
     icon: "✓"
   }
-}
-
-/* -----------------------------
-   DAYS LEFT
------------------------------ */
-function daysLeft(item) {
-  const today = new Date()
-
-  if (item.type === "subscription") {
-    if (!item.renewal_date) return 0
-    const renewal = new Date(item.renewal_date)
-    return Math.ceil((renewal - today) / (1000 * 60 * 60 * 24))
-  }
-
-  if (!item.expiration_date) return 0
-
-  const exp = new Date(item.expiration_date)
-  return Math.ceil((exp - today) / (1000 * 60 * 60 * 24))
 }
 
 /* -----------------------------

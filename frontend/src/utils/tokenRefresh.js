@@ -1,7 +1,8 @@
 // Automatic token refresh utility
 import { accessToken, refreshToken, setTokens, clearTokens } from "./auth"
-
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000"
+import { log, error } from "./logger"
+import { BASE_URL } from './api'
+import router from '../router'
 
 // Time constants for readability
 const HOUR_IN_MS = 1000 * 60 * 60 // 1 hour in milliseconds
@@ -48,19 +49,19 @@ function shouldRefreshToken(token) {
 async function performTokenRefresh() {
   // Prevent concurrent refresh attempts
   if (isRefreshing) {
-    console.log('⏭️ Refresh already in progress, skipping')
+    log('⏭️ Refresh already in progress, skipping')
     return false
   }
   
   if (!refreshToken.value) {
-    console.log('⏭️ No refresh token available, skipping refresh')
+    log('⏭️ No refresh token available, skipping refresh')
     return false
   }
 
   isRefreshing = true
 
   try {
-    console.log('🔄 Attempting automatic token refresh...')
+    log('🔄 Attempting automatic token refresh...')
     
     const response = await fetch(`${BASE_URL}/auth/refresh`, {
       method: "POST",
@@ -71,16 +72,16 @@ async function performTokenRefresh() {
     if (response.ok) {
       const data = await response.json()
       setTokens(data.access_token, data.refresh_token)
-      console.log('✅ Token refreshed successfully')
+      log('✅ Token refreshed successfully')
       return true
     } else {
-      console.log('❌ Token refresh failed:', response.status)
+      log('❌ Token refresh failed:', response.status)
       clearTokens()
-      window.location.href = "/login"
+      router.push('/login')
       return false
     }
-  } catch (error) {
-    console.error('❌ Token refresh error:', error)
+  } catch (err) {
+    error('❌ Token refresh error:', err)
     return false
   } finally {
     isRefreshing = false
@@ -94,11 +95,11 @@ export function startTokenRefresh() {
   
   // Only start if we have a refresh token
   if (!refreshToken.value) {
-    console.log('⏭️ No refresh token, not starting automatic refresh')
+    log('⏭️ No refresh token, not starting automatic refresh')
     return
   }
 
-  console.log('🚀 Starting automatic token refresh check (every hour)')
+  log('🚀 Starting automatic token refresh check (every hour)')
   
   // Check immediately if we should refresh
   if (shouldRefreshToken(accessToken.value)) {
@@ -113,7 +114,7 @@ export function startTokenRefresh() {
         performTokenRefresh()
       }
     } else {
-      console.log('⏭️ No tokens available, stopping refresh')
+      log('⏭️ No tokens available, stopping refresh')
       stopTokenRefresh()
     }
   }, CHECK_INTERVAL_MS)
@@ -124,7 +125,7 @@ export function stopTokenRefresh() {
   if (refreshIntervalId) {
     clearInterval(refreshIntervalId)
     refreshIntervalId = null
-    console.log('⏹️ Stopped automatic token refresh')
+    log('⏹️ Stopped automatic token refresh')
   }
 }
 
