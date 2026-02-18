@@ -6,6 +6,7 @@ import EmailVerificationBanner from "../components/EmailVerificationBanner.vue"
 import { useAuthStore } from "../stores/auth"
 import { clearTokens } from "../utils/auth"
 import { error } from "../utils/logger"
+import { Sparkles, Menu, X, Plus, LayoutDashboard, Package, Calendar, User, Settings, CreditCard, LogOut } from "lucide-vue-next"
 
 const router = useRouter()
 const route = useRoute()
@@ -15,12 +16,26 @@ const props = defineProps({
   pageTitle: { type: String, default: "Dashboard" }
 })
 
+// UI State
+const mobileMenuOpen = ref(false)
+
 // Computed values from store
 const userName = computed(() => {
   const u = authStore.user
   return u?.full_name || u?.username || u?.name || "User"
 })
+const userEmail = computed(() => authStore.user?.email || "")
+const userAvatar = computed(() => authStore.user?.profile_picture || null)
 const loading = ref(true)
+
+// User initials for avatar fallback
+const initials = computed(() => {
+  const names = userName.value.split(" ")
+  if (names.length >= 2) {
+    return (names[0][0] + names[names.length - 1][0]).toUpperCase()
+  }
+  return userName.value.charAt(0).toUpperCase() + (userName.value.charAt(1) || '').toUpperCase()
+})
 
 // Check if it's the dashboard page
 const isDashboard = computed(() => props.pageTitle === "Dashboard")
@@ -51,6 +66,13 @@ const pageSubtitle = computed(() => {
   }
 })
 
+// Logout function
+function logout() {
+  clearTokens()
+  mobileMenuOpen.value = false
+  router.push("/login")
+}
+
 // Fetch user profile on load
 onMounted(async () => {
   try {
@@ -67,11 +89,181 @@ onMounted(async () => {
   <!-- FLEX ROW LAYOUT: Sidebar + Main Content -->
   <div class="min-h-screen flex bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50">
 
-    <!-- SIDEBAR (Fixed left) -->
+    <!-- SIDEBAR (Fixed left, hidden on mobile) -->
     <AppSidebar />
 
-    <!-- MAIN CONTENT AREA (with left margin for sidebar on desktop) -->
-    <main class="flex-1 ml-0 lg:ml-64 overflow-y-auto">
+    <!-- MOBILE HEADER (visible only on mobile) -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white/90 backdrop-blur-xl shadow-sm z-50 border-b border-gray-200">
+      <div class="px-4 h-full flex items-center justify-between">
+        <!-- Logo -->
+        <RouterLink to="/dashboard" class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center shadow-md">
+            <Sparkles :size="16" class="text-white" />
+          </div>
+          <span class="text-lg font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
+            Remindes
+          </span>
+        </RouterLink>
+
+        <!-- Mobile menu button -->
+        <button
+          @click="mobileMenuOpen = !mobileMenuOpen"
+          class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
+        >
+          <Menu v-if="!mobileMenuOpen" :size="20" />
+          <X v-else :size="20" />
+        </button>
+      </div>
+    </header>
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <Transition
+      enter-active-class="transition-all duration-300 ease-out"
+      enter-from-class="opacity-0 -translate-x-full"
+      enter-to-class="opacity-100 translate-x-0"
+      leave-active-class="transition-all duration-200 ease-in"
+      leave-from-class="opacity-100 translate-x-0"
+      leave-to-class="opacity-0 -translate-x-full"
+    >
+      <div
+        v-if="mobileMenuOpen"
+        class="lg:hidden fixed inset-0 z-50 bg-black/50"
+        @click="mobileMenuOpen = false"
+      >
+        <aside
+          @click.stop
+          class="w-64 h-full bg-gray-900 flex flex-col border-r border-gray-800"
+        >
+          <!-- Mobile nav content (same as sidebar) -->
+          <div class="p-6 border-b border-gray-800 flex items-center justify-between">
+            <RouterLink to="/dashboard" class="flex items-center gap-3" @click="mobileMenuOpen = false">
+              <div class="w-9 h-9 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
+                <Sparkles :size="18" class="text-white" />
+              </div>
+              <span class="text-xl font-bold text-white">Remindes</span>
+            </RouterLink>
+            <button @click="mobileMenuOpen = false" class="text-gray-400 hover:text-white">
+              <X :size="20" />
+            </button>
+          </div>
+
+          <!-- Quick Add Button -->
+          <div class="px-4 pt-4 pb-2">
+            <RouterLink
+              to="/add-item"
+              @click="mobileMenuOpen = false"
+              class="w-full px-4 py-2.5 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white rounded-lg flex items-center justify-center gap-2 font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <Plus :size="18" />
+              <span>Add Item</span>
+            </RouterLink>
+          </div>
+
+          <!-- Mobile Navigation Links -->
+          <nav class="flex-1 px-4 py-2 overflow-y-auto">
+            <div class="mb-6">
+              <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-widest text-gray-500">General</p>
+              <div class="space-y-1">
+                <RouterLink
+                  to="/dashboard"
+                  @click="mobileMenuOpen = false"
+                  class="nav-item"
+                  :class="{ 'nav-item-active': $route.path === '/dashboard' }"
+                >
+                  <LayoutDashboard :size="18" />
+                  <span>Overview</span>
+                </RouterLink>
+                <RouterLink
+                  to="/items"
+                  @click="mobileMenuOpen = false"
+                  class="nav-item"
+                  :class="{ 'nav-item-active': $route.path.startsWith('/items') }"
+                >
+                  <Package :size="18" />
+                  <span>Items</span>
+                </RouterLink>
+                <RouterLink
+                  to="/calendar"
+                  @click="mobileMenuOpen = false"
+                  class="nav-item"
+                  :class="{ 'nav-item-active': $route.path === '/calendar' }"
+                >
+                  <Calendar :size="18" />
+                  <span>Calendar</span>
+                </RouterLink>
+              </div>
+            </div>
+
+            <div>
+              <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-widest text-gray-500">Account</p>
+              <div class="space-y-1">
+                <RouterLink
+                  to="/profile"
+                  @click="mobileMenuOpen = false"
+                  class="nav-item"
+                  :class="{ 'nav-item-active': $route.path === '/profile' }"
+                >
+                  <User :size="18" />
+                  <span>Profile</span>
+                </RouterLink>
+                <RouterLink
+                  to="/settings"
+                  @click="mobileMenuOpen = false"
+                  class="nav-item"
+                  :class="{ 'nav-item-active': $route.path === '/settings' }"
+                >
+                  <Settings :size="18" />
+                  <span>Settings</span>
+                </RouterLink>
+                <RouterLink
+                  to="/subscription"
+                  @click="mobileMenuOpen = false"
+                  class="nav-item"
+                  :class="{ 'nav-item-active': $route.path === '/subscription' }"
+                >
+                  <CreditCard :size="18" />
+                  <span>Subscription</span>
+                </RouterLink>
+              </div>
+            </div>
+          </nav>
+
+          <!-- Mobile User Section -->
+          <div class="p-4 border-t border-gray-800">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-gray-700">
+                <img
+                  v-if="userAvatar"
+                  :src="userAvatar"
+                  :alt="userName"
+                  class="w-full h-full object-cover"
+                />
+                <div
+                  v-else
+                  class="w-full h-full bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center"
+                >
+                  <span class="font-bold text-white text-sm">{{ initials }}</span>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-semibold text-white truncate">{{ userName }}</p>
+                <p class="text-xs text-gray-400 truncate">{{ userEmail }}</p>
+              </div>
+              <button
+                @click="logout"
+                class="w-8 h-8 rounded-lg bg-gray-800 hover:bg-red-600 flex items-center justify-center text-gray-400 hover:text-white transition-colors duration-200"
+                title="Logout"
+              >
+                <LogOut :size="16" />
+              </button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </Transition>
+
+    <!-- MAIN CONTENT AREA (with left margin for sidebar on desktop, top margin on mobile) -->
+    <main class="flex-1 ml-0 lg:ml-64 pt-16 lg:pt-0 overflow-y-auto">
       
       <!-- EMAIL VERIFICATION BANNER -->
       <EmailVerificationBanner v-if="authStore.user && !loading" :user="authStore.user" />
@@ -125,6 +317,15 @@ onMounted(async () => {
 
 .animate-fade-in {
   animation: fade-in 0.4s ease-out;
+}
+
+/* Nav item styles (for mobile drawer) */
+.nav-item {
+  @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all duration-200;
+}
+
+.nav-item-active {
+  @apply bg-teal-500/20 text-teal-400 border-l-2 border-teal-400 pl-[10px];
 }
 
 /* Ensure smooth scrolling */
