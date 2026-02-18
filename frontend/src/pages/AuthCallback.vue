@@ -36,8 +36,8 @@ onMounted(async () => {
       return
     }
     
-    // Save tokens (use access token for both if refresh token not provided for backwards compatibility)
-    setTokens(token, refreshToken || token)
+    // Save tokens
+    setTokens(token, refreshToken || null)
     
     console.log('Tokens saved, redirecting to dashboard...')
     

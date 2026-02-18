@@ -24,20 +24,28 @@ export async function apiFetch(url, options = {}) {
   let response = await doFetch()
 
   if (response.status === 401 && refreshToken.value) {
-    // try refresh
-    const refreshRes = await fetch(BASE_URL + "/auth/refresh", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ refresh_token: refreshToken.value })
-    })
+    try {
+      const refreshRes = await fetch(BASE_URL + "/auth/refresh", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refresh_token: refreshToken.value })
+      })
 
-    if (refreshRes.ok) {
+      // Guard: make sure we got JSON back, not an HTML error page
+      const contentType = refreshRes.headers.get("content-type") || ""
+      if (!refreshRes.ok || !contentType.includes("application/json")) {
+        clearTokens()
+        router.push('/login')
+        return null
+      }
+
       const data = await refreshRes.json()
       setTokens(data.access_token, data.refresh_token)
 
       // retry original request
       response = await doFetch()
-    } else {
+    } catch (err) {
+      console.error('Token refresh error:', err)
       clearTokens()
       router.push('/login')
       return null
