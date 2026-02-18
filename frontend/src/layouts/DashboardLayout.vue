@@ -1,14 +1,14 @@
 <script setup>
 import { ref, onMounted, computed } from "vue"
-import { useRouter } from "vue-router"
-import DashboardHeader from "../components/layout/DashboardHeader.vue"
+import { useRouter, useRoute } from "vue-router"
+import AppSidebar from "../components/layout/AppSidebar.vue"
 import EmailVerificationBanner from "../components/EmailVerificationBanner.vue"
 import { useAuthStore } from "../stores/auth"
 import { clearTokens } from "../utils/auth"
 import { error } from "../utils/logger"
-import { Sparkles, TrendingUp } from "lucide-vue-next"
 
 const router = useRouter()
+const route = useRoute()
 const authStore = useAuthStore()
 
 const props = defineProps({
@@ -20,19 +20,35 @@ const userName = computed(() => {
   const u = authStore.user
   return u?.full_name || u?.username || u?.name || "User"
 })
-const userEmail = computed(() => authStore.user?.email || "")
-const userAvatar = computed(() => authStore.user?.profile_picture || null)
 const loading = ref(true)
 
 // Check if it's the dashboard page
 const isDashboard = computed(() => props.pageTitle === "Dashboard")
 
-// Get greeting based on time
-const greeting = computed(() => {
-  const hour = new Date().getHours()
-  if (hour < 12) return "Good morning"
-  if (hour < 18) return "Good afternoon"
-  return "Good evening"
+// Get current date formatted
+const currentDate = computed(() => {
+  const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }
+  return new Date().toLocaleDateString('en-US', options)
+})
+
+// Get page subtitle based on route
+const pageSubtitle = computed(() => {
+  switch(props.pageTitle) {
+    case "Dashboard":
+      return "Welcome back! Here's your overview"
+    case "Items":
+      return "Manage all your documents and subscriptions"
+    case "Calendar":
+      return "View upcoming deadlines and expirations"
+    case "Profile":
+      return "Manage your personal information"
+    case "Settings":
+      return "Configure your preferences"
+    case "Subscription":
+      return "Manage your subscription plan"
+    default:
+      return ""
+  }
 })
 
 // Fetch user profile on load
@@ -48,73 +64,47 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 pt-16">
+  <!-- FLEX ROW LAYOUT: Sidebar + Main Content -->
+  <div class="min-h-screen flex bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50">
 
-    <!-- TOP NAVIGATION BAR -->
-    <DashboardHeader 
-      :userName="userName" 
-      :userEmail="userEmail"
-      :userAvatar="userAvatar"
-    />
+    <!-- SIDEBAR (Fixed left) -->
+    <AppSidebar />
 
-    <!-- ✅ EMAIL VERIFICATION BANNER (Below header, above content) -->
-    <EmailVerificationBanner v-if="authStore.user && !loading" :user="authStore.user" />
+    <!-- MAIN CONTENT AREA (with left margin for sidebar on desktop) -->
+    <main class="flex-1 ml-0 lg:ml-64 overflow-y-auto">
+      
+      <!-- EMAIL VERIFICATION BANNER -->
+      <EmailVerificationBanner v-if="authStore.user && !loading" :user="authStore.user" />
 
-    <!-- MAIN CONTENT AREA (with top padding for fixed header) -->
-    <main class="flex-1 p-4 md:p-6 lg:p-8 pt-20 overflow-y-auto">
-      <div class="max-w-7xl mx-auto">
+      <!-- PAGE CONTENT WRAPPER -->
+      <div class="p-4 md:p-6 lg:p-8">
+        <div class="max-w-7xl mx-auto">
 
-        <!-- ONLY SHOW SPECIAL HEADER FOR DASHBOARD -->
-        <template v-if="isDashboard">
+          <!-- SIMPLE PAGE TITLE HEADER -->
           <div class="mb-8">
-            <div class="relative overflow-hidden bg-gradient-to-br from-teal-500 to-cyan-500 rounded-3xl shadow-xl p-8 md:p-10 text-white">
-              
-              <!-- Decorative elements -->
-              <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-              <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
-              
-              <div class="relative z-10">
-                <div class="flex items-center gap-2 mb-3">
-                  <Sparkles :size="24" class="text-white/90" />
-                  <span class="text-white/90 font-medium">{{ greeting }}</span>
-                </div>
-                
-                <h1 class="text-3xl md:text-4xl font-bold mb-2 flex items-center gap-3">
-                  <span v-if="!loading">Welcome back, {{ userName }}!</span>
-                  <span v-else>Welcome back!</span>
-                  <span class="text-3xl">👋</span>
-                </h1>
-                
-                <p class="text-white/90 text-lg mb-6">
-                  Here's your overview for today
-                </p>
-
-                <!-- Quick Stats -->
-                <div class="flex flex-wrap gap-6 mt-6">
-                  <div class="flex items-center gap-2">
-                    <div class="w-2 h-2 rounded-full bg-white/50"></div>
-                    <span class="text-white/80 text-sm">All systems operational</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <TrendingUp :size="16" class="text-white/80" />
-                    <span class="text-white/80 text-sm">Stay organized</span>
-                  </div>
-                </div>
+            <div class="flex items-center justify-between">
+              <div>
+                <h1 class="text-2xl md:text-3xl font-bold text-gray-900">{{ pageTitle }}</h1>
+                <p v-if="pageSubtitle" class="text-gray-500 mt-1">{{ pageSubtitle }}</p>
+              </div>
+              <!-- Show current date on dashboard -->
+              <div v-if="isDashboard" class="hidden md:block">
+                <p class="text-sm text-gray-500">{{ currentDate }}</p>
               </div>
             </div>
           </div>
-        </template>
 
-        <!-- ACTION BUTTONS SLOT (for page-specific actions) -->
-        <div v-if="$slots.actions" class="mb-6">
-          <slot name="actions" />
+          <!-- ACTION BUTTONS SLOT (for page-specific actions - optional) -->
+          <div v-if="$slots.actions" class="mb-6">
+            <slot name="actions" />
+          </div>
+
+          <!-- PAGE CONTENT -->
+          <div class="animate-fade-in">
+            <slot />
+          </div>
+
         </div>
-
-        <!-- PAGE CONTENT -->
-        <div class="animate-fade-in">
-          <slot />
-        </div>
-
       </div>
     </main>
 
