@@ -346,7 +346,7 @@ const activitySummaries = computed(() => {
   const summaries = apiStats.value.activity_summaries
 
   return {
-    totalItems: `${summaries.items_added_this_month} ${summaries.items_added_this_month === 1 ? 'item' : 'items'} added this month`,
+    totalItems: `${summaries.items_added_this_month} ${summaries.items_added_this_month === 1 ? 'item' : 'items'} added in last 30 days`,
     expiringSoon: `${summaries.items_expiring_this_month} ${summaries.items_expiring_this_month === 1 ? 'item' : 'items'} expiring this month`,
     thisWeek: `${summaries.items_expiring_this_week} ${summaries.items_expiring_this_week === 1 ? 'item' : 'items'} expiring this week`,
     expired: `${summaries.expired_items} ${summaries.expired_items === 1 ? 'item needs' : 'items need'} review`,
