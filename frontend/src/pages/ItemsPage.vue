@@ -215,8 +215,8 @@ onMounted(async () => {
         :class="[
           'p-4 rounded-xl border-2 flex items-start gap-3',
           isAtLimit 
-            ? 'bg-red-50 border-red-200' 
-            : 'bg-yellow-50 border-yellow-200'
+            ? 'bg-red-900/20 border-red-800' 
+            : 'bg-yellow-900/20 border-yellow-800'
         ]"
       >
         <AlertTriangle 
@@ -228,7 +228,7 @@ onMounted(async () => {
           <h4 
             :class="[
               'font-semibold mb-1',
-              isAtLimit ? 'text-red-900' : 'text-yellow-900'
+              isAtLimit ? 'text-red-300' : 'text-yellow-300'
             ]"
           >
             {{ isAtLimit ? 'Item Limit Reached' : 'Approaching Item Limit' }}
@@ -236,7 +236,7 @@ onMounted(async () => {
           <p 
             :class="[
               'text-sm mb-3',
-              isAtLimit ? 'text-red-700' : 'text-yellow-700'
+              isAtLimit ? 'text-red-400' : 'text-yellow-400'
             ]"
           >
             {{ isAtLimit 

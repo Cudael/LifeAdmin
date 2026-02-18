@@ -3,7 +3,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="flex items-center justify-center py-12">
-      <Loader2 :size="32" class="animate-spin text-teal-500" />
+      <Loader2 :size="32" class="animate-spin text-teal-400" />
     </div>
 
     <div v-else>
@@ -11,12 +11,12 @@
       <!-- PERSONAL INFORMATION -->
       <div>
         <div class="flex items-start gap-3 mb-6">
-          <div class="w-10 h-10 rounded-lg bg-teal-100 flex items-center justify-center flex-shrink-0">
-            <User :size="20" class="text-teal-600" />
+          <div class="w-10 h-10 rounded-lg bg-teal-900/40 flex items-center justify-center flex-shrink-0">
+            <User :size="20" class="text-teal-400" />
           </div>
           <div>
-            <h3 class="text-lg font-bold text-gray-900">Personal Information</h3>
-            <p class="text-sm text-gray-600 mt-1">Your account details</p>
+            <h3 class="text-lg font-bold text-white">Personal Information</h3>
+            <p class="text-sm text-gray-300 mt-1">Your account details</p>
           </div>
         </div>
 
@@ -24,34 +24,34 @@
           
           <!-- Full Name -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">
+            <label class="block text-sm font-medium text-gray-300 mb-2">
               Full Name *
             </label>
             <div class="relative">
               <input
                 v-model="form.full_name"
                 type="text"
-                class="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                class="w-full pl-11 pr-4 py-3 bg-gray-800 border border-gray-700 text-white placeholder:text-gray-500 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                 placeholder="John Doe"
                 required
               />
               <User :size="18" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
             </div>
-            <p class="text-xs text-gray-500 mt-2">
+            <p class="text-xs text-gray-400 mt-2">
               This name will be displayed throughout the app
             </p>
           </div>
 
           <!-- Email (Read-only) -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">
+            <label class="block text-sm font-medium text-gray-300 mb-2">
               Email Address
             </label>
             <div class="relative">
               <input
                 :value="form.email"
                 type="email"
-                class="w-full pl-11 pr-4 py-3 border border-gray-200 bg-gray-50 rounded-xl text-gray-500 cursor-not-allowed"
+                class="w-full pl-11 pr-4 py-3 border border-gray-700 bg-gray-800/50 rounded-xl text-gray-400 cursor-not-allowed"
                 readonly
               />
               <Mail :size="18" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -81,7 +81,7 @@
               type="button"
               @click="resetForm"
               :disabled="saving"
-              class="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-200 disabled:opacity-50"
+              class="px-6 py-3 bg-gray-800 text-gray-300 rounded-xl font-semibold hover:bg-gray-700 transition-all duration-200 disabled:opacity-50"
             >
               Cancel
             </button>
@@ -111,8 +111,8 @@
             leave-from-class="opacity-100 translate-y-0"
             leave-to-class="opacity-0 translate-y-2"
           >
-            <div v-if="error" class="flex items-center gap-2 p-4 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm">
-              <AlertCircle :size="18" class="text-red-600" />
+            <div v-if="error" class="flex items-center gap-2 p-4 bg-red-900/20 border border-red-800 rounded-xl text-red-400 text-sm">
+              <AlertCircle :size="18" class="text-red-400" />
               <span>{{ error }}</span>
             </div>
           </Transition>
@@ -121,66 +121,66 @@
       </div>
 
       <!-- DIVIDER -->
-      <div class="border-t border-gray-200"></div>
+      <div class="border-t border-gray-800"></div>
 
       <!-- ACCOUNT INFORMATION -->
       <div>
         <div class="flex items-start gap-3 mb-6">
-          <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
-            <Info :size="20" class="text-blue-600" />
+          <div class="w-10 h-10 rounded-lg bg-blue-900/40 flex items-center justify-center flex-shrink-0">
+            <Info :size="20" class="text-blue-400" />
           </div>
           <div>
-            <h3 class="text-lg font-bold text-gray-900">Account Information</h3>
-            <p class="text-sm text-gray-600 mt-1">Overview of your account</p>
+            <h3 class="text-lg font-bold text-white">Account Information</h3>
+            <p class="text-sm text-gray-300 mt-1">Overview of your account</p>
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           
           <!-- Member Since -->
-          <div class="p-5 bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl border border-teal-200">
+          <div class="p-5 bg-teal-900/20 rounded-xl border border-teal-800">
             <div class="flex items-center gap-2 mb-2">
-              <Calendar :size="18" class="text-teal-600" />
-              <p class="text-sm font-medium text-gray-700">Member Since</p>
+              <Calendar :size="18" class="text-teal-400" />
+              <p class="text-sm font-medium text-gray-300">Member Since</p>
             </div>
-            <p class="text-xl font-bold text-gray-900">
+            <p class="text-xl font-bold text-white">
               {{ formatDate(form.created_at) }}
             </p>
           </div>
 
           <!-- Last Updated -->
-          <div class="p-5 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
+          <div class="p-5 bg-blue-900/20 rounded-xl border border-blue-800">
             <div class="flex items-center gap-2 mb-2">
-              <RefreshCw :size="18" class="text-blue-600" />
-              <p class="text-sm font-medium text-gray-700">Last Updated</p>
+              <RefreshCw :size="18" class="text-blue-400" />
+              <p class="text-sm font-medium text-gray-300">Last Updated</p>
             </div>
-            <p class="text-xl font-bold text-gray-900">
+            <p class="text-xl font-bold text-white">
               {{ formatDate(form.updated_at) }}
             </p>
           </div>
 
           <!-- Total Items -->
-          <div class="p-5 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border border-purple-200">
+          <div class="p-5 bg-purple-900/20 rounded-xl border border-purple-800">
             <div class="flex items-center gap-2 mb-2">
-              <Package :size="18" class="text-purple-600" />
-              <p class="text-sm font-medium text-gray-700">Total Items</p>
+              <Package :size="18" class="text-purple-400" />
+              <p class="text-sm font-medium text-gray-300">Total Items</p>
             </div>
-            <p class="text-xl font-bold text-gray-900">
+            <p class="text-xl font-bold text-white">
               {{ stats.total_items }}
             </p>
-            <p class="text-xs text-gray-600 mt-1">Documents & subscriptions</p>
+            <p class="text-xs text-gray-400 mt-1">Documents & subscriptions</p>
           </div>
 
           <!-- Active Subscriptions -->
-          <div class="p-5 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl border border-orange-200">
+          <div class="p-5 bg-orange-900/20 rounded-xl border border-orange-800">
             <div class="flex items-center gap-2 mb-2">
-              <Repeat :size="18" class="text-orange-600" />
-              <p class="text-sm font-medium text-gray-700">Subscriptions</p>
+              <Repeat :size="18" class="text-orange-400" />
+              <p class="text-sm font-medium text-gray-300">Subscriptions</p>
             </div>
-            <p class="text-xl font-bold text-gray-900">
+            <p class="text-xl font-bold text-white">
               {{ stats.active_subscriptions }}
             </p>
-            <p class="text-xs text-gray-600 mt-1">Active recurring items</p>
+            <p class="text-xs text-gray-400 mt-1">Active recurring items</p>
           </div>
 
         </div>

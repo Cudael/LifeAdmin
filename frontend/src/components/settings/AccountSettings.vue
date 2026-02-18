@@ -3,7 +3,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="flex items-center justify-center py-12">
-      <Loader2 :size="32" class="animate-spin text-teal-500" />
+      <Loader2 :size="32" class="animate-spin text-teal-400" />
     </div>
 
     <div v-else>
@@ -11,22 +11,22 @@
       <!-- EMAIL NOTIFICATIONS -->
       <div>
         <div class="flex items-start gap-3 mb-6">
-          <div class="w-10 h-10 rounded-lg bg-teal-100 flex items-center justify-center flex-shrink-0">
-            <Bell :size="20" class="text-teal-600" />
+          <div class="w-10 h-10 rounded-lg bg-teal-900/40 flex items-center justify-center flex-shrink-0">
+            <Bell :size="20" class="text-teal-400" />
           </div>
           <div>
-            <h3 class="text-lg font-bold text-gray-900">Email Notifications</h3>
-            <p class="text-sm text-gray-600 mt-1">Manage how you receive notifications</p>
+            <h3 class="text-lg font-bold text-white">Email Notifications</h3>
+            <p class="text-sm text-gray-300 mt-1">Manage how you receive notifications</p>
           </div>
         </div>
 
         <div class="space-y-4">
           
           <!-- Master Toggle -->
-          <div class="flex items-center justify-between p-4 bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl border border-teal-200">
+          <div class="flex items-center justify-between p-4 bg-teal-900/20 rounded-xl border border-teal-800">
             <div>
-              <p class="font-semibold text-gray-900">Email Notifications</p>
-              <p class="text-sm text-gray-600 mt-0.5">Receive alerts about expiring items</p>
+              <p class="font-semibold text-white">Email Notifications</p>
+              <p class="text-sm text-gray-300 mt-0.5">Receive alerts about expiring items</p>
             </div>
             <button
               @click="toggleEmailNotifications"
@@ -54,7 +54,7 @@
             leave-to-class="opacity-0 -translate-y-2"
           >
             <div v-if="settings.email_notifications_enabled" class="space-y-3">
-              <p class="text-sm font-medium text-gray-700">Notify me when items expire in:</p>
+              <p class="text-sm font-medium text-gray-300">Notify me when items expire in:</p>
               
               <div class="grid grid-cols-3 gap-3">
                 <button
@@ -65,7 +65,7 @@
                     'px-4 py-3 rounded-xl font-medium transition-all duration-200 border-2',
                     settings.notification_days === days
                       ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white border-teal-500 shadow-lg'
-                      : 'bg-white text-gray-700 border-gray-200 hover:border-teal-300'
+                      : 'bg-gray-800 text-gray-300 border-gray-700 hover:border-teal-300'
                   ]"
                 >
                   {{ days }} days
@@ -76,7 +76,7 @@
               <button
                 @click="sendTestEmail"
                 :disabled="sendingTest"
-                class="w-full px-4 py-3 bg-white border-2 border-gray-200 text-gray-700 rounded-xl font-medium hover:border-teal-300 hover:bg-teal-50 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                class="w-full px-4 py-3 bg-gray-800 border-2 border-gray-700 text-gray-300 rounded-xl font-medium hover:border-teal-300 hover:bg-teal-900/30 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Loader2 :size="18" class="animate-spin" v-if="sendingTest" />
                 <Mail :size="18" v-else />
@@ -104,7 +104,7 @@
           v-if="hasChanges"
           @click="resetSettings"
           :disabled="saving"
-          class="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-200"
+          class="px-6 py-3 bg-gray-800 text-gray-300 rounded-xl font-semibold hover:bg-gray-700 transition-all duration-200"
         >
           Cancel
         </button>
@@ -134,8 +134,8 @@
         leave-from-class="opacity-100 translate-y-0"
         leave-to-class="opacity-0 translate-y-2"
       >
-        <div v-if="error" class="flex items-center gap-2 p-4 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm">
-          <AlertCircle :size="18" class="text-red-600" />
+        <div v-if="error" class="flex items-center gap-2 p-4 bg-red-900/20 border border-red-800 rounded-xl text-red-400 text-sm">
+          <AlertCircle :size="18" class="text-red-400" />
           <span>{{ error }}</span>
         </div>
       </Transition>

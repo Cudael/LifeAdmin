@@ -4,12 +4,12 @@
     <!-- DATE & TIME FORMATS -->
     <div>
       <div class="flex items-start gap-3 mb-6">
-        <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
-          <Calendar :size="20" class="text-blue-600" />
+        <div class="w-10 h-10 rounded-lg bg-blue-900/40 flex items-center justify-center flex-shrink-0">
+          <Calendar :size="20" class="text-blue-400" />
         </div>
         <div>
-          <h3 class="text-lg font-bold text-gray-900">Date & Time Formats</h3>
-          <p class="text-sm text-gray-600 mt-1">Choose how dates and times are displayed throughout the app</p>
+          <h3 class="text-lg font-bold text-white">Date & Time Formats</h3>
+          <p class="text-sm text-gray-300 mt-1">Choose how dates and times are displayed throughout the app</p>
         </div>
       </div>
 
@@ -17,25 +17,25 @@
         
         <!-- Date Format -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label class="block text-sm font-medium text-gray-300 mb-2">
             Date Format
           </label>
           <select
             v-model="preferences.date_format"
-            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white"
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
           >
             <option value="MM/DD/YYYY">MM/DD/YYYY - 02/14/2026 (United States)</option>
             <option value="DD/MM/YYYY">DD/MM/YYYY - 14/02/2026 (Europe, Latin America)</option>
             <option value="YYYY-MM-DD">YYYY-MM-DD - 2026-02-14 (ISO Standard)</option>
           </select>
-          <p class="text-xs text-gray-500 mt-2">
+          <p class="text-xs text-gray-400 mt-2">
             This affects how expiration dates are shown in items and notifications
           </p>
         </div>
 
         <!-- Time Format -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label class="block text-sm font-medium text-gray-300 mb-2">
             Time Format
           </label>
           <div class="grid grid-cols-2 gap-3">
@@ -45,7 +45,7 @@
                 'px-4 py-3 rounded-xl font-medium transition-all duration-200 border-2',
                 preferences.time_format === '12h'
                   ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white border-teal-500 shadow-md'
-                  : 'bg-white text-gray-700 border-gray-200 hover:border-teal-300'
+                  : 'bg-gray-800 text-gray-300 border-gray-700 hover:border-teal-300'
               ]"
             >
               <div class="flex items-center justify-center gap-2">
@@ -61,7 +61,7 @@
                 'px-4 py-3 rounded-xl font-medium transition-all duration-200 border-2',
                 preferences.time_format === '24h'
                   ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white border-teal-500 shadow-md'
-                  : 'bg-white text-gray-700 border-gray-200 hover:border-teal-300'
+                  : 'bg-gray-800 text-gray-300 border-gray-700 hover:border-teal-300'
               ]"
             >
               <div class="flex items-center justify-center gap-2">
@@ -74,15 +74,15 @@
         </div>
 
         <!-- Preview -->
-        <div class="p-4 bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl border border-teal-200">
-          <p class="text-sm font-medium text-gray-700 mb-2">Preview</p>
+        <div class="p-4 bg-teal-900/20 rounded-xl border border-teal-800">
+          <p class="text-sm font-medium text-gray-300 mb-2">Preview</p>
           <div class="flex items-center gap-2">
-            <Calendar :size="16" class="text-teal-600" />
-            <span class="text-gray-900 font-semibold">{{ previewDate }}</span>
+            <Calendar :size="16" class="text-teal-400" />
+            <span class="text-white font-semibold">{{ previewDate }}</span>
           </div>
           <div class="flex items-center gap-2 mt-1">
-            <Clock :size="16" class="text-teal-600" />
-            <span class="text-gray-900 font-semibold">{{ previewTime }}</span>
+            <Clock :size="16" class="text-teal-400" />
+            <span class="text-white font-semibold">{{ previewTime }}</span>
           </div>
         </div>
 
@@ -90,17 +90,17 @@
     </div>
 
     <!-- DIVIDER -->
-    <div class="border-t border-gray-200"></div>
+    <div class="border-t border-gray-800"></div>
 
     <!-- ITEM DISPLAY -->
     <div>
       <div class="flex items-start gap-3 mb-6">
-        <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center flex-shrink-0">
-          <LayoutGrid :size="20" class="text-purple-600" />
+        <div class="w-10 h-10 rounded-lg bg-purple-900/40 flex items-center justify-center flex-shrink-0">
+          <LayoutGrid :size="20" class="text-purple-400" />
         </div>
         <div>
-          <h3 class="text-lg font-bold text-gray-900">Item Display</h3>
-          <p class="text-sm text-gray-600 mt-1">Control how items are shown in lists</p>
+          <h3 class="text-lg font-bold text-white">Item Display</h3>
+          <p class="text-sm text-gray-300 mt-1">Control how items are shown in lists</p>
         </div>
       </div>
 
@@ -108,12 +108,12 @@
         
         <!-- Items per page -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label class="block text-sm font-medium text-gray-300 mb-2">
             Items per page
           </label>
           <select
             v-model="preferences.items_per_page"
-            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white"
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
           >
             <option :value="10">10 items</option>
             <option :value="25">25 items</option>
@@ -124,12 +124,12 @@
 
         <!-- Sort by default -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label class="block text-sm font-medium text-gray-300 mb-2">
             Default sort order
           </label>
           <select
             v-model="preferences.default_sort"
-            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white"
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
           >
             <option value="expiration_asc">Expiring soonest first</option>
             <option value="expiration_desc">Expiring latest first</option>
@@ -159,7 +159,7 @@
         v-if="hasChanges"
         @click="resetPreferences"
         :disabled="saving"
-        class="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-200"
+        class="px-6 py-3 bg-gray-800 text-gray-300 rounded-xl font-semibold hover:bg-gray-700 transition-all duration-200"
       >
         Cancel
       </button>

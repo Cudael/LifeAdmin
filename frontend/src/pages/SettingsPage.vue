@@ -13,8 +13,8 @@
 
     <!-- SETTINGS HEADER -->
     <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
-      <p class="text-gray-600">Manage your app preferences and configurations</p>
+      <h1 class="text-3xl font-bold text-white mb-2">Settings</h1>
+      <p class="text-gray-300">Manage your app preferences and configurations</p>
     </div>
 
     <!-- SETTINGS LAYOUT -->
@@ -22,7 +22,7 @@
 
       <!-- LEFT SIDEBAR -->
       <aside class="lg:col-span-1">
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-2 sticky top-24">
+        <div class="bg-gray-900 rounded-2xl shadow-sm border border-gray-800 p-2 sticky top-24">
           <nav class="flex flex-col gap-1">
 
             <button
@@ -33,7 +33,7 @@
                 'group flex items-center gap-3 text-left px-4 py-3 rounded-xl transition-all duration-200 font-medium',
                 active === item.key
                   ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-md'
-                  : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                  : 'text-gray-300 hover:bg-gray-800 hover:text-white'
               ]"
             >
               <component
@@ -53,17 +53,17 @@
 
       <!-- RIGHT CONTENT -->
       <section class="lg:col-span-3">
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="bg-gray-900 rounded-2xl shadow-sm border border-gray-800 overflow-hidden">
           
           <!-- Section Header -->
-          <div class="bg-gradient-to-r from-teal-50 to-cyan-50 border-b border-gray-200 px-8 py-6">
+          <div class="bg-teal-900/20 border-b border-gray-800 px-8 py-6">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center shadow-md">
                 <component :is="activeMenu.icon" :size="20" class="text-white" />
               </div>
               <div>
-                <h2 class="text-2xl font-bold text-gray-900">{{ activeMenu.label }}</h2>
-                <p class="text-sm text-gray-600 mt-1">{{ activeMenu.description }}</p>
+                <h2 class="text-2xl font-bold text-white">{{ activeMenu.label }}</h2>
+                <p class="text-sm text-gray-300 mt-1">{{ activeMenu.description }}</p>
               </div>
             </div>
           </div>
