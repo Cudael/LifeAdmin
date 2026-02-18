@@ -13,7 +13,8 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 
-@router.get("/stats")
+@router.get("/items/stats")
+@router.get("/items/stats/")
 def get_item_stats(
     session: Session = Depends(get_session),
     user: User = Depends(get_current_user)

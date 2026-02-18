@@ -22,7 +22,8 @@ class NotificationResponse(BaseModel):
     item_id: int
 
 
-@router.get("/", response_model=List[NotificationResponse])
+@router.get("/notifications", response_model=List[NotificationResponse])
+@router.get("/notifications/", response_model=List[NotificationResponse])
 def get_notifications(
     unread_only: bool = False,
     user: User = Depends(get_current_user),
@@ -45,7 +46,8 @@ def get_notifications(
     ]
 
 
-@router.get("/unread-count")
+@router.get("/notifications/unread-count")
+@router.get("/notifications/unread-count/")
 def get_unread_count(
     user: User = Depends(get_current_user),
     session: Session = Depends(get_session)

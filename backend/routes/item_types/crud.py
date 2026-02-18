@@ -11,7 +11,8 @@ from utils.auth import get_current_user
 router = APIRouter()
 
 
-@router.get("/")
+@router.get("/item-types")
+@router.get("/item-types/")
 def list_item_types(
     category: Optional[str] = None,
     item_class: Optional[str] = None,  # "document" or "subscription"
@@ -53,7 +54,8 @@ def list_item_types(
     return {"item_types": result, "total": len(result)}
 
 
-@router.get("/categories")
+@router.get("/item-types/categories")
+@router.get("/item-types/categories/")
 def get_categories(
     session: Session = Depends(get_session),
     user: User = Depends(get_current_user)
@@ -77,7 +79,8 @@ def get_categories(
     return {"categories": categories}
 
 
-@router.get("/{item_type_id}")
+@router.get("/item-types/{item_type_id}")
+@router.get("/item-types/{item_type_id}/")
 def get_item_type(
     item_type_id: int,
     session: Session = Depends(get_session),
