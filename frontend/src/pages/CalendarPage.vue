@@ -4,35 +4,35 @@
 
       <!-- Header -->
       <div class="mb-6">
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">Calendar</h1>
-        <p class="text-gray-600">View all your items by expiration date</p>
+        <h1 class="text-3xl font-bold text-white dark:text-white mb-2">Calendar</h1>
+        <p class="text-gray-300 dark:text-gray-300">View all your items by expiration date</p>
       </div>
 
       <!-- Calendar Controls -->
-      <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+      <div class="bg-gray-900 dark:bg-gray-900 rounded-2xl shadow-lg p-6 mb-6">
         <div class="flex items-center justify-between mb-6">
           
           <!-- Month Navigation -->
           <div class="flex items-center gap-4">
             <button
               @click="previousMonth"
-              class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              class="p-2 hover:bg-gray-800 dark:hover:bg-gray-800 rounded-lg transition-colors"
               aria-label="Previous month"
             >
-              <ChevronLeft :size="24" class="text-gray-600" />
+              <ChevronLeft :size="24" class="text-gray-300 dark:text-gray-300" />
             </button>
             
             <div class="text-center">
-              <h2 class="text-2xl font-bold text-gray-900">{{ currentMonthYear }}</h2>
-              <p class="text-sm text-gray-500">{{ itemsThisMonth }} items this month</p>
+              <h2 class="text-2xl font-bold text-white dark:text-white">{{ currentMonthYear }}</h2>
+              <p class="text-sm text-gray-400 dark:text-gray-400">{{ itemsThisMonth }} items this month</p>
             </div>
             
             <button
               @click="nextMonth"
-              class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              class="p-2 hover:bg-gray-800 dark:hover:bg-gray-800 rounded-lg transition-colors"
               aria-label="Next month"
             >
-              <ChevronRight :size="24" class="text-gray-600" />
+              <ChevronRight :size="24" class="text-gray-300 dark:text-gray-300" />
             </button>
           </div>
 
@@ -40,19 +40,19 @@
           <div class="flex items-center gap-3">
             <button
               @click="goToToday"
-              class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors"
+              class="px-4 py-2 bg-gray-800 dark:bg-gray-800 hover:bg-gray-800 dark:hover:bg-gray-800 text-gray-300 dark:text-gray-300 rounded-lg font-medium transition-colors"
             >
               Today
             </button>
             
             <button
               @click="toggleView"
-              class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              class="p-2 hover:bg-gray-800 dark:hover:bg-gray-800 rounded-lg transition-colors"
               :title="viewMode === 'month' ? 'Switch to List View' : 'Switch to Calendar View'"
               :aria-label="viewMode === 'month' ? 'Switch to list view' : 'Switch to calendar view'"
             >
-              <LayoutGrid v-if="viewMode === 'list'" :size="20" class="text-gray-600" />
-              <List v-else :size="20" class="text-gray-600" />
+              <LayoutGrid v-if="viewMode === 'list'" :size="20" class="text-gray-300 dark:text-gray-300" />
+              <List v-else :size="20" class="text-gray-300 dark:text-gray-300" />
             </button>
           </div>
 
@@ -62,15 +62,15 @@
         <div class="flex flex-wrap items-center gap-4 text-sm">
           <div class="flex items-center gap-2">
             <div class="w-3 h-3 rounded-full bg-red-500"></div>
-            <span class="text-gray-600">Expiring soon (within 7 days)</span>
+            <span class="text-gray-300 dark:text-gray-300">Expiring soon (within 7 days)</span>
           </div>
           <div class="flex items-center gap-2">
             <div class="w-3 h-3 rounded-full bg-orange-500"></div>
-            <span class="text-gray-600">Expiring this month</span>
+            <span class="text-gray-300 dark:text-gray-300">Expiring this month</span>
           </div>
           <div class="flex items-center gap-2">
             <div class="w-3 h-3 rounded-full bg-blue-500"></div>
-            <span class="text-gray-600">Future</span>
+            <span class="text-gray-300 dark:text-gray-300">Future</span>
           </div>
         </div>
       </div>
@@ -81,14 +81,14 @@
       </div>
 
       <!-- Calendar View -->
-      <div v-else-if="viewMode === 'month'" class="bg-white rounded-2xl shadow-lg overflow-hidden">
+      <div v-else-if="viewMode === 'month'" class="bg-gray-900 dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden">
         
         <!-- Day Headers -->
-        <div class="grid grid-cols-7 border-b border-gray-200 bg-gray-50">
+        <div class="grid grid-cols-7 border-b border-gray-800 dark:border-gray-800 bg-gray-800/50 dark:bg-gray-800/50">
           <div
             v-for="day in ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']"
             :key="day"
-            class="p-4 text-center text-sm font-semibold text-gray-600"
+            class="p-4 text-center text-sm font-semibold text-gray-300 dark:text-gray-300"
           >
             {{ day }}
           </div>
@@ -100,9 +100,9 @@
             v-for="(day, index) in calendarDays"
             :key="index"
             :class="[
-              'min-h-32 border-b border-r border-gray-200 p-3 hover:bg-gray-50 transition-colors cursor-pointer',
+              'min-h-32 border-b border-r border-gray-800 dark:border-gray-800 p-3 hover:bg-gray-800 dark:hover:bg-gray-800 transition-colors cursor-pointer',
               day.isToday ? 'bg-teal-50' : '',
-              !day.isCurrentMonth ? 'bg-gray-50 opacity-50' : '',
+              !day.isCurrentMonth ? 'bg-gray-800/50 dark:bg-gray-800/50 opacity-50' : '',
               index % 7 === 6 ? 'border-r-0' : ''
             ]"
             @click="openDayModal(day)"
@@ -112,8 +112,8 @@
               <span
                 :class="[
                   'text-sm font-semibold',
-                  day.isToday ? 'w-7 h-7 flex items-center justify-center bg-teal-500 text-white rounded-full' : 'text-gray-700',
-                  !day.isCurrentMonth ? 'text-gray-400' : ''
+                  day.isToday ? 'w-7 h-7 flex items-center justify-center bg-teal-500 text-white rounded-full' : 'text-gray-300 dark:text-gray-300',
+                  !day.isCurrentMonth ? 'text-gray-400 dark:text-gray-400' : ''
                 ]"
               >
                 {{ day.date.getDate() }}
@@ -145,7 +145,7 @@
               <!-- Show more indicator -->
               <div
                 v-if="day.items.length > 3"
-                class="text-xs text-gray-500 font-medium px-2"
+                class="text-xs text-gray-400 dark:text-gray-400 font-medium px-2"
               >
                 +{{ day.items.length - 3 }} more
               </div>
@@ -160,30 +160,30 @@
         <div
           v-for="group in groupedItems"
           :key="group.date"
-          class="bg-white rounded-xl shadow-lg p-6"
+          class="bg-gray-900 dark:bg-gray-900 rounded-xl shadow-lg p-6"
         >
-          <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <h3 class="text-lg font-bold text-white dark:text-white mb-4 flex items-center gap-2">
             <Calendar :size="20" class="text-teal-500" />
             {{ formatDateHeader(group.date) }}
-            <span class="text-sm font-normal text-gray-500">({{ group.items.length }} items)</span>
+            <span class="text-sm font-normal text-gray-400 dark:text-gray-400">({{ group.items.length }} items)</span>
           </h3>
 
           <div class="space-y-3">
             <div
               v-for="item in group.items"
               :key="item.id"
-              class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+              class="flex items-center gap-4 p-4 bg-gray-800/50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-800 transition-colors cursor-pointer"
               @click="openItemDetails(item)"
             >
               <div :class="['w-2 h-2 rounded-full', getItemDotColor(item)]"></div>
               
               <div class="flex-1">
-                <p class="font-semibold text-gray-900">{{ item.name }}</p>
-                <p class="text-sm text-gray-600">{{ item.category }}</p>
+                <p class="font-semibold text-white dark:text-white">{{ item.name }}</p>
+                <p class="text-sm text-gray-300 dark:text-gray-300">{{ item.category }}</p>
               </div>
 
               <div class="text-right">
-                <p class="text-sm font-medium text-gray-700">{{ formatDate(item.expiration_date) }}</p>
+                <p class="text-sm font-medium text-gray-300 dark:text-gray-300">{{ formatDate(item.expiration_date) }}</p>
                 <p :class="['text-xs font-semibold', getDaysUntilColor(item)]">
                   {{ getDaysUntilText(item) }}
                 </p>
@@ -193,10 +193,10 @@
         </div>
 
         <!-- No items -->
-        <div v-if="groupedItems.length === 0" class="bg-white rounded-xl shadow-lg p-12 text-center">
+        <div v-if="groupedItems.length === 0" class="bg-gray-900 dark:bg-gray-900 rounded-xl shadow-lg p-12 text-center">
           <CalendarOff :size="48" class="mx-auto text-gray-400 mb-4" />
-          <h3 class="text-xl font-bold text-gray-900 mb-2">No items this month</h3>
-          <p class="text-gray-600 mb-6">Add items to see them on your calendar</p>
+          <h3 class="text-xl font-bold text-white dark:text-white mb-2">No items this month</h3>
+          <p class="text-gray-300 dark:text-gray-300 mb-6">Add items to see them on your calendar</p>
           <button
             @click="$router.push('/items/new')"
             class="px-6 py-3 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all"
@@ -222,17 +222,17 @@
         class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
         @click.self="selectedDay = null"
       >
-        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto p-6">
+        <div class="bg-gray-900 dark:bg-gray-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto p-6">
           <div class="flex items-center justify-between mb-6">
             <div>
-              <h3 class="text-2xl font-bold text-gray-900">{{ formatDateHeader(selectedDay.date) }}</h3>
-              <p class="text-sm text-gray-600 mt-1">{{ selectedDay.items.length }} items expiring</p>
+              <h3 class="text-2xl font-bold text-white dark:text-white">{{ formatDateHeader(selectedDay.date) }}</h3>
+              <p class="text-sm text-gray-300 dark:text-gray-300 mt-1">{{ selectedDay.items.length }} items expiring</p>
             </div>
             <button
               @click="selectedDay = null"
-              class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              class="p-2 hover:bg-gray-800 dark:hover:bg-gray-800 rounded-lg transition-colors"
             >
-              <X :size="24" class="text-gray-600" />
+              <X :size="24" class="text-gray-300 dark:text-gray-300" />
             </button>
           </div>
 
@@ -240,17 +240,17 @@
             <div
               v-for="item in selectedDay.items"
               :key="item.id"
-              class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
+              class="flex items-center gap-4 p-4 bg-gray-800/50 dark:bg-gray-800/50 rounded-xl hover:bg-gray-800 dark:hover:bg-gray-800 transition-colors cursor-pointer"
               @click="openItemDetails(item)"
             >
               <div :class="['w-3 h-3 rounded-full', getItemDotColor(item)]"></div>
               
               <div class="flex-1">
-                <p class="font-semibold text-gray-900">{{ item.name }}</p>
-                <p class="text-sm text-gray-600">{{ item.category }}</p>
+                <p class="font-semibold text-white dark:text-white">{{ item.name }}</p>
+                <p class="text-sm text-gray-300 dark:text-gray-300">{{ item.category }}</p>
               </div>
 
-              <ChevronRight :size="20" class="text-gray-400" />
+              <ChevronRight :size="20" class="text-gray-400 dark:text-gray-400" />
             </div>
           </div>
         </div>
@@ -435,7 +435,7 @@ function getDaysUntilColor(item) {
 
 function getItemColor(item) {
   const days = getDaysUntil(item)
-  if (days === null) return 'bg-gray-100 text-gray-700'
+  if (days === null) return 'bg-gray-800 dark:bg-gray-800 text-gray-300 dark:text-gray-300'
   if (days < 0) return 'bg-gray-200 text-gray-600'
   if (days <= 7) return 'bg-red-100 text-red-700'
   if (days <= 30) return 'bg-orange-100 text-orange-700'
