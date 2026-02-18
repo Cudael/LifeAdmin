@@ -14,7 +14,8 @@ from utils.notification_service import (
 router = APIRouter()
 
 
-@router.post("/{notification_id}/read")
+@router.post("/notifications/{notification_id}/read")
+@router.post("/notifications/{notification_id}/read/")
 def mark_as_read(
     notification_id: int,
     user: User = Depends(get_current_user),
@@ -29,7 +30,8 @@ def mark_as_read(
     return {"message": "Notification marked as read"}
 
 
-@router.post("/mark-all-read")
+@router.post("/notifications/mark-all-read")
+@router.post("/notifications/mark-all-read/")
 def mark_all_as_read(
     user: User = Depends(get_current_user),
     session: Session = Depends(get_session)
@@ -39,7 +41,8 @@ def mark_all_as_read(
     return {"message": f"Marked {count} notifications as read"}
 
 
-@router.post("/check-expiring")
+@router.post("/notifications/check-expiring")
+@router.post("/notifications/check-expiring/")
 def trigger_expiry_check(
     user: User = Depends(get_current_user),
     session: Session = Depends(get_session)
@@ -54,7 +57,8 @@ def trigger_expiry_check(
     }
 
 
-@router.post("/test-email")
+@router.post("/notifications/test-email")
+@router.post("/notifications/test-email/")
 def test_email(
     user: User = Depends(get_current_user),
     session: Session = Depends(get_session)

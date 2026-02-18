@@ -37,7 +37,8 @@ def require_verified_email(user: User = Depends(get_current_user)) -> User:
     return user
 
 
-@router.post("/")
+@router.post("/items")
+@router.post("/items/")
 @limiter.limit("30/minute")
 async def create_item(
     request: Request,
@@ -68,7 +69,8 @@ async def create_item(
     return db_item
 
 
-@router.get("/{item_id}")
+@router.get("/items/{item_id}")
+@router.get("/items/{item_id}/")
 def get_item(
     item_id: int,
     session: Session = Depends(get_session),
@@ -87,7 +89,8 @@ def get_item(
     return item
 
 
-@router.patch("/{item_id}")
+@router.patch("/items/{item_id}")
+@router.patch("/items/{item_id}/")
 def update_item(
     item_id: int,
     item: ItemUpdate,
@@ -117,7 +120,8 @@ def update_item(
     return db_item
 
 
-@router.put("/{item_id}")
+@router.put("/items/{item_id}")
+@router.put("/items/{item_id}/")
 @limiter.limit("30/minute")
 async def update_item_with_file(
     request: Request,
@@ -207,7 +211,8 @@ async def update_item_with_file(
     return db_item
 
 
-@router.delete("/{item_id}")
+@router.delete("/items/{item_id}")
+@router.delete("/items/{item_id}/")
 @limiter.limit("20/minute")
 async def delete_item(
     request: Request,
@@ -244,7 +249,8 @@ async def delete_item(
     return {"message": "Item deleted successfully", "id": item_id}
 
 
-@router.post("/upload")
+@router.post("/items/upload")
+@router.post("/items/upload/")
 @limiter.limit("20/minute")
 async def upload_item(
     request: Request,
@@ -341,7 +347,8 @@ async def upload_item(
     return item
 
 
-@router.delete("/bulk")
+@router.delete("/items/bulk")
+@router.delete("/items/bulk/")
 @limiter.limit("10/minute")
 async def bulk_delete_items(
     request: Request,

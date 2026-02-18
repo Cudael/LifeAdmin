@@ -13,7 +13,8 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 
-@router.get("/")
+@router.get("/items")
+@router.get("/items/")
 def list_items(
     skip: int = Query(0, ge=0, description="Number of items to skip"),
     limit: int = Query(100, ge=1, le=500, description="Max number of items to return"),
