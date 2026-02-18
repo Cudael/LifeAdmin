@@ -3,7 +3,7 @@
     <div
       v-for="item in items"
       :key="item.id"
-      class="group relative bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-lg hover:shadow-2xl hover:border-teal-300 transition-all duration-300 overflow-hidden flex flex-col"
+      class="group relative bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-gray-800 shadow-lg hover:shadow-2xl hover:border-teal-300 transition-all duration-300 overflow-hidden flex flex-col"
     >
       
       <!-- Status Ribbon (top-right corner) -->
@@ -73,7 +73,7 @@
         <!-- TITLE + DELETE -->
         <div class="flex justify-between items-start gap-3">
           <div class="flex-1">
-            <h3 class="font-bold text-lg text-gray-900 leading-tight group-hover:text-teal-600 transition-colors">
+            <h3 class="font-bold text-lg text-white leading-tight group-hover:text-teal-600 transition-colors">
               {{ item.name }}
             </h3>
 
@@ -94,7 +94,7 @@
           <!-- DELETE BUTTON -->
           <button
             @click.stop="handleDelete(item)"
-            class="flex-shrink-0 w-8 h-8 rounded-lg bg-gray-100 text-gray-400 hover:bg-red-500 hover:text-white transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100"
+            class="flex-shrink-0 w-8 h-8 rounded-lg bg-gray-800 text-gray-400 hover:bg-red-500 hover:text-white transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100"
             title="Delete item"
           >
             <Trash2 :size="16" />
@@ -102,12 +102,12 @@
         </div>
 
         <!-- NOTES -->
-        <p class="text-gray-600 text-sm line-clamp-2 leading-relaxed">
+        <p class="text-gray-300 text-sm line-clamp-2 leading-relaxed">
           {{ item.notes || "No notes added" }}
         </p>
 
         <!-- DIVIDER -->
-        <div class="border-t border-gray-200"></div>
+        <div class="border-t border-gray-800"></div>
 
         <!-- DATE + DAYS SECTION -->
         <div class="space-y-2">
@@ -117,18 +117,18 @@
             
             <!-- Renewal Date -->
             <div class="flex items-center justify-between text-sm">
-              <span class="text-gray-500 flex items-center gap-1.5">
+              <span class="text-gray-400 flex items-center gap-1.5">
                 <Calendar :size="14" />
                 Renews:
               </span>
-              <span class="font-semibold text-gray-900">
+              <span class="font-semibold text-white">
                 {{ formatDate(item.renewal_date) }}
               </span>
             </div>
 
             <!-- Days until renewal -->
             <div class="flex items-center gap-2">
-              <div class="flex-1 bg-gray-100 rounded-full h-1.5 overflow-hidden">
+              <div class="flex-1 bg-gray-800/50 rounded-full h-1.5 overflow-hidden">
                 <div 
                   :class="[
                     'h-full transition-all duration-500',
@@ -139,19 +139,19 @@
                   :style="{ width: getProgressWidth(daysLeft(item.renewal_date)) }"
                 ></div>
               </div>
-              <span class="text-xs font-medium text-gray-600 whitespace-nowrap">
+              <span class="text-xs font-medium text-gray-300 whitespace-nowrap">
                 {{ Math.abs(daysLeft(item.renewal_date)) }} days {{ daysLeft(item.renewal_date) < 0 ? 'overdue' : 'left' }}
               </span>
             </div>
 
             <!-- Optional expiration -->
-            <div v-if="item.expiration_date" class="pt-2 border-t border-gray-100">
+            <div v-if="item.expiration_date" class="pt-2 border-t border-gray-800">
               <div class="flex items-center justify-between text-sm">
-                <span class="text-gray-500 flex items-center gap-1.5">
+                <span class="text-gray-400 flex items-center gap-1.5">
                   <AlertTriangle :size="14" />
                   Ends:
                 </span>
-                <span class="font-semibold text-orange-600">
+                <span class="font-semibold text-orange-400">
                   {{ formatDate(item.expiration_date) }}
                 </span>
               </div>
@@ -164,18 +164,18 @@
             
             <!-- Expiration Date -->
             <div class="flex items-center justify-between text-sm">
-              <span class="text-gray-500 flex items-center gap-1.5">
+              <span class="text-gray-400 flex items-center gap-1.5">
                 <Calendar :size="14" />
                 Expires:
               </span>
-              <span class="font-semibold text-gray-900">
+              <span class="font-semibold text-white">
                 {{ formatDate(item.expiration_date) }}
               </span>
             </div>
 
             <!-- Days left progress -->
             <div class="flex items-center gap-2">
-              <div class="flex-1 bg-gray-100 rounded-full h-1.5 overflow-hidden">
+              <div class="flex-1 bg-gray-800/50 rounded-full h-1.5 overflow-hidden">
                 <div 
                   :class="[
                     'h-full transition-all duration-500',
@@ -186,7 +186,7 @@
                   :style="{ width: getProgressWidth(daysLeft(item.expiration_date)) }"
                 ></div>
               </div>
-              <span class="text-xs font-medium text-gray-600 whitespace-nowrap">
+              <span class="text-xs font-medium text-gray-300 whitespace-nowrap">
                 {{ Math.abs(daysLeft(item.expiration_date)) }} days {{ daysLeft(item.expiration_date) < 0 ? 'overdue' : 'left' }}
               </span>
             </div>
@@ -213,7 +213,7 @@
           <!-- Edit Button -->
           <RouterLink
             :to="`/items/${item.id}/edit`"
-            class="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border-2 border-gray-200 text-gray-700 rounded-xl text-sm font-semibold hover:border-teal-500 hover:text-teal-600 transition-all duration-200"
+            class="flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-800 border-2 border-gray-700 text-gray-300 rounded-xl text-sm font-semibold hover:border-teal-500 hover:text-teal-600 transition-all duration-200"
             @click.stop
           >
             <Edit2 :size="16" />
@@ -223,7 +223,7 @@
           <!-- View Details Button -->
           <RouterLink
             :to="`/items/${item.id}`"
-            class="flex items-center justify-center p-2.5 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors"
+            class="flex items-center justify-center p-2.5 bg-gray-800 text-gray-300 rounded-xl hover:bg-gray-700 transition-colors"
             title="View details"
             @click.stop
           >

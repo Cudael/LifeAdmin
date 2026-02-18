@@ -4,12 +4,12 @@
     <!-- PASSWORD CHANGE SECTION -->
     <div>
       <div class="flex items-start gap-3 mb-6">
-        <div class="w-10 h-10 rounded-lg bg-teal-100 flex items-center justify-center flex-shrink-0">
-          <Lock :size="20" class="text-teal-600" />
+        <div class="w-10 h-10 rounded-lg bg-teal-900/40 flex items-center justify-center flex-shrink-0">
+          <Lock :size="20" class="text-teal-400" />
         </div>
         <div>
-          <h3 class="text-lg font-bold text-gray-900">Change Password</h3>
-          <p class="text-sm text-gray-600 mt-1">Update your password to keep your account secure</p>
+          <h3 class="text-lg font-bold text-white">Change Password</h3>
+          <p class="text-sm text-gray-300 mt-1">Update your password to keep your account secure</p>
         </div>
       </div>
 
@@ -17,14 +17,14 @@
         
         <!-- Current Password -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label class="block text-sm font-medium text-gray-300 mb-2">
             Current Password *
           </label>
           <div class="relative">
             <input
               v-model="passwordForm.current"
               :type="showCurrentPassword ? 'text' : 'password'"
-              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white placeholder:text-gray-500 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
               placeholder="Enter current password"
               required
             />
@@ -41,14 +41,14 @@
 
         <!-- New Password -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label class="block text-sm font-medium text-gray-300 mb-2">
             New Password *
           </label>
           <div class="relative">
             <input
               v-model="passwordForm.new"
               :type="showNewPassword ? 'text' : 'password'"
-              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white placeholder:text-gray-500 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
               placeholder="Enter new password"
               required
               @input="checkPasswordStrength"
@@ -66,7 +66,7 @@
           <!-- Password Strength Indicator -->
           <div v-if="passwordForm.new" class="mt-3">
             <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-medium text-gray-600">Password strength:</span>
+              <span class="text-xs font-medium text-gray-300">Password strength:</span>
               <span :class="[
                 'text-xs font-semibold',
                 passwordStrength === 'weak' ? 'text-red-600' :
@@ -91,23 +91,23 @@
           <!-- Password Requirements -->
           <div class="mt-3 space-y-1">
             <div class="flex items-center gap-2 text-xs">
-              <CheckCircle2 v-if="passwordChecks.length" :size="14" class="text-green-500" />
-              <XCircle v-else :size="14" class="text-gray-300" />
-              <span :class="passwordChecks.length ? 'text-gray-700' : 'text-gray-400'">
+              <CheckCircle2 v-if="passwordChecks.length" :size="14" class="text-green-400" />
+              <XCircle v-else :size="14" class="text-gray-600" />
+              <span :class="passwordChecks.length ? 'text-gray-300' : 'text-gray-500'">
                 At least 8 characters
               </span>
             </div>
             <div class="flex items-center gap-2 text-xs">
-              <CheckCircle2 v-if="passwordChecks.uppercase" :size="14" class="text-green-500" />
-              <XCircle v-else :size="14" class="text-gray-300" />
-              <span :class="passwordChecks.uppercase ? 'text-gray-700' : 'text-gray-400'">
+              <CheckCircle2 v-if="passwordChecks.uppercase" :size="14" class="text-green-400" />
+              <XCircle v-else :size="14" class="text-gray-600" />
+              <span :class="passwordChecks.uppercase ? 'text-gray-300' : 'text-gray-500'">
                 One uppercase letter
               </span>
             </div>
             <div class="flex items-center gap-2 text-xs">
-              <CheckCircle2 v-if="passwordChecks.number" :size="14" class="text-green-500" />
-              <XCircle v-else :size="14" class="text-gray-300" />
-              <span :class="passwordChecks.number ? 'text-gray-700' : 'text-gray-400'">
+              <CheckCircle2 v-if="passwordChecks.number" :size="14" class="text-green-400" />
+              <XCircle v-else :size="14" class="text-gray-600" />
+              <span :class="passwordChecks.number ? 'text-gray-300' : 'text-gray-500'">
                 One number
               </span>
             </div>
@@ -116,14 +116,14 @@
 
         <!-- Confirm New Password -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label class="block text-sm font-medium text-gray-300 mb-2">
             Confirm New Password *
           </label>
           <div class="relative">
             <input
               v-model="passwordForm.confirm"
               :type="showConfirmPassword ? 'text' : 'password'"
-              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white placeholder:text-gray-500 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
               placeholder="Confirm new password"
               required
             />
@@ -158,7 +158,7 @@
             v-if="passwordForm.current || passwordForm.new || passwordForm.confirm"
             type="button"
             @click="resetPasswordForm"
-            class="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-200"
+            class="px-6 py-3 bg-gray-800 text-gray-300 rounded-xl font-semibold hover:bg-gray-700 transition-all duration-200"
           >
             Cancel
           </button>
@@ -188,8 +188,8 @@
           leave-from-class="opacity-100 translate-y-0"
           leave-to-class="opacity-0 translate-y-2"
         >
-          <div v-if="error" class="flex items-center gap-2 p-4 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm">
-            <AlertCircle :size="18" class="text-red-600" />
+          <div v-if="error" class="flex items-center gap-2 p-4 bg-red-900/20 border border-red-800 rounded-xl text-red-400 text-sm">
+            <AlertCircle :size="18" class="text-red-400" />
             <span>{{ error }}</span>
           </div>
         </Transition>
@@ -198,31 +198,31 @@
     </div>
 
     <!-- DIVIDER -->
-    <div class="border-t border-gray-200"></div>
+    <div class="border-t border-gray-800"></div>
 
     <!-- DELETE ACCOUNT SECTION (DANGER ZONE) -->
     <div>
       <div class="flex items-start gap-3 mb-6">
-        <div class="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0">
-          <AlertTriangle :size="20" class="text-red-600" />
+        <div class="w-10 h-10 rounded-lg bg-red-900/40 flex items-center justify-center flex-shrink-0">
+          <AlertTriangle :size="20" class="text-red-400" />
         </div>
         <div>
-          <h3 class="text-lg font-bold text-gray-900">Danger Zone</h3>
-          <p class="text-sm text-gray-600 mt-1">Irreversible and destructive actions</p>
+          <h3 class="text-lg font-bold text-white">Danger Zone</h3>
+          <p class="text-sm text-gray-300 mt-1">Irreversible and destructive actions</p>
         </div>
       </div>
 
-      <div class="border-2 border-red-200 rounded-xl p-6 bg-red-50/50">
+      <div class="border-2 border-red-800 rounded-xl p-6 bg-red-900/20">
         <div class="flex items-start justify-between gap-4">
           <div class="flex-1">
-            <h4 class="text-base font-bold text-red-900 mb-2 flex items-center gap-2">
+            <h4 class="text-base font-bold text-red-300 mb-2 flex items-center gap-2">
               <Trash2 :size="18" />
               Delete Account
             </h4>
-            <p class="text-sm text-red-800 mb-3">
+            <p class="text-sm text-red-400 mb-3">
               Permanently delete your account and all associated data. This action cannot be undone.
             </p>
-            <ul class="text-xs text-red-700 space-y-1 mb-4">
+            <ul class="text-xs text-red-400 space-y-1 mb-4">
               <li class="flex items-center gap-2">
                 <div class="w-1 h-1 rounded-full bg-red-600"></div>
                 All your items and documents will be deleted

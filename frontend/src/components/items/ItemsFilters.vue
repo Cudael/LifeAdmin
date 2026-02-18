@@ -57,7 +57,7 @@ function clearSearch() {
     <!-- Filters Button -->
     <button
       @click="toggleFilters"
-      class="relative px-4 py-2 bg-white border-2 border-gray-200 text-gray-700 rounded-xl font-semibold hover:border-teal-300 hover:shadow-md transition-all duration-200 flex items-center gap-2"
+      class="relative px-4 py-2 bg-gray-800 border-2 border-gray-700 text-gray-300 rounded-xl font-semibold hover:border-teal-300 hover:shadow-md transition-all duration-200 flex items-center gap-2"
     >
       <Filter :size="18" />
       <span class="hidden md:inline">Filters</span>
@@ -65,7 +65,7 @@ function clearSearch() {
       <!-- Active indicator dot -->
       <span 
         v-if="hasActiveFilters"
-        class="absolute -top-1 -right-1 w-3 h-3 bg-teal-500 rounded-full border-2 border-white"
+        class="absolute -top-1 -right-1 w-3 h-3 bg-teal-500 rounded-full border-2 border-gray-950"
       ></span>
     </button>
 
@@ -74,15 +74,15 @@ function clearSearch() {
       v-if="hasActiveFilters"
       class="mt-4 flex items-center gap-2 flex-wrap"
     >
-      <span class="text-xs text-gray-500 font-medium">Active:</span>
+      <span class="text-xs text-gray-400 font-medium">Active:</span>
       
       <button
         v-if="activeStatFilter !== 'all'"
         @click="setFilter('all')"
-        class="px-3 py-1 bg-teal-100 text-teal-700 text-xs rounded-full font-medium hover:bg-teal-200 transition-colors flex items-center gap-1"
+        class="px-3 py-1 bg-teal-900/40 text-teal-400 text-xs rounded-full font-medium hover:bg-teal-900/60 transition-colors flex items-center gap-1"
       >
         {{ activeStatFilter }}
-        <span class="text-teal-600">×</span>
+        <span class="text-teal-400">×</span>
       </button>
       
       <button
@@ -105,7 +105,7 @@ function clearSearch() {
 
       <button
         @click="clearFilters"
-        class="text-xs text-gray-500 hover:text-gray-700 font-medium underline"
+        class="text-xs text-gray-400 hover:text-gray-300 font-medium underline"
       >
         Clear all
       </button>
@@ -121,11 +121,11 @@ function clearSearch() {
       leave-to-class="opacity-0 -translate-y-4 max-h-0"
     >
       <div v-show="showFilters" class="mt-4 overflow-hidden">
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 space-y-6">
+        <div class="bg-gray-900 rounded-2xl shadow-lg border border-gray-800 p-6 space-y-6">
           
           <!-- Status Filters -->
           <div>
-            <h3 class="text-sm font-semibold text-gray-700 mb-3">Status</h3>
+            <h3 class="text-sm font-semibold text-gray-300 mb-3">Status</h3>
             <div class="flex flex-wrap gap-2">
               <button
                 v-for="filter in ['all', 'expired', 'week', 'soon', 'missingDocs']"
@@ -135,7 +135,7 @@ function clearSearch() {
                   'px-4 py-2 rounded-lg text-sm font-medium transition-all',
                   activeStatFilter === filter
                     ? 'bg-teal-500 text-white shadow-md'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
                 ]"
               >
                 {{ filter === 'all' ? 'All' : filter === 'week' ? 'This Week' : filter === 'missingDocs' ? 'Missing Docs' : filter.charAt(0).toUpperCase() + filter.slice(1) }}
@@ -145,7 +145,7 @@ function clearSearch() {
 
           <!-- Category Filters -->
           <div>
-            <h3 class="text-sm font-semibold text-gray-700 mb-3">Categories</h3>
+            <h3 class="text-sm font-semibold text-gray-300 mb-3">Categories</h3>
             <FilterBar 
               :activeCategory="activeCategory" 
               :categories="categoryFilters"

@@ -23,7 +23,7 @@
         >
           <div
             v-if="show"
-            class="bg-white rounded-2xl shadow-2xl w-full max-w-md"
+            class="bg-gray-900 rounded-2xl shadow-2xl w-full max-w-md"
             role="dialog"
             aria-modal="true"
             :aria-labelledby="titleId"
@@ -47,11 +47,11 @@
                 <div class="flex-1">
                   <h3
                     :id="titleId"
-                    class="text-xl font-bold text-gray-900 mb-1"
+                    class="text-xl font-bold text-white mb-1"
                   >
                     {{ title }}
                   </h3>
-                  <p class="text-sm text-gray-600">
+                  <p class="text-sm text-gray-300">
                     {{ message }}
                   </p>
                 </div>
@@ -60,7 +60,7 @@
                 <button
                   v-if="showCloseButton"
                   @click="handleCancel"
-                  class="flex-shrink-0 p-1 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 transition-colors"
+                  class="flex-shrink-0 p-1 text-gray-400 hover:text-gray-300 rounded-lg hover:bg-gray-800 transition-colors"
                   aria-label="Close"
                 >
                   <X :size="20" />
@@ -73,18 +73,18 @@
               v-if="itemName || $slots.details"
               class="px-6 pb-4"
             >
-              <div class="p-4 bg-gray-50 rounded-xl">
+              <div class="p-4 bg-gray-800/50 rounded-xl">
                 <slot name="details">
                   <div class="flex items-center gap-3">
                     <div
                       v-if="itemIcon"
-                      class="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center flex-shrink-0"
+                      class="w-10 h-10 rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center flex-shrink-0"
                     >
-                      <component :is="itemIcon" :size="20" class="text-gray-600" />
+                      <component :is="itemIcon" :size="20" class="text-gray-300" />
                     </div>
                     <div class="flex-1 min-w-0">
-                      <p class="font-semibold text-gray-900 truncate">{{ itemName }}</p>
-                      <p v-if="itemDescription" class="text-sm text-gray-600 truncate">{{ itemDescription }}</p>
+                      <p class="font-semibold text-white truncate">{{ itemName }}</p>
+                      <p v-if="itemDescription" class="text-sm text-gray-300 truncate">{{ itemDescription }}</p>
                     </div>
                   </div>
                 </slot>
@@ -96,9 +96,9 @@
               v-if="warningMessage || permanent"
               class="px-6 pb-4"
             >
-              <div class="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-xl">
+              <div class="flex items-start gap-2 p-3 bg-red-900/20 border border-red-800 rounded-xl">
                 <AlertTriangle :size="16" class="text-red-600 flex-shrink-0 mt-0.5" />
-                <div class="text-sm text-red-800">
+                <div class="text-sm text-red-300">
                   <p v-if="warningMessage">{{ warningMessage }}</p>
                   <p v-else-if="permanent">
                     <strong>This action cannot be undone.</strong> All data will be permanently deleted.
@@ -112,14 +112,14 @@
               v-if="requireConfirmation"
               class="px-6 pb-4"
             >
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-sm font-medium text-gray-300 mb-2">
                 Type <span class="font-mono font-bold text-red-600">{{ confirmationText }}</span> to confirm:
               </label>
               <input
                 ref="confirmInputRef"
                 v-model="confirmationInput"
                 type="text"
-                class="w-full px-4 py-2 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                class="w-full px-4 py-2 bg-gray-800 border-2 border-gray-700 text-white placeholder:text-gray-500 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
                 :placeholder="`Type ${confirmationText}`"
                 @keydown.enter="handleConfirmWithEnter"
                 @keydown.esc="handleCancel"
@@ -132,7 +132,7 @@
                 <button
                   @click="handleCancel"
                   :disabled="loading"
-                  class="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="flex-1 px-4 py-3 bg-gray-800 text-gray-300 rounded-xl font-semibold hover:bg-gray-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {{ cancelText }}
                 </button>

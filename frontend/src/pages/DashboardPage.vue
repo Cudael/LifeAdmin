@@ -7,10 +7,9 @@
       <SummaryCard
         label="Total Items"
         :icon="Package"
-        iconColor="stroke-teal-500"
+        iconColor="stroke-teal-400"
         subtitle="All items"
         :value="stats.total"
-        bgGradient="from-teal-50 to-cyan-50"
         class="hover:scale-105 transition-transform duration-200"
         @click="navigateToItems('all')"
       />
@@ -18,10 +17,9 @@
       <SummaryCard
         label="Expiring Soon"
         :icon="Clock"
-        iconColor="stroke-orange-500"
+        iconColor="stroke-orange-400"
         subtitle="Within 30 days"
         :value="stats.soon"
-        bgGradient="from-orange-50 to-red-50"
         class="hover:scale-105 transition-transform duration-200"
         @click="navigateToItems('soon')"
       />
@@ -29,10 +27,9 @@
       <SummaryCard
         label="This Week"
         :icon="Calendar"
-        iconColor="stroke-amber-500"
+        iconColor="stroke-amber-400"
         subtitle="Next 7 days"
         :value="stats.week"
-        bgGradient="from-amber-50 to-yellow-50"
         class="hover:scale-105 transition-transform duration-200"
         @click="navigateToItems('week')"
       />
@@ -40,10 +37,9 @@
       <SummaryCard
         label="Expired"
         :icon="AlertTriangle"
-        iconColor="stroke-red-500"
+        iconColor="stroke-red-400"
         subtitle="Needs attention"
         :value="stats.expired"
-        bgGradient="from-red-50 to-pink-50"
         class="hover:scale-105 transition-transform duration-200"
         @click="navigateToItems('expired')"
       />
@@ -51,10 +47,9 @@
       <SummaryCard
         label="Documents"
         :icon="FileText"
-        iconColor="stroke-green-500"
+        iconColor="stroke-green-400"
         subtitle="Uploaded files"
         :value="stats.documents"
-        bgGradient="from-green-50 to-emerald-50"
         class="hover:scale-105 transition-transform duration-200"
         @click="navigateToItems('documents')"
       />
@@ -62,10 +57,9 @@
       <SummaryCard
         label="Subscriptions"
         :icon="CreditCard"
-        iconColor="stroke-purple-500"
+        iconColor="stroke-purple-400"
         subtitle="Recurring items"
         :value="stats.subscriptions"
-        bgGradient="from-purple-50 to-violet-50"
         class="hover:scale-105 transition-transform duration-200"
         @click="navigateToItems('subscriptions')"
       />
@@ -76,21 +70,21 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
       <!-- RECENTLY ADDED (2 columns wide) - Enhanced -->
-      <div class="lg:col-span-2 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-shadow duration-300">
+      <div class="lg:col-span-2 bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-800 p-6 hover:shadow-xl transition-shadow duration-300">
         <div class="flex items-center justify-between mb-6">
-          <h3 class="text-xl font-bold text-gray-900 flex items-center gap-2">
-            <Clock :size="24" class="text-teal-500" />
+          <h3 class="text-xl font-bold text-white flex items-center gap-2">
+            <Clock :size="24" class="text-teal-400" />
             Recently Added
           </h3>
-          <RouterLink to="/items" class="text-teal-600 text-sm font-medium hover:text-teal-700 hover:underline">
+          <RouterLink to="/items" class="text-teal-400 text-sm font-medium hover:text-teal-300 hover:underline">
             View All →
           </RouterLink>
         </div>
 
         <div v-if="recentItems.length === 0" class="text-center py-12">
-          <Package :size="48" class="text-gray-300 mx-auto mb-3" />
-          <p class="text-gray-500 text-sm">No recent items yet</p>
-          <RouterLink to="/add-item" class="text-teal-600 text-sm font-medium hover:underline mt-2 inline-block">
+          <Package :size="48" class="text-gray-600 mx-auto mb-3" />
+          <p class="text-gray-400 text-sm">No recent items yet</p>
+          <RouterLink to="/add-item" class="text-teal-400 text-sm font-medium hover:underline mt-2 inline-block">
             Add your first item
           </RouterLink>
         </div>
@@ -99,17 +93,17 @@
           <li
             v-for="item in recentItems"
             :key="item.id"
-            class="group flex justify-between items-center p-4 rounded-xl hover:bg-gradient-to-r hover:from-teal-50 hover:to-cyan-50 transition-all duration-200 border border-transparent hover:border-teal-200"
+            class="group flex justify-between items-center p-4 rounded-xl hover:bg-teal-900/30 transition-all duration-200 border border-transparent hover:border-teal-800"
           >
             <div class="flex items-start gap-3">
               <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-cyan-400 flex items-center justify-center flex-shrink-0 shadow-md">
                 <FileText :size="20" class="text-white" />
               </div>
               <div>
-                <p class="font-semibold text-gray-900 group-hover:text-teal-700 transition-colors">
+                <p class="font-semibold text-white group-hover:text-teal-400 transition-colors">
                   {{ item.name }}
                 </p>
-                <p class="text-xs text-gray-500 mt-1">
+                <p class="text-xs text-gray-400 mt-1">
                   Added {{ formatDate(item.created_at) }}
                 </p>
               </div>
@@ -171,10 +165,10 @@
       <MiniCalendar :items="itemsStore.items" />
 
       <!-- Categories Overview (2 columns) -->
-      <div class="lg:col-span-2 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-shadow duration-300">
+      <div class="lg:col-span-2 bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-800 p-6 hover:shadow-xl transition-shadow duration-300">
         <div class="flex items-center justify-between mb-6">
-          <h3 class="text-xl font-bold text-gray-900 flex items-center gap-2">
-            <FileText :size="24" class="text-teal-500" />
+          <h3 class="text-xl font-bold text-white flex items-center gap-2">
+            <FileText :size="24" class="text-teal-400" />
             Categories Overview
           </h3>
         </div>
@@ -183,11 +177,11 @@
           <div
             v-for="category in categoryStats"
             :key="category.name"
-            class="p-4 bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl border border-teal-200/50 hover:shadow-md transition-all hover:scale-105 duration-200 cursor-pointer"
+            class="p-4 bg-teal-900/20 rounded-xl border border-teal-800 hover:shadow-md transition-all hover:scale-105 duration-200 cursor-pointer"
           >
             <div class="text-3xl mb-2">{{ category.icon }}</div>
-            <p class="text-sm text-gray-600 mb-1">{{ category.name }}</p>
-            <p class="text-2xl font-bold text-gray-900">{{ category.count }}</p>
+            <p class="text-sm text-gray-400 mb-1">{{ category.name }}</p>
+            <p class="text-2xl font-bold text-white">{{ category.count }}</p>
           </div>
         </div>
       </div>
@@ -195,38 +189,38 @@
     </div>
 
     <!-- UPCOMING EXPIRATIONS (full width) - Enhanced -->
-    <div class="mt-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-shadow duration-300">
+    <div class="mt-6 bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-800 p-6 hover:shadow-xl transition-shadow duration-300">
       <div class="flex items-center justify-between mb-6">
-        <h3 class="text-xl font-bold text-gray-900 flex items-center gap-2">
-          <AlertTriangle :size="24" class="text-orange-500" />
+        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+          <AlertTriangle :size="24" class="text-orange-400" />
           Upcoming Expirations
         </h3>
-        <span class="px-3 py-1 bg-orange-100 text-orange-700 text-xs font-semibold rounded-full">
+        <span class="px-3 py-1 bg-orange-900/40 text-orange-400 text-xs font-semibold rounded-full">
           {{ upcoming.length }} items
         </span>
       </div>
 
       <div v-if="upcoming.length === 0" class="text-center py-12">
-        <Calendar :size="48" class="text-gray-300 mx-auto mb-3" />
-        <p class="text-gray-500 text-sm">Nothing expiring soon</p>
-        <p class="text-gray-400 text-xs mt-1">You're all set! 🎉</p>
+        <Calendar :size="48" class="text-gray-600 mx-auto mb-3" />
+        <p class="text-gray-400 text-sm">Nothing expiring soon</p>
+        <p class="text-gray-500 text-xs mt-1">You're all set! 🎉</p>
       </div>
 
       <ul v-else class="space-y-3">
         <li
           v-for="item in upcoming"
           :key="item.id"
-          class="group flex justify-between items-center p-4 rounded-xl hover:bg-orange-50 transition-all duration-200 border border-transparent hover:border-orange-200"
+          class="group flex justify-between items-center p-4 rounded-xl hover:bg-orange-900/20 transition-all duration-200 border border-transparent hover:border-orange-800"
         >
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 to-red-400 flex items-center justify-center flex-shrink-0 shadow-md">
               <Clock :size="20" class="text-white" />
             </div>
             <div>
-              <p class="font-semibold text-gray-900">{{ item.name }}</p>
-              <p class="text-xs text-gray-500 mt-1 flex items-center gap-2">
+              <p class="font-semibold text-white">{{ item.name }}</p>
+              <p class="text-xs text-gray-400 mt-1 flex items-center gap-2">
                 <span>Expires {{ formatDate(item.expiration_date) }}</span>
-                <span class="px-2 py-0.5 bg-orange-100 text-orange-700 rounded-full font-medium">
+                <span class="px-2 py-0.5 bg-orange-900/40 text-orange-400 rounded-full font-medium">
                   {{ daysLeft(item.expiration_date) }} days
                 </span>
               </p>
@@ -243,17 +237,17 @@
     </div>
 
     <!-- TIMELINE (full width) - Enhanced -->
-    <div class="mt-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-shadow duration-300">
+    <div class="mt-6 bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-800 p-6 hover:shadow-xl transition-shadow duration-300">
       <div class="flex items-center justify-between mb-6">
-        <h3 class="text-xl font-bold text-gray-900 flex items-center gap-2">
-          <Calendar :size="24" class="text-teal-500" />
+        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+          <Calendar :size="24" class="text-teal-400" />
           Next Deadlines
         </h3>
       </div>
 
       <div v-if="timeline.length === 0" class="text-center py-12">
-        <Calendar :size="48" class="text-gray-300 mx-auto mb-3" />
-        <p class="text-gray-500 text-sm">No upcoming deadlines</p>
+        <Calendar :size="48" class="text-gray-600 mx-auto mb-3" />
+        <p class="text-gray-400 text-sm">No upcoming deadlines</p>
       </div>
 
       <div v-else class="relative pl-8 space-y-6">
@@ -266,16 +260,16 @@
           class="relative"
         >
           <!-- Timeline dot -->
-          <div class="absolute -left-6 w-4 h-4 rounded-full bg-gradient-to-br from-teal-400 to-cyan-400 shadow-lg border-2 border-white"></div>
+          <div class="absolute -left-6 w-4 h-4 rounded-full bg-gradient-to-br from-teal-400 to-cyan-400 shadow-lg border-2 border-gray-950"></div>
 
-          <div class="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-4 border border-teal-200/50 hover:shadow-md transition-shadow duration-200">
-            <p class="font-semibold text-gray-900 mb-1">{{ item.name }}</p>
-            <div class="flex items-center gap-3 text-xs text-gray-600">
+          <div class="bg-teal-900/20 rounded-xl p-4 border border-teal-800 hover:shadow-md transition-shadow duration-200">
+            <p class="font-semibold text-white mb-1">{{ item.name }}</p>
+            <div class="flex items-center gap-3 text-xs text-gray-400">
               <span class="flex items-center gap-1">
                 <Calendar :size="14" />
                 {{ formatDate(item.expiration_date) }}
               </span>
-              <span class="px-2 py-1 bg-teal-100 text-teal-700 rounded-full font-medium">
+              <span class="px-2 py-1 bg-teal-900/40 text-teal-400 rounded-full font-medium">
                 {{ daysLeft(item.expiration_date) }} days left
               </span>
             </div>

@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from "vue"
 import { useRouter, useRoute } from "vue-router"
 import AppSidebar from "../components/layout/AppSidebar.vue"
+import DashboardTopBar from "../components/layout/DashboardTopBar.vue"
 import EmailVerificationBanner from "../components/EmailVerificationBanner.vue"
 import { useAuthStore } from "../stores/auth"
 import { clearTokens } from "../utils/auth"
@@ -87,20 +88,20 @@ onMounted(async () => {
 
 <template>
   <!-- FLEX ROW LAYOUT: Sidebar + Main Content -->
-  <div class="min-h-screen flex bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50">
+  <div class="min-h-screen flex bg-gray-950">
 
     <!-- SIDEBAR (Fixed left, hidden on mobile) -->
     <AppSidebar />
 
     <!-- MOBILE HEADER (visible only on mobile) -->
-    <header class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white/90 backdrop-blur-xl shadow-sm z-50 border-b border-gray-200">
+    <header class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-gray-900/90 backdrop-blur-xl shadow-sm z-50 border-b border-gray-800">
       <div class="px-4 h-full flex items-center justify-between">
         <!-- Logo -->
         <RouterLink to="/dashboard" class="flex items-center gap-2">
           <div class="w-8 h-8 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center shadow-md">
             <Sparkles :size="16" class="text-white" />
           </div>
-          <span class="text-lg font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
+          <span class="text-lg font-bold text-white">
             Remindes
           </span>
         </RouterLink>
@@ -108,7 +109,7 @@ onMounted(async () => {
         <!-- Mobile menu button -->
         <button
           @click="mobileMenuOpen = !mobileMenuOpen"
-          class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
+          class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition-colors text-gray-300"
         >
           <Menu v-if="!mobileMenuOpen" :size="20" />
           <X v-else :size="20" />
@@ -263,42 +264,42 @@ onMounted(async () => {
     </Transition>
 
     <!-- MAIN CONTENT AREA (with left margin for sidebar on desktop, top margin on mobile) -->
-    <main class="flex-1 ml-0 lg:ml-64 pt-16 lg:pt-0 overflow-y-auto">
+    <div class="flex-1 ml-0 lg:ml-64 pt-16 lg:pt-0 flex flex-col min-h-screen bg-gray-950">
+      
+      <!-- TOP BAR -->
+      <DashboardTopBar :pageTitle="pageTitle" />
       
       <!-- EMAIL VERIFICATION BANNER -->
       <EmailVerificationBanner v-if="authStore.user && !loading" :user="authStore.user" />
 
-      <!-- PAGE CONTENT WRAPPER -->
-      <div class="p-4 md:p-6 lg:p-8">
+      <!-- PAGE TITLE SECTION -->
+      <div class="px-6 py-4 border-b border-gray-800 bg-gray-900">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl md:text-3xl font-bold text-white">{{ pageTitle }}</h1>
+            <p v-if="pageSubtitle" class="text-gray-400 mt-1">{{ pageSubtitle }}</p>
+          </div>
+          <!-- Show current date on dashboard -->
+          <div v-if="isDashboard" class="hidden md:block">
+            <p class="text-sm text-gray-400">{{ currentDate }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTION BUTTONS SLOT (for page-specific actions - optional) -->
+      <div v-if="$slots.actions" class="px-6 py-4 bg-gray-950">
+        <slot name="actions" />
+      </div>
+
+      <!-- MAIN CONTENT -->
+      <main class="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
         <div class="max-w-7xl mx-auto">
-
-          <!-- SIMPLE PAGE TITLE HEADER -->
-          <div class="mb-8">
-            <div class="flex items-center justify-between">
-              <div>
-                <h1 class="text-2xl md:text-3xl font-bold text-gray-900">{{ pageTitle }}</h1>
-                <p v-if="pageSubtitle" class="text-gray-500 mt-1">{{ pageSubtitle }}</p>
-              </div>
-              <!-- Show current date on dashboard -->
-              <div v-if="isDashboard" class="hidden md:block">
-                <p class="text-sm text-gray-500">{{ currentDate }}</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- ACTION BUTTONS SLOT (for page-specific actions - optional) -->
-          <div v-if="$slots.actions" class="mb-6">
-            <slot name="actions" />
-          </div>
-
-          <!-- PAGE CONTENT -->
           <div class="animate-fade-in">
             <slot />
           </div>
-
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
 
   </div>
 </template>
