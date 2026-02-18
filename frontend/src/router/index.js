@@ -1,153 +1,141 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { accessToken } from '../utils/auth'
-import LandingPage from '../pages/LandingPage.vue'
-import LoginPage from '../pages/LoginPage.vue'
-import RegisterPage from '../pages/RegisterPage.vue'
-import ForgotPasswordPage from '../pages/ForgotPasswordPage.vue'
-import ResetPasswordPage from '../pages/ResetPasswordPage.vue'
-import AuthCallback from '../pages/AuthCallback.vue'
-import DashboardPage from '../pages/DashboardPage.vue'
-import EditItemPage from '../pages/EditItemPage.vue'
-import SettingsPage from '../pages/SettingsPage.vue'
-import ItemsPage from '../pages/ItemsPage.vue'
-import ItemDetails from '../pages/ItemDetails.vue'
-import ProfilePage from '../pages/ProfilePage.vue'
-import CalendarPage from '../pages/CalendarPage.vue'
-import VerifyEmailPage from '../pages/VerifyEmailPage.vue'
-import PrivacyPolicyPage from '../pages/PrivacyPolicyPage.vue'
-import TermsOfServicePage from '../pages/TermsOfServicePage.vue'
-import CookiePolicyPage from '../pages/CookiePolicyPage.vue'
-import ContactPage from '../pages/ContactPage.vue'
-import AboutPage from '../pages/AboutPage.vue'
-import SubscriptionPage from '../pages/SubscriptionPage.vue'
 
 const routes = [
   // Public routes
   { 
     path: '/', 
     name: 'Landing',
-    component: LandingPage 
+    component: () => import('../pages/LandingPage.vue'),
+    meta: { title: 'Remindes – Document & Subscription Management' }
   },
   {
     path: '/privacy',
     name: 'Privacy',
-    component: PrivacyPolicyPage
+    component: () => import('../pages/PrivacyPolicyPage.vue'),
+    meta: { title: 'Privacy Policy – Remindes' }
   },
   {
     path: '/terms',
     name: 'Terms',
-    component: TermsOfServicePage
+    component: () => import('../pages/TermsOfServicePage.vue'),
+    meta: { title: 'Terms of Service – Remindes' }
   },
   {
     path: '/cookies',
     name: 'Cookies',
-    component: CookiePolicyPage
+    component: () => import('../pages/CookiePolicyPage.vue'),
+    meta: { title: 'Cookie Policy – Remindes' }
   },
   {
     path: '/contact',
     name: 'Contact',
-    component: ContactPage
+    component: () => import('../pages/ContactPage.vue'),
+    meta: { title: 'Contact – Remindes' }
   },
   {
     path: '/about',
     name: 'About',
-    component: AboutPage
+    component: () => import('../pages/AboutPage.vue'),
+    meta: { title: 'About – Remindes' }
   },
 
   // Guest-only routes (redirect to dashboard if logged in)
   { 
     path: '/login', 
     name: 'Login',
-    component: LoginPage, 
-    meta: { guestOnly: true } 
+    component: () => import('../pages/LoginPage.vue'),
+    meta: { guestOnly: true, title: 'Login – Remindes' } 
   },
   { 
     path: '/register', 
     name: 'Register',
-    component: RegisterPage, 
-    meta: { guestOnly: true } 
+    component: () => import('../pages/RegisterPage.vue'),
+    meta: { guestOnly: true, title: 'Register – Remindes' } 
   },
   { 
     path: '/forgot-password', 
     name: 'ForgotPassword',
-    component: ForgotPasswordPage, 
-    meta: { guestOnly: true } 
+    component: () => import('../pages/ForgotPasswordPage.vue'),
+    meta: { guestOnly: true, title: 'Forgot Password – Remindes' } 
   },
   { 
     path: '/reset-password', // ✅ Fixed: removed :token parameter
     name: 'ResetPassword',
-    component: ResetPasswordPage, 
-    meta: { guestOnly: true } 
+    component: () => import('../pages/ResetPasswordPage.vue'),
+    meta: { guestOnly: true, title: 'Reset Password – Remindes' } 
   },
   {
     path: '/verify-email',
     name: 'VerifyEmail',
-    component: VerifyEmailPage
+    component: () => import('../pages/VerifyEmailPage.vue'),
+    meta: { title: 'Verify Email – Remindes' }
   },
 
   // OAuth callback (no auth required during callback)
   { 
     path: '/auth/callback', 
     name: 'AuthCallback',
-    component: AuthCallback 
+    component: () => import('../pages/AuthCallback.vue'),
+    meta: { title: 'Authenticating – Remindes' }
   },
 
   // Protected routes (require authentication)
   { 
     path: '/dashboard', 
     name: 'Dashboard',
-    component: DashboardPage, 
-    meta: { requiresAuth: true } 
+    component: () => import('../pages/DashboardPage.vue'),
+    meta: { requiresAuth: true, title: 'Dashboard – Remindes' } 
   },
   { 
     path: '/add-item', 
     name: 'AddItem',
     component: () => import('../pages/AddItemWizard.vue'), 
-    meta: { requiresAuth: true } 
+    meta: { requiresAuth: true, title: 'Add Item – Remindes' } 
   },
   { 
     path: '/items', 
     name: 'Items', 
-    component: ItemsPage, 
-    meta: { requiresAuth: true } 
+    component: () => import('../pages/ItemsPage.vue'),
+    meta: { requiresAuth: true, title: 'My Items – Remindes' } 
   },
   { 
     path: '/items/:id', 
     name: 'ItemDetails', 
-    component: ItemDetails, 
+    component: () => import('../pages/ItemDetails.vue'),
     props: true, 
-    meta: { requiresAuth: true } 
+    meta: { requiresAuth: true, title: 'Item Details – Remindes' } 
   },
   { 
     path: '/items/:id/edit', 
     name: 'ItemEdit', 
-    component: EditItemPage, 
+    component: () => import('../pages/EditItemPage.vue'),
     props: true, 
-    meta: { requiresAuth: true } 
+    meta: { requiresAuth: true, title: 'Edit Item – Remindes' } 
   },
   { 
     path: '/calendar', 
     name: 'Calendar', 
-    component: CalendarPage, 
-    meta: { requiresAuth: true } 
+    component: () => import('../pages/CalendarPage.vue'),
+    meta: { requiresAuth: true, title: 'Calendar – Remindes' } 
   },
   { 
     path: '/profile', 
     name: 'Profile', 
-    component: ProfilePage, 
-    meta: { requiresAuth: true } 
+    component: () => import('../pages/ProfilePage.vue'),
+    meta: { requiresAuth: true, title: 'Profile – Remindes' } 
   },
   { 
     path: '/settings', 
     name: 'Settings', 
-    component: SettingsPage, 
-    meta: { requiresAuth: true } 
+    component: () => import('../pages/SettingsPage.vue'),
+    meta: { requiresAuth: true, title: 'Settings – Remindes' } 
   },
   { 
     path: '/subscription', 
     name: 'Subscription', 
-    component: SubscriptionPage, 
-    meta: { requiresAuth: true } 
+    component: () => import('../pages/SubscriptionPage.vue'),
+    meta: { requiresAuth: true, title: 'Subscription – Remindes' } 
   },
 
   // 404 catch-all - redirect to landing or dashboard
@@ -196,6 +184,11 @@ router.beforeEach(async (to, from, next) => {
   }
 
   next()
+})
+
+// Update page title on route change
+router.afterEach((to) => {
+  document.title = to.meta.title || 'Remindes'
 })
 
 export default router

@@ -1,5 +1,6 @@
 // src/utils/auth.js
 import { ref } from "vue"
+import { log } from "./logger"
 
 // Use consistent key names
 const ACCESS_TOKEN_KEY = "access_token"
@@ -17,7 +18,7 @@ export function setTokens(access, refresh) {
     localStorage.setItem(REFRESH_TOKEN_KEY, refresh)
   }
   
-  console.log('✅ Tokens saved:', {
+  log('✅ Tokens saved:', {
     access: access ? 'Yes' : 'No',
     refresh: refresh ? 'Yes' : 'No'
   })
@@ -36,7 +37,7 @@ export function clearTokens() {
   localStorage.removeItem(ACCESS_TOKEN_KEY)
   localStorage.removeItem(REFRESH_TOKEN_KEY)
   
-  console.log('🗑️ Tokens cleared')
+  log('🗑️ Tokens cleared')
   
   // Stop automatic token refresh when tokens are cleared
   import('./tokenRefresh').then(module => {

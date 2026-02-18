@@ -5,6 +5,7 @@ import DashboardHeader from "../components/layout/DashboardHeader.vue"
 import EmailVerificationBanner from "../components/EmailVerificationBanner.vue"  // ✅ Import
 import { apiFetch } from "../utils/api"
 import { clearTokens } from "../utils/auth"
+import { error } from "../utils/logger"
 import { Sparkles, TrendingUp } from "lucide-vue-next"
 
 const router = useRouter()
@@ -38,14 +39,14 @@ onMounted(async () => {
 
     // If unauthorized, clear tokens and redirect to login
     if (res.status === 401) {
-      console.error("Unauthorized - redirecting to login")
+      error("Unauthorized - redirecting to login")
       clearTokens()
       router.push("/login")
       return
     }
 
     if (!res.ok) {
-      console.error("Failed to fetch user profile")
+      error("Failed to fetch user profile")
       loading.value = false
       return
     }
@@ -58,7 +59,7 @@ onMounted(async () => {
     loading.value = false
 
   } catch (err) {
-    console.error("Error fetching user:", err)
+    error("Error fetching user:", err)
     loading.value = false
   }
 })
