@@ -435,13 +435,21 @@ User notifications:
 ### Running tests
 
 ```bash
-# Backend tests (if available)
+# Backend tests
 cd backend
-pytest
+pip install pytest httpx
+pytest tests/
 
-# Frontend tests (if available)
+# Frontend tests
 cd frontend
+npm install
 npm test
+
+# Run tests in watch mode (frontend)
+npm run test:watch
+
+# Run tests with coverage (frontend)
+npm run test:coverage
 ```
 
 ### Database inspection
