@@ -8,8 +8,9 @@
         label="Total Items"
         :icon="Package"
         accentColor="teal"
-        subtitle="All items"
+        subtitle="Last 30 days"
         :value="stats.total"
+        :activitySummary="activitySummaries.totalItems"
         @click="navigateToItems('all')"
       />
 
@@ -19,6 +20,7 @@
         accentColor="orange"
         subtitle="Within 30 days"
         :value="stats.soon"
+        :activitySummary="activitySummaries.expiringSoon"
         @click="navigateToItems('soon')"
       />
 
@@ -28,6 +30,7 @@
         accentColor="amber"
         subtitle="Next 7 days"
         :value="stats.week"
+        :activitySummary="activitySummaries.thisWeek"
         @click="navigateToItems('week')"
       />
 
@@ -37,6 +40,7 @@
         accentColor="red"
         subtitle="Needs attention"
         :value="stats.expired"
+        :activitySummary="activitySummaries.expired"
         @click="navigateToItems('expired')"
       />
 
@@ -46,6 +50,7 @@
         accentColor="green"
         subtitle="Uploaded files"
         :value="stats.documents"
+        :activitySummary="activitySummaries.documents"
         @click="navigateToItems('documents')"
       />
 
@@ -55,6 +60,7 @@
         accentColor="purple"
         subtitle="Recurring items"
         :value="stats.subscriptions"
+        :activitySummary="activitySummaries.subscriptions"
         @click="navigateToItems('subscriptions')"
       />
 
@@ -276,7 +282,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from "vue"
+import { computed, onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
 import { useItemsStore } from "../stores/items"
 import { useItemStatus } from "../composables/useItemStatus"
@@ -299,6 +305,9 @@ const itemsStore = useItemsStore()
 const router = useRouter()
 const { getStatus, daysLeft } = useItemStatus()
 
+// Store API stats
+const apiStats = ref(null)
+
 function navigateToItems(filter) {
   router.push({ path: '/items', query: { filter } })
 }
@@ -320,6 +329,31 @@ const stats = computed(() => ({
     return diff <= 30
   }).length
 }))
+
+// Generate activity summaries from API stats
+const activitySummaries = computed(() => {
+  if (!apiStats.value?.activity_summaries) {
+    return {
+      totalItems: "",
+      expiringSoon: "",
+      thisWeek: "",
+      expired: "",
+      documents: "",
+      subscriptions: ""
+    }
+  }
+
+  const summaries = apiStats.value.activity_summaries
+
+  return {
+    totalItems: `${summaries.items_added_this_month} ${summaries.items_added_this_month === 1 ? 'item' : 'items'} added this month`,
+    expiringSoon: `${summaries.items_expiring_this_month} ${summaries.items_expiring_this_month === 1 ? 'item' : 'items'} expiring this month`,
+    thisWeek: `${summaries.items_expiring_this_week} ${summaries.items_expiring_this_week === 1 ? 'item' : 'items'} expiring this week`,
+    expired: `${summaries.expired_items} ${summaries.expired_items === 1 ? 'item needs' : 'items need'} review`,
+    documents: `${summaries.documents_total} ${summaries.documents_total === 1 ? 'document' : 'documents'} stored`,
+    subscriptions: `${summaries.subscriptions_renewing_week} renewing in 7 days`
+  }
+})
 
 const categoryStats = computed(() => {
   const categories = [
@@ -406,8 +440,17 @@ const recommended = computed(() => {
 })
 
 onMounted(async () => {
-  const res = await apiFetch("/items")
-  const data = await res.json()
-  itemsStore.setItems(data.items || data)
+  // Fetch items
+  const itemsRes = await apiFetch("/items")
+  const itemsData = await itemsRes.json()
+  itemsStore.setItems(itemsData.items || itemsData)
+  
+  // Fetch stats
+  try {
+    const statsRes = await apiFetch("/items/stats")
+    apiStats.value = await statsRes.json()
+  } catch (error) {
+    console.error("Failed to fetch stats:", error)
+  }
 })
 </script>
