@@ -101,11 +101,6 @@ export function startTokenRefresh() {
 
   log('🚀 Starting automatic token refresh check (every hour)')
   
-  // Check immediately if we should refresh
-  if (shouldRefreshToken(accessToken.value)) {
-    performTokenRefresh()
-  }
-  
   // Set up periodic check - check every hour if token needs refresh
   refreshIntervalId = setInterval(() => {
     if (accessToken.value && refreshToken.value) {
