@@ -28,7 +28,7 @@
     <!-- Day headers -->
     <div class="grid grid-cols-7 gap-1 mb-2">
       <div
-        v-for="(day, index) in ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']"
+        v-for="(day, index) in DAY_NAMES"
         :key="`day-${index}`"
         class="text-center text-xs font-semibold text-gray-500 py-1"
       >
@@ -106,6 +106,8 @@ const props = defineProps({
 const router = useRouter()
 const currentDate = ref(new Date())
 const { daysLeft } = useItemStatus()
+
+const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 const currentMonth = computed(() => {
   return currentDate.value.toLocaleDateString('en-US', { 

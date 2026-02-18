@@ -15,8 +15,6 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 const ALLOWED_TYPES = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png']
 
 function validateFile(file) {
-  if (!file) return { valid: false, error: 'No file selected' }
-  
   // Check file type
   if (!ALLOWED_TYPES.includes(file.type)) {
     return { 

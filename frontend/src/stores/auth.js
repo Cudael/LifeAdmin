@@ -32,7 +32,7 @@ export const useAuthStore = defineStore("auth", () => {
   }
 
   async function fetchUser() {
-    if (user.value) return  // Already loaded – skip redundant request
+    if (user.value) return  // Already loaded — skip redundant request
     loading.value = true
     try {
       const res = await apiFetch("/auth/me")
