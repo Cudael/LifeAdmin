@@ -20,7 +20,6 @@ def test_item_types_no_trailing_slash():
     response = client.get("/item-types")
     # Should be 401 (unauthorized) not 307 (redirect)
     assert response.status_code == 401, f"Expected 401, got {response.status_code}"
-    assert response.status_code != 307, "Should not redirect"
 
 
 def test_item_types_with_trailing_slash():
@@ -28,32 +27,27 @@ def test_item_types_with_trailing_slash():
     response = client.get("/item-types/")
     # Should be 401 (unauthorized) not 307 (redirect)
     assert response.status_code == 401, f"Expected 401, got {response.status_code}"
-    assert response.status_code != 307, "Should not redirect"
 
 
 def test_item_types_categories_no_trailing_slash():
     """Test /item-types/categories without trailing slash returns 401, not 307 redirect"""
     response = client.get("/item-types/categories")
     assert response.status_code == 401, f"Expected 401, got {response.status_code}"
-    assert response.status_code != 307, "Should not redirect"
 
 
 def test_item_types_categories_with_trailing_slash():
     """Test /item-types/categories/ with trailing slash returns 401, not 307 redirect"""
     response = client.get("/item-types/categories/")
     assert response.status_code == 401, f"Expected 401, got {response.status_code}"
-    assert response.status_code != 307, "Should not redirect"
 
 
 def test_item_types_by_id_no_trailing_slash():
     """Test /item-types/1 without trailing slash returns 401, not 307 redirect"""
     response = client.get("/item-types/1")
     assert response.status_code == 401, f"Expected 401, got {response.status_code}"
-    assert response.status_code != 307, "Should not redirect"
 
 
 def test_item_types_by_id_with_trailing_slash():
     """Test /item-types/1/ with trailing slash returns 401, not 307 redirect"""
     response = client.get("/item-types/1/")
     assert response.status_code == 401, f"Expected 401, got {response.status_code}"
-    assert response.status_code != 307, "Should not redirect"
