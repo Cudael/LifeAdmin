@@ -7,60 +7,54 @@
       <SummaryCard
         label="Total Items"
         :icon="Package"
-        iconColor="stroke-teal-400"
+        accentColor="teal"
         subtitle="All items"
         :value="stats.total"
-        class="hover:scale-105 transition-transform duration-200"
         @click="navigateToItems('all')"
       />
 
       <SummaryCard
         label="Expiring Soon"
         :icon="Clock"
-        iconColor="stroke-orange-400"
+        accentColor="orange"
         subtitle="Within 30 days"
         :value="stats.soon"
-        class="hover:scale-105 transition-transform duration-200"
         @click="navigateToItems('soon')"
       />
 
       <SummaryCard
         label="This Week"
         :icon="Calendar"
-        iconColor="stroke-amber-400"
+        accentColor="amber"
         subtitle="Next 7 days"
         :value="stats.week"
-        class="hover:scale-105 transition-transform duration-200"
         @click="navigateToItems('week')"
       />
 
       <SummaryCard
         label="Expired"
         :icon="AlertTriangle"
-        iconColor="stroke-red-400"
+        accentColor="red"
         subtitle="Needs attention"
         :value="stats.expired"
-        class="hover:scale-105 transition-transform duration-200"
         @click="navigateToItems('expired')"
       />
 
       <SummaryCard
         label="Documents"
         :icon="FileText"
-        iconColor="stroke-green-400"
+        accentColor="green"
         subtitle="Uploaded files"
         :value="stats.documents"
-        class="hover:scale-105 transition-transform duration-200"
         @click="navigateToItems('documents')"
       />
 
       <SummaryCard
         label="Subscriptions"
         :icon="CreditCard"
-        iconColor="stroke-purple-400"
+        accentColor="purple"
         subtitle="Recurring items"
         :value="stats.subscriptions"
-        class="hover:scale-105 transition-transform duration-200"
         @click="navigateToItems('subscriptions')"
       />
 
