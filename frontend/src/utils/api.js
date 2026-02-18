@@ -45,6 +45,7 @@ export async function apiFetch(url, options = {}) {
       // retry original request
       response = await doFetch()
     } catch (err) {
+      console.error('Token refresh error:', err)
       clearTokens()
       router.push('/login')
       return null
