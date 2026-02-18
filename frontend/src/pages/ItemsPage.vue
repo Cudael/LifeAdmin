@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { useItemsStore } from "../stores/items"
 import { useAuthStore } from "../stores/auth"
+import { useItemStatus } from "../composables/useItemStatus"
 import { apiFetch } from "../utils/api"
 
 import DashboardLayout from "../layouts/DashboardLayout.vue"
@@ -20,6 +21,7 @@ const itemsStore = useItemsStore()
 const authStore = useAuthStore()
 const route = useRoute()
 const router = useRouter()
+const { getStatus, daysLeft } = useItemStatus()
 
 // UI State
 const activeCategory = ref("All")
@@ -29,21 +31,6 @@ const deleteModalOpen = ref(false)
 const showFilters = ref(false)
 const itemToDelete = ref(null)
 
-// Helper functions
-const getStatus = (date) => {
-  if (!date) return "valid"
-  const diff = (new Date(date) - new Date()) / (1000 * 60 * 60 * 24)
-  if (diff < 0) return "expired"
-  if (diff < 7) return "week"
-  if (diff < 30) return "soon"
-  return "valid"
-}
-
-const daysLeft = (date) => {
-  if (!date) return null
-  return Math.ceil((new Date(date) - new Date()) / (1000 * 60 * 60 * 24))
-}
-
 // Computed properties
 const insights = computed(() => {
   const items = itemsStore.items
@@ -52,7 +39,7 @@ const insights = computed(() => {
       const days = daysLeft(i.expiration_date)
       return days !== null && days >= 0 && days <= 30
     }).length,
-    needsAttention: items.filter(i => getStatus(i.expiration_date) === 'expired').length,
+    needsAttention: items.filter(i => getStatus(i.expiration_date).key === 'expired').length,
     filesUploaded: items.filter(i => i.file_path).length,
     addedThisWeek: items.filter(i => {
       if (!i.created_at) return false
@@ -75,13 +62,13 @@ const categoryFilters = computed(() => {
     return acc
   }, {})
 
-  const uniqueCategories = [...new Set(items.map(item => item.category || 'Uncategorized'))]
+  const categories = [...new Set(items.map(item => item.category || 'Uncategorized'))]
   const categoryIcons = {
     'Travel': Plane, 'Health': Heart, 'Finance': Wallet, 'Work': Briefcase,
     'Personal': User, 'Subscriptions': Repeat, 'Home': Home, 'Uncategorized': Layers
   }
 
-  const dynamicCategories = uniqueCategories.map(cat => ({
+  const dynamicCategories = categories.map(cat => ({
     label: cat, value: cat, icon: categoryIcons[cat] || Layers, count: categoryCounts[cat] || 0
   })).sort((a, b) => a.label.localeCompare(b.label))
 
@@ -94,7 +81,7 @@ const filteredItems = computed(() => {
   // Status filter
   if (activeStatFilter.value !== 'all') {
     if (['soon', 'week', 'expired'].includes(activeStatFilter.value)) {
-      list = list.filter(i => getStatus(i.expiration_date) === activeStatFilter.value)
+      list = list.filter(i => getStatus(i.expiration_date).key === activeStatFilter.value)
     } else if (activeStatFilter.value === 'documents') {
       list = list.filter(i => i.type === 'document')
     } else if (activeStatFilter.value === 'subscriptions') {
@@ -147,8 +134,7 @@ const openDeleteModal = (item) => {
 const confirmDelete = async () => {
   if (!itemToDelete.value) return
   try {
-    await apiFetch(`/items/${itemToDelete.value.id}`, { method: "DELETE" })
-    itemsStore.setItems(itemsStore.items.filter(i => i.id !== itemToDelete.value.id))
+    await itemsStore.deleteItem(itemToDelete.value.id)
     deleteModalOpen.value = false
     itemToDelete.value = null
   } catch (error) {

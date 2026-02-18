@@ -304,6 +304,7 @@
 import { computed, onMounted } from "vue"
 import { useRouter } from "vue-router"
 import { useItemsStore } from "../stores/items"
+import { useItemStatus } from "../composables/useItemStatus"
 import { apiFetch } from "../utils/api"
 
 import DashboardLayout from "../layouts/DashboardLayout.vue"
@@ -322,37 +323,21 @@ import {
 
 const itemsStore = useItemsStore()
 const router = useRouter()
+const { getStatus, daysLeft } = useItemStatus()
 
 function navigateToItems(filter) {
   router.push({ path: '/items', query: { filter } })
-}
-
-function getStatus(date) {
-  if (!date) return "valid"
-  const today = new Date()
-  const exp = new Date(date)
-  const diff = (exp - today) / (1000 * 60 * 60 * 24)
-
-  if (diff < 0) return "expired"
-  if (diff < 7) return "week"
-  if (diff < 30) return "soon"
-  return "valid"
 }
 
 function formatDate(date) {
   return new Date(date).toLocaleDateString()
 }
 
-function daysLeft(date) {
-  const diff = (new Date(date) - new Date()) / (1000 * 60 * 60 * 24)
-  return Math.ceil(diff)
-}
-
 const stats = computed(() => ({
   total: itemsStore.items.length,
-  expired: itemsStore.items.filter(i => getStatus(i.expiration_date) === "expired").length,
-  week: itemsStore.items.filter(i => getStatus(i.expiration_date) === "week").length,
-  soon: itemsStore.items.filter(i => getStatus(i.expiration_date) === "soon").length,
+  expired: itemsStore.items.filter(i => getStatus(i.expiration_date).key === "expired").length,
+  week: itemsStore.items.filter(i => getStatus(i.expiration_date).key === "week").length,
+  soon: itemsStore.items.filter(i => getStatus(i.expiration_date).key === "soon").length,
   documents: itemsStore.items.filter(i => i.type === "document").length,
   subscriptions: itemsStore.items.filter(i => i.type === "subscription").length,
   missingDocs: itemsStore.items.filter(i => !i.file_path).length,
@@ -389,7 +374,10 @@ const recentItems = computed(() =>
 
 const upcoming = computed(() =>
   itemsStore.items
-    .filter(i => getStatus(i.expiration_date) === "soon" || getStatus(i.expiration_date) === "week")
+    .filter(i => {
+      const status = getStatus(i.expiration_date)
+      return status.key === "soon" || status.key === "week"
+    })
     .sort((a, b) => new Date(a.expiration_date) - new Date(b.expiration_date))
     .slice(0, 5)
 )

@@ -2,6 +2,9 @@
 import { onMounted, ref, computed } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { apiFetch, BASE_URL } from "../utils/api"
+import { useAuthStore } from "../stores/auth"
+import { useItemsStore } from "../stores/items"
+import { useItemStatus } from "../composables/useItemStatus"
 import DashboardLayout from "../layouts/DashboardLayout.vue"
 import DeleteModal from "../components/DeleteModal.vue"
 import {
@@ -26,9 +29,11 @@ import {
 
 const route = useRoute()
 const router = useRouter()
+const authStore = useAuthStore()
+const itemsStore = useItemsStore()
+const { daysLeft, getStatus, getStatusColor } = useItemStatus()
 
 const item = ref(null)
-const user = ref(null)
 const deleteModalOpen = ref(false)
 const loading = ref(true)
 
@@ -41,30 +46,24 @@ function formatDate(date) {
   })
 }
 
-function daysLeft(date) {
-  if (!date) return null
-  const diff = (new Date(date) - new Date()) / (1000 * 60 * 60 * 24)
-  return Math.ceil(diff)
-}
-
 const status = computed(() => {
   if (!item.value?.expiration_date) return { label: "Valid", icon: CheckCircle2 }
 
-  const diff = daysLeft(item.value.expiration_date)
+  const s = getStatus(item.value.expiration_date)
+  
+  const iconMap = {
+    expired: AlertTriangle,
+    week: AlertCircle,
+    soon: Clock,
+    valid: CheckCircle2
+  }
 
-  if (diff < 0) return { label: "Expired", icon: AlertTriangle }
-  if (diff < 7) return { label: "Expiring This Week", icon: AlertCircle }
-  if (diff < 30) return { label: "Expiring Soon", icon: Clock }
-  return { label: "Valid", icon: CheckCircle2 }
+  return { label: s.label, icon: iconMap[s.key] }
 })
 
 const statusColor = computed(() => {
-  switch (status.value.label) {
-    case "Expired": return "bg-red-500/10 text-red-700 border-red-200"
-    case "Expiring This Week": return "bg-yellow-500/10 text-yellow-700 border-yellow-200"
-    case "Expiring Soon": return "bg-orange-500/10 text-orange-700 border-orange-200"
-    default: return "bg-green-500/10 text-green-700 border-green-200"
-  }
+  if (!item.value?.expiration_date) return "bg-green-500/10 text-green-700 border-green-200"
+  return getStatusColor(item.value.expiration_date)
 })
 
 const isDocument = computed(() => item.value?.type === "document")
@@ -75,23 +74,12 @@ const reminderDaysDisplay = computed(() => {
   if (item.value.reminder_days_before !== null && item.value.reminder_days_before !== undefined) {
     return item.value.reminder_days_before
   }
-  return user.value?.notification_days_before || 7
+  return authStore.user?.notification_days_before || 7
 })
 
 const usingCustomReminder = computed(() => {
   return item.value?.reminder_days_before !== null && item.value?.reminder_days_before !== undefined
 })
-
-async function loadUser() {
-  try {
-    const res = await apiFetch("/auth/me")
-    if (res.ok) {
-      user.value = await res.json()
-    }
-  } catch (err) {
-    console.error("Failed to load user:", err)
-  }
-}
 
 async function loadItem() {
   try {
@@ -109,12 +97,12 @@ async function loadItem() {
 }
 
 async function deleteItem() {
-  await apiFetch(`/items/${item.value.id}`, { method: "DELETE" })
+  await itemsStore.deleteItem(item.value.id)
   router.push("/items")
 }
 
 onMounted(async () => {
-  await loadUser()
+  await authStore.fetchUser()
   await loadItem()
 })
 </script>
