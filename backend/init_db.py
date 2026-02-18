@@ -54,7 +54,7 @@ def init_database():
         action='store_true',
         help='Skip confirmation prompt and overwrite existing database'
     )
-    args, _ = parser.parse_known_args()
+    args = parser.parse_args()
 
     # Get database file path from DATABASE_URL
     db_file = DATABASE_URL.replace("sqlite:///", "")
