@@ -11,6 +11,7 @@ It creates all tables from all models including:
 
 Usage:
     python init_db.py
+    python init_db.py --force  # Skip confirmation prompt
 
 This will:
 1. Delete the existing database.db if it exists
@@ -21,6 +22,7 @@ This will:
 import os
 import sys
 import logging
+import argparse
 from pathlib import Path
 
 # Add the backend directory to the Python path
@@ -46,7 +48,14 @@ logger = logging.getLogger(__name__)
 
 def init_database():
     """Initialize the database with all tables"""
-    
+    parser = argparse.ArgumentParser(description="Initialize the Remindes database")
+    parser.add_argument(
+        '--force', '--yes', '-y',
+        action='store_true',
+        help='Skip confirmation prompt and overwrite existing database'
+    )
+    args, _ = parser.parse_known_args()
+
     # Get database file path from DATABASE_URL
     db_file = DATABASE_URL.replace("sqlite:///", "")
     db_path = backend_dir / db_file
@@ -58,13 +67,17 @@ def init_database():
     # Delete existing database if it exists
     if db_path.exists():
         logger.warning(f"Existing database found at: {db_path}")
-        response = input("Delete existing database and create fresh one? (yes/no): ")
-        if response.lower() in ['yes', 'y']:
+        if args.force:
             db_path.unlink()
-            logger.info(f"✅ Deleted existing database: {db_path}")
+            logger.info(f"✅ Deleted existing database (--force): {db_path}")
         else:
-            logger.info("Cancelled. Exiting without changes.")
-            return
+            response = input("Delete existing database and create fresh one? (yes/no): ")
+            if response.lower() in ['yes', 'y']:
+                db_path.unlink()
+                logger.info(f"✅ Deleted existing database: {db_path}")
+            else:
+                logger.info("Cancelled. Exiting without changes.")
+                return
     
     # Create all tables
     logger.info(f"Creating database at: {db_path}")
