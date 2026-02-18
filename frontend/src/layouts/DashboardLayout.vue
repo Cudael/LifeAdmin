@@ -2,23 +2,26 @@
 import { ref, onMounted, computed } from "vue"
 import { useRouter } from "vue-router"
 import DashboardHeader from "../components/layout/DashboardHeader.vue"
-import EmailVerificationBanner from "../components/EmailVerificationBanner.vue"  // ✅ Import
-import { apiFetch } from "../utils/api"
+import EmailVerificationBanner from "../components/EmailVerificationBanner.vue"
+import { useAuthStore } from "../stores/auth"
 import { clearTokens } from "../utils/auth"
 import { error } from "../utils/logger"
 import { Sparkles, TrendingUp } from "lucide-vue-next"
 
 const router = useRouter()
+const authStore = useAuthStore()
 
 const props = defineProps({
   pageTitle: { type: String, default: "Dashboard" }
 })
 
-// User info
-const user = ref(null)  // ✅ Changed to full user object
-const userName = ref("User")
-const userEmail = ref("")
-const userAvatar = ref(null)
+// Computed values from store
+const userName = computed(() => {
+  const u = authStore.user
+  return u?.full_name || u?.username || u?.name || "User"
+})
+const userEmail = computed(() => authStore.user?.email || "")
+const userAvatar = computed(() => authStore.user?.profile_picture || null)
 const loading = ref(true)
 
 // Check if it's the dashboard page
@@ -35,29 +38,8 @@ const greeting = computed(() => {
 // Fetch user profile on load
 onMounted(async () => {
   try {
-    const res = await apiFetch("/auth/me")
-
-    // If unauthorized, clear tokens and redirect to login
-    if (res.status === 401) {
-      error("Unauthorized - redirecting to login")
-      clearTokens()
-      router.push("/login")
-      return
-    }
-
-    if (!res.ok) {
-      error("Failed to fetch user profile")
-      loading.value = false
-      return
-    }
-
-    const data = await res.json()
-    user.value = data  // ✅ Store full user object
-    userName.value = data.full_name || data.username || data.name || "User"
-    userEmail.value = data.email || ""
-    userAvatar.value = data.profile_picture || null
+    await authStore.fetchUser()
     loading.value = false
-
   } catch (err) {
     error("Error fetching user:", err)
     loading.value = false
@@ -76,7 +58,7 @@ onMounted(async () => {
     />
 
     <!-- ✅ EMAIL VERIFICATION BANNER (Below header, above content) -->
-    <EmailVerificationBanner v-if="user && !loading" :user="user" />
+    <EmailVerificationBanner v-if="authStore.user && !loading" :user="authStore.user" />
 
     <!-- MAIN CONTENT AREA (with top padding for fixed header) -->
     <main class="flex-1 p-4 md:p-6 lg:p-8 pt-20 overflow-y-auto">

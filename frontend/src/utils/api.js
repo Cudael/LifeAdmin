@@ -1,6 +1,7 @@
 import { accessToken, refreshToken, setTokens, clearTokens } from "./auth"
+import router from '../router'
 
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000"
+export const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000"
 
 export async function apiFetch(url, options = {}) {
   async function doFetch() {
@@ -38,12 +39,10 @@ export async function apiFetch(url, options = {}) {
       response = await doFetch()
     } else {
       clearTokens()
-      window.location.href = "/login"
-      return
+      router.push('/login')
+      return null
     }
   }
 
   return response
 }
-
-export { BASE_URL }

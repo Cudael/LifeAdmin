@@ -1,8 +1,8 @@
 // Automatic token refresh utility
 import { accessToken, refreshToken, setTokens, clearTokens } from "./auth"
 import { log, error } from "./logger"
-
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000"
+import { BASE_URL } from './api'
+import router from '../router'
 
 // Time constants for readability
 const HOUR_IN_MS = 1000 * 60 * 60 // 1 hour in milliseconds
@@ -77,7 +77,7 @@ async function performTokenRefresh() {
     } else {
       log('❌ Token refresh failed:', response.status)
       clearTokens()
-      window.location.href = "/login"
+      router.push('/login')
       return false
     }
   } catch (err) {
