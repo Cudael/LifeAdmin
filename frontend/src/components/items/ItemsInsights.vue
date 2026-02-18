@@ -37,43 +37,43 @@ function handleFilter(filter) {
       <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-md">
         <TrendingUp :size="20" class="text-white" />
       </div>
-      <h3 class="text-lg font-bold text-gray-900">Insights</h3>
+      <h3 class="text-lg font-bold text-white">Insights</h3>
     </div>
 
     <!-- Stats Grid - Top Row (4 insights) -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
       
       <!-- Expiring This Month -->
-      <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-orange-200/50 hover:shadow-md transition-shadow">
+      <div class="bg-orange-900/20 backdrop-blur-sm rounded-xl p-3 border border-orange-800 hover:shadow-md transition-shadow">
         <div class="flex items-center gap-2 mb-1">
           <Clock :size="14" class="text-orange-500" />
-          <p class="text-xs text-gray-600 font-medium">Expiring This Month</p>
+          <p class="text-xs text-gray-300 font-medium">Expiring This Month</p>
         </div>
-        <p class="text-2xl font-bold text-orange-600">
+        <p class="text-2xl font-bold text-orange-400">
           {{ insights.expiringThisMonth }}
         </p>
         <button
           v-if="insights.expiringThisMonth > 0"
           @click="handleFilter('soon')"
-          class="mt-1 text-xs text-orange-600 hover:text-orange-700 font-medium hover:underline"
+          class="mt-1 text-xs text-orange-400 hover:text-orange-500 font-medium hover:underline"
         >
           View items →
         </button>
       </div>
 
       <!-- Needs Attention -->
-      <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-red-200/50 hover:shadow-md transition-shadow">
+      <div class="bg-red-900/20 backdrop-blur-sm rounded-xl p-3 border border-red-800 hover:shadow-md transition-shadow">
         <div class="flex items-center gap-2 mb-1">
           <AlertTriangle :size="14" class="text-red-500" />
-          <p class="text-xs text-gray-600 font-medium">Needs Attention</p>
+          <p class="text-xs text-gray-300 font-medium">Needs Attention</p>
         </div>
-        <p class="text-2xl font-bold text-red-600">
+        <p class="text-2xl font-bold text-red-400">
           {{ insights.needsAttention }}
         </p>
         <button
           v-if="insights.needsAttention > 0"
           @click="handleFilter('expired')"
-          class="mt-1 text-xs text-red-600 hover:text-red-700 font-medium hover:underline"
+          class="mt-1 text-xs text-red-400 hover:text-red-500 font-medium hover:underline"
         >
           View expired →
         </button>
@@ -82,8 +82,8 @@ function handleFilter(filter) {
       <!-- Files Uploaded -->
       <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-teal-200/50 hover:shadow-md transition-shadow">
         <div class="flex items-center gap-2 mb-1">
-          <Upload :size="14" class="text-teal-500" />
-          <p class="text-xs text-gray-600 font-medium">Files Uploaded</p>
+          <Upload :size="14" class="text-teal-400" />
+          <p class="text-xs text-gray-300 font-medium">Files Uploaded</p>
         </div>
         <p class="text-2xl font-bold text-teal-600">
           {{ insights.filesUploaded }}
@@ -97,15 +97,15 @@ function handleFilter(filter) {
       </div>
 
       <!-- Added This Week -->
-      <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-blue-200/50 hover:shadow-md transition-shadow">
+      <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-3 border border-gray-800 hover:shadow-md transition-shadow">
         <div class="flex items-center gap-2 mb-1">
           <Calendar :size="14" class="text-blue-500" />
-          <p class="text-xs text-gray-600 font-medium">Added This Week</p>
+          <p class="text-xs text-gray-300 font-medium">Added This Week</p>
         </div>
         <p class="text-2xl font-bold text-blue-600">
           {{ insights.addedThisWeek }}
         </p>
-        <p class="mt-1 text-xs text-gray-500">
+        <p class="mt-1 text-xs text-gray-400">
           Last 7 days
         </p>
       </div>
@@ -115,12 +115,12 @@ function handleFilter(filter) {
     <!-- Stats Grid - Bottom Row (3 quick stats) -->
     <div class="grid grid-cols-2 lg:grid-cols-3 gap-3">
       
-      <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-gray-200/50 hover:shadow-md transition-shadow">
-        <p class="text-xs text-gray-500 mb-1">Total Items</p>
-        <p class="text-2xl font-bold text-gray-900">
+      <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-3 border border-gray-800 hover:shadow-md transition-shadow">
+        <p class="text-xs text-gray-400 mb-1">Total Items</p>
+        <p class="text-2xl font-bold text-white">
           {{ isPremium ? totalItems : `${totalItems}/20` }}
         </p>
-        <p v-if="!isPremium" class="text-xs text-gray-500 mt-1">
+        <p v-if="!isPremium" class="text-xs text-gray-400 mt-1">
           Free plan limit
         </p>
         <p v-else class="text-xs text-teal-600 mt-1">
@@ -128,15 +128,15 @@ function handleFilter(filter) {
         </p>
       </div>
 
-      <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-teal-200/50 hover:shadow-md transition-shadow">
-        <p class="text-xs text-gray-500 mb-1">Documents</p>
+      <div class="bg-teal-900/20 backdrop-blur-sm rounded-xl p-3 border border-gray-800 hover:shadow-md transition-shadow">
+        <p class="text-xs text-gray-400 mb-1">Documents</p>
         <p class="text-2xl font-bold text-teal-600">
           {{ documentsCount }}
         </p>
       </div>
 
-      <div class="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-purple-200/50 hover:shadow-md transition-shadow">
-        <p class="text-xs text-gray-500 mb-1">Subscriptions</p>
+      <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-3 border border-gray-800 hover:shadow-md transition-shadow">
+        <p class="text-xs text-gray-400 mb-1">Subscriptions</p>
         <p class="text-2xl font-bold text-purple-600">
           {{ subscriptionsCount }}
         </p>

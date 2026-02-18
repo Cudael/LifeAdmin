@@ -2,7 +2,7 @@
   <div class="relative w-full md:w-96 group">
     <!-- Search Icon -->
     <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 transition-colors duration-200"
-         :class="{ 'text-teal-500': isFocused || modelValue }">
+         :class="{ 'text-teal-400': isFocused || modelValue }">
       <Search :size="20" />
     </div>
 
@@ -18,12 +18,12 @@
       type="text"
       :placeholder="placeholder"
       class="w-full pl-12 pr-24 py-3.5 
-             bg-white border-2 border-gray-200 
+             bg-gray-800 border-2 border-gray-700 
              rounded-xl
-             text-gray-900 placeholder-gray-400
+             text-white placeholder:text-gray-500
              transition-all duration-200
              focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-100
-             hover:border-gray-300
+             hover:border-gray-600
              group-hover:shadow-md"
     />
 
@@ -42,7 +42,7 @@
         <button
           v-if="modelValue"
           @click="clearSearch"
-          class="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors duration-200"
+          class="p-1.5 rounded-lg text-gray-400 hover:text-gray-300 hover:bg-gray-800 transition-colors duration-200"
           title="Clear search (Esc)"
         >
           <X :size="16" />
@@ -60,7 +60,7 @@
       >
         <kbd
           v-if="!modelValue && !isFocused && showShortcut"
-          class="hidden sm:flex items-center gap-1 px-2 py-1 bg-gray-100 border border-gray-200 rounded text-xs font-mono text-gray-500"
+          class="hidden sm:flex items-center gap-1 px-2 py-1 bg-gray-800 border border-gray-700 rounded text-xs font-mono text-gray-400"
         >
           <Command :size="12" />
           K

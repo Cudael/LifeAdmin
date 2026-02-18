@@ -1,26 +1,26 @@
 <template>
-  <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-shadow duration-300">
+  <div class="bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-800 p-6 hover:shadow-xl transition-shadow duration-300">
     
     <!-- Header -->
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
-        <Calendar :size="20" class="text-teal-500" />
+      <h3 class="text-lg font-bold text-white flex items-center gap-2">
+        <Calendar :size="20" class="text-teal-400" />
         {{ currentMonth }}
       </h3>
       <div class="flex items-center gap-2">
         <button
           @click="previousMonth"
-          class="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+          class="p-1.5 hover:bg-gray-800 rounded-lg transition-colors"
           aria-label="Previous month"
         >
-          <ChevronLeft :size="16" class="text-gray-600" />
+          <ChevronLeft :size="16" class="text-gray-300" />
         </button>
         <button
           @click="nextMonth"
-          class="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+          class="p-1.5 hover:bg-gray-800 rounded-lg transition-colors"
           aria-label="Next month"
         >
-          <ChevronRight :size="16" class="text-gray-600" />
+          <ChevronRight :size="16" class="text-gray-300" />
         </button>
       </div>
     </div>
@@ -30,7 +30,7 @@
       <div
         v-for="(day, index) in DAY_NAMES"
         :key="`day-${index}`"
-        class="text-center text-xs font-semibold text-gray-500 py-1"
+        class="text-center text-xs font-semibold text-gray-400 py-1"
       >
         {{ day.charAt(0) }}
       </div>
@@ -44,7 +44,7 @@
         @click="handleDayClick(day)"
         :class="[
           'aspect-square flex items-center justify-center text-sm rounded-lg transition-all duration-200 relative',
-          day.isCurrentMonth ? 'text-gray-900 hover:bg-teal-50' : 'text-gray-300',
+          day.isCurrentMonth ? 'text-white hover:bg-teal-900/30' : 'text-gray-300',
           day.isToday ? 'bg-teal-500 text-white font-bold hover:bg-teal-600' : '',
           day.hasItems && !day.isToday ? 'font-semibold' : '',
           !day.isCurrentMonth ? 'cursor-default' : 'cursor-pointer'
@@ -68,11 +68,11 @@
     </div>
 
     <!-- Footer - Quick stats -->
-    <div class="mt-4 pt-4 border-t border-gray-200">
+    <div class="mt-4 pt-4 border-t border-gray-800">
       <div class="flex items-center justify-between text-xs">
         <div class="flex items-center gap-2">
           <div class="w-2 h-2 rounded-full bg-red-500"></div>
-          <span class="text-gray-600">{{ expiringSoonCount }} expiring soon</span>
+          <span class="text-gray-300">{{ expiringSoonCount }} expiring soon</span>
         </div>
         <RouterLink
           to="/calendar"

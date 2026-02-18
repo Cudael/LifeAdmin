@@ -18,8 +18,8 @@ function clearFilters() {
 <template>
   <div class="text-center py-20">
     <Package :size="64" class="text-gray-300 mx-auto mb-4" />
-    <h3 class="text-xl font-bold text-gray-900 mb-2">No items found</h3>
-    <p class="text-gray-600 mb-6">
+    <h3 class="text-xl font-bold text-white mb-2">No items found</h3>
+    <p class="text-gray-300 mb-6">
       {{ hasActiveFilters
         ? 'Try adjusting your filters or search'
         : 'Get started by adding your first item'
@@ -29,7 +29,7 @@ function clearFilters() {
       <button
         v-if="hasActiveFilters"
         @click="clearFilters"
-        class="px-6 py-3 bg-white text-gray-700 rounded-xl font-medium border-2 border-gray-200 hover:border-gray-300 transition-colors"
+        class="px-6 py-3 bg-gray-800 text-gray-300 rounded-xl font-medium border-2 border-gray-700 hover:border-gray-600 transition-colors"
       >
         Clear Filters
       </button>
