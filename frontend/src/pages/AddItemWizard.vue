@@ -381,7 +381,10 @@ onMounted(async () => {
 async function loadUser() {
   try {
     const res = await apiFetch("/auth/me")
-    if (res.ok) {
+    if (!res) return
+
+    const contentType = res.headers.get("content-type") || ""
+    if (res.ok && contentType.includes("application/json")) {
       user.value = await res.json()
     }
   } catch (err) {
@@ -392,10 +395,16 @@ async function loadUser() {
 async function loadItemTypes() {
   try {
     const res = await apiFetch("/item-types")
-    if (res.ok) {
-      const data = await res.json()
-      itemTypes.value = data.item_types || []
+    if (!res) return  // apiFetch returned null (auth failure / network error)
+
+    const contentType = res.headers.get("content-type") || ""
+    if (!res.ok || !contentType.includes("application/json")) {
+      console.error("Failed to load item types: unexpected response", res.status)
+      return
     }
+
+    const data = await res.json()
+    itemTypes.value = data.item_types || []
   } catch (err) {
     console.error("Failed to load item types:", err)
   }
@@ -404,10 +413,16 @@ async function loadItemTypes() {
 async function loadCategories() {
   try {
     const res = await apiFetch("/item-types/categories")
-    if (res.ok) {
-      const data = await res.json()
-      categories.value = Object.keys(data.categories || {})
+    if (!res) return  // apiFetch returned null (auth failure / network error)
+
+    const contentType = res.headers.get("content-type") || ""
+    if (!res.ok || !contentType.includes("application/json")) {
+      console.error("Failed to load categories: unexpected response", res.status)
+      return
     }
+
+    const data = await res.json()
+    categories.value = Object.keys(data.categories || {})
   } catch (err) {
     console.error("Failed to load categories:", err)
   }
