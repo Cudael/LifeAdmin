@@ -35,7 +35,7 @@
       </p>
 
       <!-- Label -->
-      <p class="text-sm font-medium text-gray-400 mb-3">{{ label }}</p>
+      <p class="text-sm font-medium text-gray-200 mb-3">{{ label }}</p>
 
       <!-- Activity sparkline / summary -->
       <div v-if="activitySummary" class="flex items-center gap-1.5">
@@ -56,7 +56,6 @@
 
 <script setup>
 import { computed } from 'vue'
-import { MoreVertical } from 'lucide-vue-next'
 
 const ACCENT_MAP = {
   teal: {
@@ -64,7 +63,11 @@ const ACCENT_MAP = {
     borderActive: 'border-teal-500',
     borderHover: 'border-teal-700',
     ringActive: 'ring-teal-900/50',
-    iconBg: 'bg-gray-800',
+    iconBg: 'bg-teal-900/40',
+    iconColor: 'text-teal-400',
+    dotColor: 'bg-teal-400',
+    glowBg: 'bg-teal-500',
+    barGradient: 'bg-gradient-to-r from-teal-500 to-cyan-500',
     activityColor: 'text-teal-400',
   },
   orange: {
@@ -72,7 +75,11 @@ const ACCENT_MAP = {
     borderActive: 'border-orange-500',
     borderHover: 'border-orange-700',
     ringActive: 'ring-orange-900/50',
-    iconBg: 'bg-gray-800',
+    iconBg: 'bg-orange-900/40',
+    iconColor: 'text-orange-400',
+    dotColor: 'bg-orange-400',
+    glowBg: 'bg-orange-500',
+    barGradient: 'bg-gradient-to-r from-orange-500 to-amber-500',
     activityColor: 'text-orange-400',
   },
   red: {
@@ -80,7 +87,11 @@ const ACCENT_MAP = {
     borderActive: 'border-red-500',
     borderHover: 'border-red-700',
     ringActive: 'ring-red-900/50',
-    iconBg: 'bg-gray-800',
+    iconBg: 'bg-red-900/40',
+    iconColor: 'text-red-400',
+    dotColor: 'bg-red-400',
+    glowBg: 'bg-red-500',
+    barGradient: 'bg-gradient-to-r from-red-500 to-rose-500',
     activityColor: 'text-red-400',
   },
   amber: {
@@ -88,7 +99,11 @@ const ACCENT_MAP = {
     borderActive: 'border-amber-500',
     borderHover: 'border-amber-700',
     ringActive: 'ring-amber-900/50',
-    iconBg: 'bg-gray-800',
+    iconBg: 'bg-amber-900/40',
+    iconColor: 'text-amber-400',
+    dotColor: 'bg-amber-400',
+    glowBg: 'bg-amber-500',
+    barGradient: 'bg-gradient-to-r from-amber-500 to-yellow-500',
     activityColor: 'text-amber-400',
   },
   green: {
@@ -96,7 +111,11 @@ const ACCENT_MAP = {
     borderActive: 'border-green-500',
     borderHover: 'border-green-700',
     ringActive: 'ring-green-900/50',
-    iconBg: 'bg-gray-800',
+    iconBg: 'bg-green-900/40',
+    iconColor: 'text-green-400',
+    dotColor: 'bg-green-400',
+    glowBg: 'bg-green-500',
+    barGradient: 'bg-gradient-to-r from-green-500 to-emerald-500',
     activityColor: 'text-green-400',
   },
   purple: {
@@ -104,7 +123,11 @@ const ACCENT_MAP = {
     borderActive: 'border-purple-500',
     borderHover: 'border-purple-700',
     ringActive: 'ring-purple-900/50',
-    iconBg: 'bg-gray-800',
+    iconBg: 'bg-purple-900/40',
+    iconColor: 'text-purple-400',
+    dotColor: 'bg-purple-400',
+    glowBg: 'bg-purple-500',
+    barGradient: 'bg-gradient-to-r from-purple-500 to-violet-500',
     activityColor: 'text-purple-400',
   },
 }

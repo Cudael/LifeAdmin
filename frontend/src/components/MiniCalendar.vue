@@ -76,7 +76,7 @@
         </div>
         <RouterLink
           to="/calendar"
-          class="text-teal-600 font-medium hover:text-teal-700 hover:underline"
+          class="text-teal-400 font-medium hover:text-teal-300 hover:underline"
         >
           View Calendar →
         </RouterLink>
