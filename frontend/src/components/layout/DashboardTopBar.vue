@@ -244,6 +244,9 @@ const notificationItems = computed(() => {
       if (daysUntil < 0) {
         urgency = 'red'
         urgencyLabel = 'Expired'
+      } else if (daysUntil === 0) {
+        urgency = 'red'
+        urgencyLabel = 'Expires today'
       } else if (daysUntil <= 7) {
         urgency = 'red'
         urgencyLabel = `${daysUntil} days`

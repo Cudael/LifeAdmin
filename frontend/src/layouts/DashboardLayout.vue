@@ -60,14 +60,15 @@ const pageSubtitleComputed = computed(() => {
     case "Dashboard": {
       // Time-aware greeting with first name
       const hour = new Date().getHours()
-      const firstName = userName.value.split(' ')[0]
+      const firstName = userName.value.split(' ')[0].trim()
+      const displayName = firstName || userName.value || 'there'
       let greeting = 'Good morning'
       if (hour >= 12 && hour < 17) {
         greeting = 'Good afternoon'
       } else if (hour >= 17) {
         greeting = 'Good evening'
       }
-      return `${greeting}, ${firstName}! Here's your overview`
+      return `${greeting}, ${displayName}! Here's your overview`
     }
     case "Items":
       return "Manage all your documents and subscriptions"

@@ -342,9 +342,11 @@ function formatDate(date) {
 
 function getTimelineBadgeClasses(expirationDate) {
   const days = daysLeft(expirationDate)
-  if (days === null) return 'bg-teal-900/40 text-teal-400'
+  if (days === null) return 'bg-gray-900/40 text-gray-400'
   
-  if (days < 0 || days <= 7) {
+  if (days <= 0) {
+    return 'bg-red-900/40 text-red-400'
+  } else if (days <= 7) {
     return 'bg-red-900/40 text-red-400'
   } else if (days <= 30) {
     return 'bg-orange-900/40 text-orange-400'
@@ -355,10 +357,12 @@ function getTimelineBadgeClasses(expirationDate) {
 
 function getTimelineBadgeText(expirationDate) {
   const days = daysLeft(expirationDate)
-  if (days === null) return ''
+  if (days === null) return 'No expiration'
   
   if (days < 0) {
     return 'Expired'
+  } else if (days === 0) {
+    return 'Expires today'
   } else {
     return `${days} days left`
   }
