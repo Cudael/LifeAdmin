@@ -146,8 +146,8 @@
             class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-colors duration-200"
             :class="{
               'border-l-4 border-l-red-400': action.severity === 'error',
-              'border-l-4 border-l-orange-400': action.severity === 'warning' && action.id === 2,
-              'border-l-4 border-l-yellow-400': action.severity === 'warning' && action.id === 3
+              'border-l-4 border-l-orange-400': action.severity === 'warning' && action.priority === 'high',
+              'border-l-4 border-l-yellow-400': action.severity === 'warning' && action.priority === 'medium'
             }"
           >
             <div class="flex items-start gap-3">
@@ -155,8 +155,8 @@
                 class="w-2 h-2 rounded-full mt-2 flex-shrink-0"
                 :class="{
                   'bg-red-400': action.severity === 'error',
-                  'bg-orange-400': action.severity === 'warning' && action.id === 2,
-                  'bg-yellow-400': action.severity === 'warning' && action.id === 3,
+                  'bg-orange-400': action.severity === 'warning' && action.priority === 'high',
+                  'bg-yellow-400': action.severity === 'warning' && action.priority === 'medium',
                   'bg-white': action.severity === 'info'
                 }"
               ></div>
@@ -344,9 +344,7 @@ function getTimelineBadgeClasses(expirationDate) {
   const days = daysLeft(expirationDate)
   if (days === null) return 'bg-teal-900/40 text-teal-400'
   
-  if (days < 0) {
-    return 'bg-red-900/40 text-red-400'
-  } else if (days <= 7) {
+  if (days < 0 || days <= 7) {
     return 'bg-red-900/40 text-red-400'
   } else if (days <= 30) {
     return 'bg-orange-900/40 text-orange-400'
@@ -454,6 +452,7 @@ const recommended = computed(() => {
     actions.push({
       id: 1,
       severity: 'error',
+      priority: 'high',
       text: `${stats.value.expired} items have expired — review them`,
       link: "/items?filter=expired",
       cta: "Review Now"
@@ -464,6 +463,7 @@ const recommended = computed(() => {
     actions.push({
       id: 2,
       severity: 'warning',
+      priority: 'high',
       text: `${stats.value.soon} items are expiring soon`,
       link: "/items?filter=soon",
       cta: "View Items"
@@ -474,6 +474,7 @@ const recommended = computed(() => {
     actions.push({
       id: 3,
       severity: 'warning',
+      priority: 'medium',
       text: `${stats.value.missingDocs} items are missing documents`,
       link: "/items?filter=missingDocs",
       cta: "Fix Now"
@@ -484,6 +485,7 @@ const recommended = computed(() => {
     actions.push({
       id: 4,
       severity: 'info',
+      priority: 'low',
       text: "Add your first item to get started",
       link: "/add-item",
       cta: "Add Item"
