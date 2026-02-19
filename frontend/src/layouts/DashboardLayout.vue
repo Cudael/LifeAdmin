@@ -14,7 +14,8 @@ const route = useRoute()
 const authStore = useAuthStore()
 
 const props = defineProps({
-  pageTitle: { type: String, default: "Dashboard" }
+  pageTitle: { type: String, default: "Dashboard" },
+  pageSubtitle: { type: String, default: "" }
 })
 
 // UI State
@@ -48,10 +49,27 @@ const currentDate = computed(() => {
 })
 
 // Get page subtitle based on route
-const pageSubtitle = computed(() => {
+const pageSubtitleComputed = computed(() => {
+  // If prop is provided, use it
+  if (props.pageSubtitle) {
+    return props.pageSubtitle
+  }
+  
+  // Otherwise, compute based on page title
   switch(props.pageTitle) {
-    case "Dashboard":
-      return "Welcome back! Here's your overview"
+    case "Dashboard": {
+      // Time-aware greeting with first name
+      const hour = new Date().getHours()
+      const firstName = userName.value.split(' ')[0].trim()
+      const displayName = firstName || userName.value || 'there'
+      let greeting = 'Good morning'
+      if (hour >= 12 && hour < 17) {
+        greeting = 'Good afternoon'
+      } else if (hour >= 17) {
+        greeting = 'Good evening'
+      }
+      return `${greeting}, ${displayName}! Here's your overview`
+    }
     case "Items":
       return "Manage all your documents and subscriptions"
     case "Calendar":
@@ -277,10 +295,10 @@ onMounted(async () => {
         <div class="flex items-center justify-between">
           <div>
             <h1 class="text-2xl md:text-3xl font-bold text-white">{{ pageTitle }}</h1>
-            <p v-if="pageSubtitle" class="text-gray-400 mt-1">{{ pageSubtitle }}</p>
+            <p v-if="pageSubtitleComputed" class="text-gray-400 mt-1">{{ pageSubtitleComputed }}</p>
           </div>
           <!-- Show current date on dashboard -->
-          <div v-if="isDashboard" class="hidden md:block">
+          <div v-if="isDashboard" class="block">
             <p class="text-sm text-gray-400">{{ currentDate }}</p>
           </div>
         </div>
@@ -350,5 +368,12 @@ main::-webkit-scrollbar-thumb {
 
 main::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(to bottom, #0d9488, #0891b2);
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #14b8a6;
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 </style>

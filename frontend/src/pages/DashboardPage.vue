@@ -1,8 +1,13 @@
 <template>
   <DashboardLayout pageTitle="Dashboard">
 
-    <!-- SUMMARY CARDS - Compact Grid -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+    <!-- SUMMARY CARDS - Compact Grid with Loading Skeletons -->
+    <div style="animation-delay: 0ms" class="animate-fade-in">
+      <div v-if="loading" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+        <div v-for="i in 6" :key="i" class="rounded-2xl bg-gray-800/60 animate-pulse h-32"></div>
+      </div>
+      
+      <div v-else class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
       
       <SummaryCard
         label="Total Items"
@@ -65,9 +70,10 @@
       />
 
     </div>
+    </div>
 
     <!-- WIDGETS LAYOUT - Enhanced with better styling -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div style="animation-delay: 100ms" class="animate-fade-in grid grid-cols-1 lg:grid-cols-3 gap-6">
 
       <!-- RECENTLY ADDED (2 columns wide) - Enhanced -->
       <div class="lg:col-span-2 bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-800 p-6 hover:shadow-xl transition-shadow duration-300">
@@ -76,7 +82,7 @@
             <Clock :size="24" class="text-teal-400" />
             Recently Added
           </h3>
-          <RouterLink to="/items" class="text-teal-400 text-sm font-medium hover:text-teal-300 hover:underline">
+          <RouterLink to="/items" class="text-xs px-3 py-1 rounded-full bg-teal-900/40 text-teal-400 hover:bg-teal-900/60 hover:text-teal-300 transition-colors font-medium">
             View All →
           </RouterLink>
         </div>
@@ -138,9 +144,22 @@
             v-for="action in recommended"
             :key="action.id"
             class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-colors duration-200"
+            :class="{
+              'border-l-4 border-l-red-400': action.severity === 'error',
+              'border-l-4 border-l-orange-400': action.severity === 'warning' && action.priority === 'high',
+              'border-l-4 border-l-yellow-400': action.severity === 'warning' && action.priority === 'medium'
+            }"
           >
             <div class="flex items-start gap-3">
-              <div class="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
+              <div 
+                class="w-2 h-2 rounded-full mt-2 flex-shrink-0"
+                :class="{
+                  'bg-red-400': action.severity === 'error',
+                  'bg-orange-400': action.severity === 'warning' && action.priority === 'high',
+                  'bg-yellow-400': action.severity === 'warning' && action.priority === 'medium',
+                  'bg-white': action.severity === 'info'
+                }"
+              ></div>
               <div class="flex-1">
                 <p class="font-medium text-white mb-2">{{ action.text }}</p>
                 <RouterLink
@@ -159,7 +178,7 @@
     </div>
 
     <!-- NEW ROW: MINI CALENDAR + CATEGORIES -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+    <div style="animation-delay: 200ms" class="animate-fade-in grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
       
       <!-- Mini Calendar Widget -->
       <MiniCalendar :items="itemsStore.items" />
@@ -178,6 +197,7 @@
             v-for="category in categoryStats"
             :key="category.name"
             class="p-4 bg-teal-900/20 rounded-xl border border-teal-800 hover:shadow-md transition-all hover:scale-105 duration-200 cursor-pointer"
+            :class="{ 'opacity-40 grayscale': category.count === 0 }"
           >
             <div class="text-3xl mb-2">{{ category.icon }}</div>
             <p class="text-sm text-gray-400 mb-1">{{ category.name }}</p>
@@ -189,7 +209,7 @@
     </div>
 
     <!-- UPCOMING EXPIRATIONS (full width) - Enhanced -->
-    <div class="mt-6 bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-800 p-6 hover:shadow-xl transition-shadow duration-300">
+    <div style="animation-delay: 300ms" class="animate-fade-in mt-6 bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-800 p-6 hover:shadow-xl transition-shadow duration-300">
       <div class="flex items-center justify-between mb-6">
         <h3 class="text-xl font-bold text-white flex items-center gap-2">
           <AlertTriangle :size="24" class="text-orange-400" />
@@ -237,7 +257,7 @@
     </div>
 
     <!-- TIMELINE (full width) - Enhanced -->
-    <div class="mt-6 bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-800 p-6 hover:shadow-xl transition-shadow duration-300">
+    <div style="animation-delay: 400ms" class="animate-fade-in mt-6 bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-800 p-6 hover:shadow-xl transition-shadow duration-300">
       <div class="flex items-center justify-between mb-6">
         <h3 class="text-xl font-bold text-white flex items-center gap-2">
           <Calendar :size="24" class="text-teal-400" />
@@ -269,8 +289,11 @@
                 <Calendar :size="14" />
                 {{ formatDate(item.expiration_date) }}
               </span>
-              <span class="px-2 py-1 bg-teal-900/40 text-teal-400 rounded-full font-medium">
-                {{ daysLeft(item.expiration_date) }} days left
+              <span 
+                class="px-2 py-1 rounded-full font-medium"
+                :class="getTimelineBadgeClasses(item.expiration_date)"
+              >
+                {{ getTimelineBadgeText(item.expiration_date) }}
               </span>
             </div>
           </div>
@@ -307,6 +330,7 @@ const { getStatus, daysLeft } = useItemStatus()
 
 // Store API stats
 const apiStats = ref(null)
+const loading = ref(true)
 
 function navigateToItems(filter) {
   router.push({ path: '/items', query: { filter } })
@@ -314,6 +338,34 @@ function navigateToItems(filter) {
 
 function formatDate(date) {
   return new Date(date).toLocaleDateString()
+}
+
+function getTimelineBadgeClasses(expirationDate) {
+  const days = daysLeft(expirationDate)
+  if (days === null) return 'bg-gray-900/40 text-gray-400'
+  
+  if (days <= 0) {
+    return 'bg-red-900/40 text-red-400'
+  } else if (days <= 7) {
+    return 'bg-red-900/40 text-red-400'
+  } else if (days <= 30) {
+    return 'bg-orange-900/40 text-orange-400'
+  } else {
+    return 'bg-teal-900/40 text-teal-400'
+  }
+}
+
+function getTimelineBadgeText(expirationDate) {
+  const days = daysLeft(expirationDate)
+  if (days === null) return 'No expiration'
+  
+  if (days < 0) {
+    return 'Expired'
+  } else if (days === 0) {
+    return 'Expires today'
+  } else {
+    return `${days} days left`
+  }
 }
 
 const stats = computed(() => ({
@@ -403,6 +455,8 @@ const recommended = computed(() => {
   if (stats.value.expired > 0) {
     actions.push({
       id: 1,
+      severity: 'error',
+      priority: 'high',
       text: `${stats.value.expired} items have expired — review them`,
       link: "/items?filter=expired",
       cta: "Review Now"
@@ -412,6 +466,8 @@ const recommended = computed(() => {
   if (stats.value.soon > 0) {
     actions.push({
       id: 2,
+      severity: 'warning',
+      priority: 'high',
       text: `${stats.value.soon} items are expiring soon`,
       link: "/items?filter=soon",
       cta: "View Items"
@@ -421,6 +477,8 @@ const recommended = computed(() => {
   if (stats.value.missingDocs > 0) {
     actions.push({
       id: 3,
+      severity: 'warning',
+      priority: 'medium',
       text: `${stats.value.missingDocs} items are missing documents`,
       link: "/items?filter=missingDocs",
       cta: "Fix Now"
@@ -430,6 +488,8 @@ const recommended = computed(() => {
   if (stats.value.recent === 0) {
     actions.push({
       id: 4,
+      severity: 'info',
+      priority: 'low',
       text: "Add your first item to get started",
       link: "/add-item",
       cta: "Add Item"
@@ -452,5 +512,8 @@ onMounted(async () => {
   } catch (error) {
     console.error("Failed to fetch stats:", error)
   }
+  
+  // Set loading to false
+  loading.value = false
 })
 </script>
