@@ -1,64 +1,56 @@
 <template>
   <div
-    class="group relative p-5 rounded-2xl border cursor-pointer transition-all duration-300 select-none
-           bg-gray-900 overflow-hidden"
+    class="group relative overflow-hidden rounded-2xl border cursor-pointer
+           transition-all duration-300 select-none"
     :class="[
+      'bg-gradient-to-br from-gray-900 to-gray-900/80 backdrop-blur-xl',
       active
-        ? `shadow-xl scale-[1.02] ${computedBorderActive} ring-1 ${computedRingActive}`
-        : `border-gray-800 hover:${computedBorderHover} hover:shadow-lg hover:scale-[1.02]`
+        ? `shadow-xl scale-[1.02] ${accent.borderActive} ring-1 ${accent.ringActive}`
+        : `border-gray-800/50 hover:border-gray-700 hover:shadow-xl hover:shadow-${accentColor}-500/10 hover:scale-[1.01]`
     ]"
     @click="$emit('click')"
   >
-
-    <!-- Subtle hover background tint -->
+    <!-- Premium ambient glow -->
     <div
-      class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-      :class="computedHoverBg"
-    ></div>
+      class="absolute -top-12 -right-12 w-32 h-32 rounded-full blur-3xl
+             opacity-0 group-hover:opacity-20 transition-opacity duration-500"
+      :class="accent.glowBg"
+    />
 
-    <!-- Content -->
-    <div class="relative">
+    <!-- Inner content with glassmorphism inset -->
+    <div class="relative p-5">
 
-      <!-- TOP ROW: Icon + Label + 3-dot Menu -->
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center gap-2">
-          <!-- Icon: small, subtle, left side -->
-          <div
-            class="flex items-center justify-center w-8 h-8 rounded-lg flex-shrink-0"
-            :class="computedIconBg"
-          >
-            <component
-              :is="icon"
-              class="w-4 h-4 text-gray-200"
-            />
-          </div>
-          <h3 class="text-xs font-semibold tracking-widest uppercase text-gray-500 group-hover:text-gray-400 transition-colors leading-tight">
-            {{ label }}
-          </h3>
-        </div>
-        <!-- 3-dot menu icon -->
-        <MoreVertical :size="16" class="text-gray-600 group-hover:text-gray-400 transition-colors flex-shrink-0" />
+      <!-- Top: Icon badge -->
+      <div
+        class="w-10 h-10 rounded-xl flex items-center justify-center mb-4
+               ring-1 ring-white/5 shadow-inner"
+        :class="accent.iconBg"
+      >
+        <component :is="icon" class="w-5 h-5" :class="accent.iconColor" />
       </div>
 
-      <!-- VALUE (Large) -->
-      <p class="text-4xl font-bold text-white tracking-tight leading-none mb-2">
+      <!-- Value with animated counter feel -->
+      <p class="text-3xl font-bold text-white tracking-tight mb-1 tabular-nums">
         {{ formattedValue }}
       </p>
 
-      <!-- Subtitle -->
-      <p class="text-xs text-gray-500 mb-3">{{ subtitle }}</p>
+      <!-- Label -->
+      <p class="text-sm font-medium text-gray-400 mb-3">{{ label }}</p>
 
-      <!-- Activity Summary (at bottom with accent color) -->
-      <p 
-        v-if="activitySummary"
-        class="text-xs font-medium transition-colors"
-        :class="computedActivityColor"
-      >
-        {{ activitySummary }}
-      </p>
-
+      <!-- Activity sparkline / summary -->
+      <div v-if="activitySummary" class="flex items-center gap-1.5">
+        <div class="w-1.5 h-1.5 rounded-full animate-pulse" :class="accent.dotColor" />
+        <p class="text-xs font-medium" :class="accent.activityColor">
+          {{ activitySummary }}
+        </p>
+      </div>
     </div>
 
+    <!-- Bottom accent bar -->
+    <div
+      class="h-0.5 w-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      :class="accent.barGradient"
+    />
   </div>
 </template>
 
