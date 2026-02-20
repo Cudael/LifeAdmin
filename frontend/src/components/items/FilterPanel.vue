@@ -1,5 +1,19 @@
 <template>
-  <div class="mb-6">
+  <div class="space-y-3">
+    <!-- Filter Toggle Button -->
+    <div class="flex items-center gap-3">
+      <button
+        @click="showFilters = !showFilters"
+        class="flex items-center gap-2 px-5 py-3 bg-slate-800/60 hover:bg-slate-700/60 border border-white/5 hover:border-white/10 text-white rounded-xl font-medium transition-all duration-200"
+        :class="hasActiveFilters ? 'ring-1 ring-teal-500/50 text-teal-400' : ''"
+      >
+        <Filter :size="18" />
+        <span>Filters</span>
+        <div v-if="hasActiveFilters" class="w-2 h-2 rounded-full bg-teal-400 shadow-[0_0_8px_rgba(45,212,191,0.8)]"></div>
+      </button>
+    </div>
+
+    <!-- Expandable Filter Panel -->
     <Transition
       enter-active-class="transition-all duration-300 ease-out"
       enter-from-class="opacity-0 -translate-y-4 max-h-0"
@@ -12,13 +26,13 @@
         <div class="bg-slate-900/60 backdrop-blur-xl rounded-[2rem] p-8 border border-white/5 shadow-2xl">
           
           <div class="flex items-center justify-between mb-8">
-            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2 tracking-tight">
               <Filter :size="18" class="text-teal-400" /> Advanced Filters
             </h3>
             <button
               v-if="hasActiveFilters"
               @click="$emit('clearFilters')"
-              class="text-xs font-bold uppercase tracking-wider text-rose-400 hover:text-rose-300 transition-colors"
+              class="text-[10px] font-bold uppercase tracking-widest text-rose-400 hover:text-rose-300 transition-colors"
             >
               Clear All
             </button>
@@ -75,17 +89,19 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { Filter, Layers, AlertTriangle, FileText, Repeat } from 'lucide-vue-next'
 
 defineProps({
-  showFilters: Boolean,
   activeCategory: String,
   activeStatFilter: String,
   categoryFilters: Array,
   hasActiveFilters: Boolean
 })
 
-defineEmits(['update:showFilters', 'update:activeCategory', 'update:activeStatFilter', 'clearFilters'])
+defineEmits(['update:activeCategory', 'update:activeStatFilter', 'clearFilters'])
+
+const showFilters = ref(false)
 
 const statusFilters = [
   { label: 'All Items', value: 'all', icon: Layers },

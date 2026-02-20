@@ -6,7 +6,7 @@ import { useAuthStore } from "../stores/auth"
 import { useItemsStore } from "../stores/items"
 import { useItemStatus } from "../composables/useItemStatus"
 import DashboardLayout from "../layouts/DashboardLayout.vue"
-import DeleteModal from "../components/DeleteModal.vue"
+import DeleteModal from "../components/common/DeleteModal.vue"
 import {
   Edit2,
   Trash2,
