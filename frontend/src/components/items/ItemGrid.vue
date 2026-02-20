@@ -3,7 +3,7 @@
     <div
       v-for="item in items"
       :key="item.id"
-      class="group relative bg-slate-900/60 backdrop-blur-xl rounded-[2rem] border border-white/5 shadow-xl hover:shadow-2xl hover:border-teal-500/30 transition-all duration-500 overflow-hidden flex flex-col cursor-pointer"
+      class="group relative bg-slate-900/60 backdrop-blur-xl rounded-[2rem] border border-white/5 shadow-2xl hover:shadow-[0_0_40px_rgba(45,212,191,0.1)] hover:border-teal-500/30 transition-all duration-500 overflow-hidden flex flex-col cursor-pointer"
       @click="$router.push(`/items/${item.id}`)"
     >
       
@@ -65,7 +65,7 @@
         <!-- TITLE + CATEGORY -->
         <div>
           <div class="flex justify-between items-start gap-2 mb-2">
-            <h3 class="font-bold text-xl text-white leading-tight group-hover:text-teal-400 transition-colors truncate pr-2">
+            <h3 class="font-bold text-xl text-white leading-tight tracking-tight group-hover:text-teal-400 transition-colors truncate pr-2">
               {{ item.name }}
             </h3>
             <!-- Delete Button (Reveals on hover) -->
@@ -80,7 +80,7 @@
 
           <span
             class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest border"
-            :class="categoryColors[item.category] || 'bg-slate-800 border-white/5 text-slate-400'"
+            :class="categoryColors[item.category] || 'bg-slate-800/60 border-white/5 text-slate-400'"
           >
             <component :is="getCategoryIcon(item.category)" :size="10" />
             {{ item.category || 'Uncategorized' }}
@@ -92,8 +92,8 @@
         <!-- TIMELINE & PROGRESS -->
         <div class="space-y-3 mt-auto">
           <div class="flex items-center justify-between text-sm">
-            <span class="text-slate-400 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider">
-              <Calendar :size="14" class="text-slate-500" />
+            <span class="text-slate-500 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest">
+              <Calendar :size="14" />
               {{ item.type === 'subscription' ? 'Renews' : 'Expires' }}
             </span>
             <span class="font-bold text-slate-200">
@@ -114,7 +114,7 @@
                 :style="{ width: getProgressWidth(daysLeft(item.type === 'subscription' ? item.renewal_date : item.expiration_date)) }"
               ></div>
             </div>
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap">
+            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">
               {{ Math.abs(daysLeft(item.type === 'subscription' ? item.renewal_date : item.expiration_date)) }}d {{ daysLeft(item.type === 'subscription' ? item.renewal_date : item.expiration_date) < 0 ? 'overdue' : 'left' }}
             </span>
           </div>
@@ -126,8 +126,8 @@
 </template>
 
 <script setup>
-import { BASE_URL } from "../utils/api"
-import { useItemStatus } from "../composables/useItemStatus"
+import { BASE_URL } from "../../utils/api"
+import { useItemStatus } from "../../composables/useItemStatus"
 import { Calendar, FileText, CreditCard, Trash2, Plane, Heart, DollarSign, Briefcase, User, Repeat } from "lucide-vue-next"
 
 defineProps({ items: Array })

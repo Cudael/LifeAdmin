@@ -4,8 +4,8 @@ import { useRoute, useRouter } from "vue-router"
 import { apiFetch } from "../utils/api"
 import DashboardLayout from "../layouts/DashboardLayout.vue"
 import FileUploader from "../components/FileUploader.vue"
-import DeleteModal from "../components/DeleteModal.vue"
-import Autocomplete from "../components/Autocomplete.vue"
+import DeleteModal from "../components/common/DeleteModal.vue"
+import Autocomplete from "../components/common/Autocomplete.vue"
 import {
   Save,
   X,

@@ -1,7 +1,7 @@
 <template>
   <div class="relative w-full md:w-96 group">
     <!-- Search Icon -->
-    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 transition-colors duration-200"
+    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 transition-colors duration-200"
          :class="{ 'text-teal-400': isFocused || modelValue }">
       <Search :size="20" />
     </div>
@@ -17,14 +17,14 @@
       @keydown.enter="$emit('search', modelValue)"
       type="text"
       :placeholder="placeholder"
-      class="w-full pl-12 pr-24 py-3.5 
-             bg-gray-800 border-2 border-gray-700 
+      class="w-full pl-12 pr-24 py-3.5
+             bg-slate-950/50 border border-white/10
              rounded-xl
-             text-white placeholder:text-gray-500
+             text-white placeholder:text-slate-600
              transition-all duration-200
-             focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-100
-             hover:border-gray-600
-             group-hover:shadow-md"
+             focus:outline-none focus:ring-1 focus:ring-teal-500/50 focus:border-teal-500/50
+             shadow-inner
+             hover:border-white/20"
     />
 
     <!-- Right Side: Clear Button + Keyboard Shortcut -->
@@ -42,7 +42,7 @@
         <button
           v-if="modelValue"
           @click="clearSearch"
-          class="p-1.5 rounded-lg text-gray-400 hover:text-gray-300 hover:bg-gray-800 transition-colors duration-200"
+          class="p-1.5 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-800/50 transition-colors duration-200"
           title="Clear search (Esc)"
         >
           <X :size="16" />
@@ -60,7 +60,7 @@
       >
         <kbd
           v-if="!modelValue && !isFocused && showShortcut"
-          class="hidden sm:flex items-center gap-1 px-2 py-1 bg-gray-800 border border-gray-700 rounded text-xs font-mono text-gray-400"
+          class="hidden sm:flex items-center gap-1 px-2 py-1 bg-slate-900/60 border border-white/10 rounded text-xs font-mono text-slate-500"
         >
           <Command :size="12" />
           K

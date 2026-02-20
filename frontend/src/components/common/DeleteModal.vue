@@ -10,7 +10,7 @@
     >
       <div
         v-if="show"
-        class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+        class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
         @click.self="handleBackdropClick"
       >
         <Transition
@@ -23,13 +23,16 @@
         >
           <div
             v-if="show"
-            class="bg-gray-900 rounded-2xl shadow-2xl w-full max-w-md"
+            class="relative overflow-hidden bg-rose-950/80 backdrop-blur-xl border border-rose-500/30 rounded-[2rem] shadow-2xl w-full max-w-md"
             role="dialog"
             aria-modal="true"
             :aria-labelledby="titleId"
           >
+            <!-- Warning Halo Glow -->
+            <div class="absolute -top-24 -right-24 w-64 h-64 bg-rose-500/20 blur-[80px] rounded-full pointer-events-none"></div>
+
             <!-- Header -->
-            <div class="p-6 pb-4">
+            <div class="relative z-10 p-6 pb-4">
               <div class="flex items-start gap-4">
                 <!-- Icon -->
                 <div
@@ -47,11 +50,11 @@
                 <div class="flex-1">
                   <h3
                     :id="titleId"
-                    class="text-xl font-bold text-white mb-1"
+                    class="text-xl font-bold text-white mb-1 tracking-tight"
                   >
                     {{ title }}
                   </h3>
-                  <p class="text-sm text-gray-300">
+                  <p class="text-sm text-rose-200/70">
                     {{ message }}
                   </p>
                 </div>
@@ -60,7 +63,7 @@
                 <button
                   v-if="showCloseButton"
                   @click="handleCancel"
-                  class="flex-shrink-0 p-1 text-gray-400 hover:text-gray-300 rounded-lg hover:bg-gray-800 transition-colors"
+                  class="flex-shrink-0 p-1 text-rose-400/60 hover:text-rose-300 rounded-lg hover:bg-rose-500/10 transition-colors"
                   aria-label="Close"
                 >
                   <X :size="20" />
@@ -71,20 +74,20 @@
             <!-- Item Details (Optional) -->
             <div
               v-if="itemName || $slots.details"
-              class="px-6 pb-4"
+              class="relative z-10 px-6 pb-4"
             >
-              <div class="p-4 bg-gray-800/50 rounded-xl">
+              <div class="p-4 bg-rose-900/20 border border-rose-500/20 rounded-xl">
                 <slot name="details">
                   <div class="flex items-center gap-3">
                     <div
                       v-if="itemIcon"
-                      class="w-10 h-10 rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center flex-shrink-0"
+                      class="w-10 h-10 rounded-lg bg-rose-900/40 border border-rose-500/20 flex items-center justify-center flex-shrink-0"
                     >
-                      <component :is="itemIcon" :size="20" class="text-gray-300" />
+                      <component :is="itemIcon" :size="20" class="text-rose-300" />
                     </div>
                     <div class="flex-1 min-w-0">
                       <p class="font-semibold text-white truncate">{{ itemName }}</p>
-                      <p v-if="itemDescription" class="text-sm text-gray-300 truncate">{{ itemDescription }}</p>
+                      <p v-if="itemDescription" class="text-sm text-rose-200/60 truncate">{{ itemDescription }}</p>
                     </div>
                   </div>
                 </slot>
@@ -94,11 +97,11 @@
             <!-- Warning Message -->
             <div
               v-if="warningMessage || permanent"
-              class="px-6 pb-4"
+              class="relative z-10 px-6 pb-4"
             >
-              <div class="flex items-start gap-2 p-3 bg-red-900/20 border border-red-800 rounded-xl">
-                <AlertTriangle :size="16" class="text-red-600 flex-shrink-0 mt-0.5" />
-                <div class="text-sm text-red-300">
+              <div class="flex items-start gap-2 p-3 bg-rose-900/30 border border-rose-500/30 rounded-xl">
+                <AlertTriangle :size="16" class="text-rose-400 flex-shrink-0 mt-0.5" />
+                <div class="text-sm text-rose-300">
                   <p v-if="warningMessage">{{ warningMessage }}</p>
                   <p v-else-if="permanent">
                     <strong>This action cannot be undone.</strong> All data will be permanently deleted.
@@ -110,16 +113,16 @@
             <!-- Confirmation Input -->
             <div
               v-if="requireConfirmation"
-              class="px-6 pb-4"
+              class="relative z-10 px-6 pb-4"
             >
-              <label class="block text-sm font-medium text-gray-300 mb-2">
-                Type <span class="font-mono font-bold text-red-600">{{ confirmationText }}</span> to confirm:
+              <label class="block text-sm font-medium text-rose-300/80 mb-2">
+                Type <span class="font-mono font-bold text-rose-400">{{ confirmationText }}</span> to confirm:
               </label>
               <input
                 ref="confirmInputRef"
                 v-model="confirmationInput"
                 type="text"
-                class="w-full px-4 py-2 bg-gray-800 border-2 border-gray-700 text-white placeholder:text-gray-500 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                class="w-full px-4 py-2 bg-slate-950/50 border border-rose-500/30 text-white placeholder:text-slate-600 rounded-xl focus:ring-1 focus:ring-rose-500/50 focus:border-rose-500/50 shadow-inner"
                 :placeholder="`Type ${confirmationText}`"
                 @keydown.enter="handleConfirmWithEnter"
                 @keydown.esc="handleCancel"
@@ -127,12 +130,12 @@
             </div>
 
             <!-- Actions -->
-            <div class="px-6 pb-6">
+            <div class="relative z-10 px-6 pb-6">
               <div class="flex gap-3">
                 <button
                   @click="handleCancel"
                   :disabled="loading"
-                  class="flex-1 px-4 py-3 bg-gray-800 text-gray-300 rounded-xl font-semibold hover:bg-gray-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="flex-1 px-4 py-3 bg-slate-900/60 border border-white/5 text-slate-300 rounded-xl font-semibold hover:bg-slate-800/60 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {{ cancelText }}
                 </button>
@@ -142,9 +145,9 @@
                   :disabled="!canConfirm || loading"
                   class="flex-1 px-4 py-3 text-white rounded-xl font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   :class="[
-                    danger 
-                      ? 'bg-red-600 hover:bg-red-700 shadow-lg shadow-red-200' 
-                      : 'bg-teal-600 hover:bg-teal-700 shadow-lg shadow-teal-200'
+                    danger
+                      ? 'bg-rose-500/10 hover:bg-rose-500 border border-rose-500/50 hover:border-transparent text-rose-400 hover:text-white shadow-[0_0_20px_rgba(225,29,72,0.1)] hover:shadow-[0_0_30px_rgba(225,29,72,0.5)]'
+                      : 'bg-teal-600 hover:bg-teal-700 shadow-lg shadow-teal-900/50'
                   ]"
                 >
                   <Loader2 v-if="loading" :size="18" class="animate-spin" />
@@ -177,8 +180,8 @@ const props = defineProps({
   
   // Appearance
   icon: { type: [Object, Function], default: () => AlertTriangle },
-  iconBgColor: { type: String, default: 'bg-red-100' },
-  iconColor: { type: String, default: 'text-red-600' },
+  iconBgColor: { type: String, default: 'bg-rose-500/20' },
+  iconColor: { type: String, default: 'text-rose-400' },
   danger: { type: Boolean, default: true },
   
   // Button text

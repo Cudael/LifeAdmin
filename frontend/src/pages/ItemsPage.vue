@@ -26,17 +26,6 @@
         </div>
 
         <div class="flex items-center gap-3 w-full sm:w-auto">
-          <!-- Filter Toggle Button inside Header -->
-          <button 
-            @click="showFilters = !showFilters"
-            class="flex items-center gap-2 px-5 py-3 bg-slate-800 hover:bg-slate-700 border border-white/5 text-white rounded-xl font-medium transition-colors w-full sm:w-auto justify-center"
-            :class="hasActiveFilters ? 'ring-1 ring-teal-500/50 text-teal-400' : ''"
-          >
-            <Filter :size="18" />
-            <span>Filters</span>
-            <div v-if="hasActiveFilters" class="w-2 h-2 rounded-full bg-teal-400 shadow-[0_0_8px_rgba(45,212,191,0.8)]"></div>
-          </button>
-
           <!-- Add Item Button -->
           <RouterLink
             to="/add-item"
@@ -48,9 +37,8 @@
         </div>
       </div>
 
-      <!-- FILTER BAR (Expandable) -->
-      <FilterBar
-        v-model:showFilters="showFilters"
+      <!-- FILTER PANEL (with built-in toggle) -->
+      <FilterPanel
         :activeCategory="activeCategory"
         :activeStatFilter="activeStatFilter"
         :categoryFilters="categoryFilters"
@@ -161,13 +149,13 @@ import { useItemStatus } from "../composables/useItemStatus"
 import { apiFetch } from "../utils/api"
 
 import DashboardLayout from "../layouts/DashboardLayout.vue"
-import ItemGrid from "../components/ItemGrid.vue"
-import DeleteModal from "../components/DeleteModal.vue"
+import ItemGrid from "../components/items/ItemGrid.vue"
+import DeleteModal from "../components/common/DeleteModal.vue"
 import ItemsInsights from "../components/items/ItemsInsights.vue"
-import FilterBar from "../components/FilterBar.vue"
+import FilterPanel from "../components/items/FilterPanel.vue"
 import ItemsEmptyState from "../components/items/ItemsEmptyState.vue"
 
-import { Search, Plus, Filter, FileText, Repeat, Layers, Heart, Wallet, Briefcase, User, Plane, Home, AlertTriangle, Sparkles } from "lucide-vue-next"
+import { Search, Plus, FileText, Repeat, Layers, Heart, Wallet, Briefcase, User, Plane, Home, AlertTriangle, Sparkles } from "lucide-vue-next"
 
 const itemsStore = useItemsStore()
 const authStore = useAuthStore()
@@ -182,7 +170,6 @@ const search = ref("")
 const deleteModalOpen = ref(false)
 const itemToDelete = ref(null)
 const showInsights = ref(false)
-const showFilters = ref(false)
 
 // Computed properties
 const insights = computed(() => {

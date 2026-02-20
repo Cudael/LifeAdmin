@@ -9,7 +9,7 @@
       @keydown.up.prevent="navigateUp"
       @keydown.enter.prevent="selectCurrent"
       @keydown.escape="showSuggestions = false"
-      class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl transition-all duration-200 bg-white/50"
+      class="w-full px-4 py-3 bg-slate-950/50 border border-white/10 text-white placeholder:text-slate-600 rounded-xl transition-all duration-200 shadow-inner"
       :class="focusClasses"
       :placeholder="placeholder"
       :required="required"
@@ -19,7 +19,7 @@
     <Transition name="dropdown">
       <div
         v-if="showSuggestions && filteredSuggestions.length"
-        class="absolute z-50 w-full mt-2 bg-white border-2 border-gray-200 rounded-xl shadow-xl max-h-60 overflow-y-auto"
+        class="absolute z-50 w-full mt-2 bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-xl shadow-xl max-h-60 overflow-y-auto"
       >
         <button
           v-for="(suggestion, index) in filteredSuggestions"
@@ -31,8 +31,8 @@
         >
           <span class="text-2xl">{{ suggestion.icon }}</span>
           <div>
-            <p class="font-semibold text-gray-900">{{ suggestion.label }}</p>
-            <p class="text-xs text-gray-500">{{ suggestion.description }}</p>
+            <p class="font-semibold text-white">{{ suggestion.label }}</p>
+            <p class="text-xs text-slate-400">{{ suggestion.description }}</p>
           </div>
         </button>
       </div>
@@ -73,7 +73,6 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"])
 
-const BLUR_DELAY = 200 // Delay in milliseconds to allow click events on suggestions to fire
 const inputValue = ref(props.modelValue)
 const showSuggestions = ref(false)
 const selectedIndex = ref(0)
@@ -100,9 +99,9 @@ const filteredSuggestions = computed(() => {
 // Dynamic focus classes based on color prop
 const focusClasses = computed(() => {
   if (props.color === "teal") {
-    return "focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+    return "focus:ring-1 focus:ring-teal-500/50 focus:border-teal-500/50"
   } else if (props.color === "purple") {
-    return "focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+    return "focus:ring-1 focus:ring-purple-500/50 focus:border-purple-500/50"
   }
   return ""
 })
@@ -110,9 +109,9 @@ const focusClasses = computed(() => {
 // Dynamic hover classes based on color prop
 const hoverClasses = computed(() => {
   if (props.color === "teal") {
-    return "bg-gradient-to-r from-teal-50 to-cyan-50"
+    return "bg-teal-500/10 text-teal-300"
   } else if (props.color === "purple") {
-    return "bg-gradient-to-r from-purple-50 to-pink-50"
+    return "bg-purple-500/10 text-purple-300"
   }
   return ""
 })
@@ -136,7 +135,7 @@ function onBlur() {
   // Delay to allow click events on suggestions to fire first
   setTimeout(() => {
     showSuggestions.value = false
-  }, BLUR_DELAY)
+  }, 200)
 }
 
 // Navigate down in suggestions
