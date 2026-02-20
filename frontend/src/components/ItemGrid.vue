@@ -1,234 +1,123 @@
 <template>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
     <div
       v-for="item in items"
       :key="item.id"
-      class="group relative bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-gray-800 shadow-lg hover:shadow-2xl hover:border-teal-300 transition-all duration-300 overflow-hidden flex flex-col"
+      class="group relative bg-slate-900/60 backdrop-blur-xl rounded-[2rem] border border-white/5 shadow-xl hover:shadow-2xl hover:border-teal-500/30 transition-all duration-500 overflow-hidden flex flex-col cursor-pointer"
+      @click="$router.push(`/items/${item.id}`)"
     >
       
-      <!-- Status Ribbon (top-right corner) -->
-      <div class="absolute top-4 right-4 z-10">
+      <!-- Top Glowing Edge -->
+      <div class="absolute top-0 left-0 right-0 h-px z-30 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        <div class="h-full w-1/2 bg-gradient-to-r from-transparent via-teal-400 to-transparent"></div>
+      </div>
+
+      <!-- STATUS RIBBON (Floating Frosted Glass) -->
+      <div class="absolute top-4 right-4 z-20">
         <div
-          :class="[
-            'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg backdrop-blur-sm',
-            expirationStatus(item).bgClass
-          ]"
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold tracking-widest uppercase shadow-[0_4px_12px_rgba(0,0,0,0.3)] backdrop-blur-md border"
+          :class="expirationStatus(item).bgClass"
         >
-          <span :class="expirationStatus(item).iconClass">
-            {{ expirationStatus(item).icon }}
-          </span>
+          <span :class="expirationStatus(item).iconClass">{{ expirationStatus(item).icon }}</span>
           <span>{{ expirationStatus(item).label }}</span>
         </div>
       </div>
 
-      <!-- IMAGE -->
-      <div class="relative w-full h-48 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
-        
-        <!-- Overlay gradient for better text contrast -->
-        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10"></div>
+      <!-- IMAGE AREA -->
+      <div class="relative w-full h-48 overflow-hidden bg-slate-950">
+        <!-- Deep Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent z-10 pointer-events-none"></div>
 
-        <!-- Subscription icon -->
         <img
           v-if="item.type === 'subscription' && getSubscriptionIcon(item.name)"
           :src="getSubscriptionIcon(item.name)"
-          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100"
           :alt="item.name"
         />
-
-        <!-- Uploaded file -->
         <img
           v-else-if="item.file_path"
           :src="`${BASE_URL}${item.file_path}`"
-          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90 mix-blend-luminosity"
           :alt="item.name"
         />
-
-        <!-- Category fallback -->
         <img
           v-else
           :src="defaultImages[item.category] || defaultImages.default"
-          class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-500"
+          class="w-full h-full object-cover opacity-40 group-hover:scale-105 group-hover:opacity-60 transition-transform duration-700 mix-blend-luminosity"
           :alt="item.category"
         />
 
-        <!-- Type Badge (bottom-left of image) -->
-        <div class="absolute bottom-3 left-3 z-20">
+        <!-- Type Badge (Bottom Left) -->
+        <div class="absolute bottom-4 left-5 z-20">
           <span
-            :class="[
-              'inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold backdrop-blur-md shadow-lg',
-              item.type === 'subscription' 
-                ? 'bg-purple-500/90 text-white' 
-                : 'bg-teal-500/90 text-white'
-            ]"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider backdrop-blur-xl border border-white/10 shadow-lg"
+            :class="item.type === 'subscription' ? 'bg-indigo-500/20 text-indigo-300' : 'bg-teal-500/20 text-teal-300'"
           >
-            <component :is="item.type === 'subscription' ? CreditCard : FileText" :size="14" />
+            <component :is="item.type === 'subscription' ? CreditCard : FileText" :size="12" />
             {{ item.type === 'subscription' ? 'Subscription' : 'Document' }}
           </span>
         </div>
       </div>
 
       <!-- CONTENT SECTION -->
-      <div class="flex-1 p-5 flex flex-col gap-3">
+      <div class="flex-1 p-6 pt-2 flex flex-col gap-4 relative z-20">
         
-        <!-- TITLE + DELETE -->
-        <div class="flex justify-between items-start gap-3">
-          <div class="flex-1">
-            <h3 class="font-bold text-lg text-white leading-tight group-hover:text-teal-600 transition-colors">
+        <!-- TITLE + CATEGORY -->
+        <div>
+          <div class="flex justify-between items-start gap-2 mb-2">
+            <h3 class="font-bold text-xl text-white leading-tight group-hover:text-teal-400 transition-colors truncate pr-2">
               {{ item.name }}
             </h3>
-
-            <!-- CATEGORY BADGE -->
-            <div class="mt-2">
-              <span
-                :class="[
-                  'inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold',
-                  categoryColors[item.category] || 'bg-gray-100 text-gray-700'
-                ]"
-              >
-                <component :is="getCategoryIcon(item.category)" :size="12" />
-                {{ item.category }}
-              </span>
-            </div>
+            <!-- Delete Button (Reveals on hover) -->
+            <button
+              @click.stop="$emit('delete', item)"
+              class="flex-shrink-0 w-8 h-8 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:bg-rose-500 hover:text-white transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100 -translate-y-1 group-hover:translate-y-0"
+              title="Delete item"
+            >
+              <Trash2 :size="14" />
+            </button>
           </div>
 
-          <!-- DELETE BUTTON -->
-          <button
-            @click.stop="handleDelete(item)"
-            class="flex-shrink-0 w-8 h-8 rounded-lg bg-gray-800 text-gray-400 hover:bg-red-500 hover:text-white transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100"
-            title="Delete item"
+          <span
+            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest border"
+            :class="categoryColors[item.category] || 'bg-slate-800 border-white/5 text-slate-400'"
           >
-            <Trash2 :size="16" />
-          </button>
+            <component :is="getCategoryIcon(item.category)" :size="10" />
+            {{ item.category || 'Uncategorized' }}
+          </span>
         </div>
 
-        <!-- NOTES -->
-        <p class="text-gray-300 text-sm line-clamp-2 leading-relaxed">
-          {{ item.notes || "No notes added" }}
-        </p>
+        <div class="h-px bg-white/5 w-full"></div>
 
-        <!-- DIVIDER -->
-        <div class="border-t border-gray-800"></div>
+        <!-- TIMELINE & PROGRESS -->
+        <div class="space-y-3 mt-auto">
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-slate-400 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider">
+              <Calendar :size="14" class="text-slate-500" />
+              {{ item.type === 'subscription' ? 'Renews' : 'Expires' }}
+            </span>
+            <span class="font-bold text-slate-200">
+              {{ formatDate(item.type === 'subscription' ? item.renewal_date : item.expiration_date) }}
+            </span>
+          </div>
 
-        <!-- DATE + DAYS SECTION -->
-        <div class="space-y-2">
-
-          <!-- SUBSCRIPTIONS -->
-          <template v-if="item.type === 'subscription'">
-            
-            <!-- Renewal Date -->
-            <div class="flex items-center justify-between text-sm">
-              <span class="text-gray-400 flex items-center gap-1.5">
-                <Calendar :size="14" />
-                Renews:
-              </span>
-              <span class="font-semibold text-white">
-                {{ formatDate(item.renewal_date) }}
-              </span>
+          <!-- Progress Bar -->
+          <div class="flex items-center gap-3">
+            <div class="flex-1 bg-slate-950 rounded-full h-1 overflow-hidden shadow-inner">
+              <div 
+                class="h-full transition-all duration-1000 ease-out shadow-[0_0_10px_currentColor]"
+                :class="[
+                  daysLeft(item.type === 'subscription' ? item.renewal_date : item.expiration_date) < 0 ? 'bg-rose-500 text-rose-500' : 
+                  daysLeft(item.type === 'subscription' ? item.renewal_date : item.expiration_date) < 7 ? 'bg-orange-500 text-orange-500' : 
+                  daysLeft(item.type === 'subscription' ? item.renewal_date : item.expiration_date) < 30 ? 'bg-amber-400 text-amber-400' : 'bg-teal-500 text-teal-500'
+                ]"
+                :style="{ width: getProgressWidth(daysLeft(item.type === 'subscription' ? item.renewal_date : item.expiration_date)) }"
+              ></div>
             </div>
-
-            <!-- Days until renewal -->
-            <div class="flex items-center gap-2">
-              <div class="flex-1 bg-gray-800/50 rounded-full h-1.5 overflow-hidden">
-                <div 
-                  :class="[
-                    'h-full transition-all duration-500',
-                    daysLeft(item.renewal_date) < 0 ? 'bg-red-500' : 
-                    daysLeft(item.renewal_date) < 7 ? 'bg-orange-500' : 
-                    daysLeft(item.renewal_date) < 30 ? 'bg-yellow-500' : 'bg-green-500'
-                  ]"
-                  :style="{ width: getProgressWidth(daysLeft(item.renewal_date)) }"
-                ></div>
-              </div>
-              <span class="text-xs font-medium text-gray-300 whitespace-nowrap">
-                {{ Math.abs(daysLeft(item.renewal_date)) }} days {{ daysLeft(item.renewal_date) < 0 ? 'overdue' : 'left' }}
-              </span>
-            </div>
-
-            <!-- Optional expiration -->
-            <div v-if="item.expiration_date" class="pt-2 border-t border-gray-800">
-              <div class="flex items-center justify-between text-sm">
-                <span class="text-gray-400 flex items-center gap-1.5">
-                  <AlertTriangle :size="14" />
-                  Ends:
-                </span>
-                <span class="font-semibold text-orange-400">
-                  {{ formatDate(item.expiration_date) }}
-                </span>
-              </div>
-            </div>
-
-          </template>
-
-          <!-- DOCUMENTS -->
-          <template v-else>
-            
-            <!-- Expiration Date -->
-            <div class="flex items-center justify-between text-sm">
-              <span class="text-gray-400 flex items-center gap-1.5">
-                <Calendar :size="14" />
-                Expires:
-              </span>
-              <span class="font-semibold text-white">
-                {{ formatDate(item.expiration_date) }}
-              </span>
-            </div>
-
-            <!-- Days left progress -->
-            <div class="flex items-center gap-2">
-              <div class="flex-1 bg-gray-800/50 rounded-full h-1.5 overflow-hidden">
-                <div 
-                  :class="[
-                    'h-full transition-all duration-500',
-                    daysLeft(item.expiration_date) < 0 ? 'bg-red-500' : 
-                    daysLeft(item.expiration_date) < 7 ? 'bg-orange-500' : 
-                    daysLeft(item.expiration_date) < 30 ? 'bg-yellow-500' : 'bg-green-500'
-                  ]"
-                  :style="{ width: getProgressWidth(daysLeft(item.expiration_date)) }"
-                ></div>
-              </div>
-              <span class="text-xs font-medium text-gray-300 whitespace-nowrap">
-                {{ Math.abs(daysLeft(item.expiration_date)) }} days {{ daysLeft(item.expiration_date) < 0 ? 'overdue' : 'left' }}
-              </span>
-            </div>
-
-          </template>
-
-        </div>
-
-        <!-- ACTIONS ROW -->
-        <div class="flex items-center gap-2 pt-2 mt-auto">
-          
-          <!-- View Document Button -->
-          <a
-            v-if="item.file_path"
-            :href="`${BASE_URL}${item.file_path}`"
-            target="_blank"
-            class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl text-sm font-semibold hover:shadow-lg hover:shadow-teal-500/30 transition-all duration-200"
-            @click.stop
-          >
-            <ExternalLink :size="16" />
-            View Document
-          </a>
-
-          <!-- Edit Button -->
-          <RouterLink
-            :to="`/items/${item.id}/edit`"
-            class="flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-800 border-2 border-gray-700 text-gray-300 rounded-xl text-sm font-semibold hover:border-teal-500 hover:text-teal-600 transition-all duration-200"
-            @click.stop
-          >
-            <Edit2 :size="16" />
-            Edit
-          </RouterLink>
-
-          <!-- View Details Button -->
-          <RouterLink
-            :to="`/items/${item.id}`"
-            class="flex items-center justify-center p-2.5 bg-gray-800 text-gray-300 rounded-xl hover:bg-gray-700 transition-colors"
-            title="View details"
-            @click.stop
-          >
-            <Eye :size="18" />
-          </RouterLink>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap">
+              {{ Math.abs(daysLeft(item.type === 'subscription' ? item.renewal_date : item.expiration_date)) }}d {{ daysLeft(item.type === 'subscription' ? item.renewal_date : item.expiration_date) < 0 ? 'overdue' : 'left' }}
+            </span>
+          </div>
         </div>
 
       </div>
@@ -239,171 +128,51 @@
 <script setup>
 import { BASE_URL } from "../utils/api"
 import { useItemStatus } from "../composables/useItemStatus"
-import { 
-  Calendar, 
-  AlertTriangle, 
-  FileText, 
-  CreditCard, 
-  Trash2, 
-  ExternalLink, 
-  Edit2, 
-  Eye,
-  Plane,
-  Heart,
-  DollarSign,
-  Briefcase,
-  User,
-  Repeat
-} from "lucide-vue-next"
+import { Calendar, FileText, CreditCard, Trash2, Plane, Heart, DollarSign, Briefcase, User, Repeat } from "lucide-vue-next"
 
-defineProps({
-  items: Array
-})
-
-// ✅ Define the emit
-const emit = defineEmits(['delete'])
-
-// ✅ Add handler function
-function handleDelete(item) {
-  emit('delete', item)
-}
+defineProps({ items: Array })
+defineEmits(['delete'])
 
 const { daysLeft } = useItemStatus()
 
-/* -----------------------------
-   STATUS LOGIC (ENHANCED)
------------------------------ */
 function expirationStatus(item) {
   const today = new Date()
+  const targetDate = item.type === 'subscription' ? item.renewal_date : item.expiration_date
 
-  // SUBSCRIPTIONS
-  if (item.type === "subscription") {
-    if (!item.renewal_date) {
-      return { 
-        label: "Active", 
-        bgClass: "bg-green-500/90 text-white",
-        iconClass: "",
-        icon: "✓"
-      }
-    }
+  if (!targetDate) return { label: "Active", bgClass: "bg-emerald-500/10 border-emerald-500/20 text-emerald-400", iconClass: "", icon: "●" }
 
-    const renewal = new Date(item.renewal_date)
-    const diff = (renewal - today) / (1000 * 60 * 60 * 24)
+  const diff = (new Date(targetDate) - today) / (1000 * 60 * 60 * 24)
 
-    if (diff < 0) {
-      return { 
-        label: "Expired", 
-        bgClass: "bg-red-500/90 text-white",
-        iconClass: "animate-pulse",
-        icon: "⚠"
-      }
-    }
-    if (diff < 30) {
-      return { 
-        label: "Soon", 
-        bgClass: "bg-orange-500/90 text-white",
-        iconClass: "",
-        icon: "⏰"
-      }
-    }
-
-    return { 
-      label: "Active", 
-      bgClass: "bg-green-500/90 text-white",
-      iconClass: "",
-      icon: "✓"
-    }
-  }
-
-  // DOCUMENTS
-  if (!item.expiration_date) {
-    return { 
-      label: "Valid", 
-      bgClass: "bg-green-500/90 text-white",
-      iconClass: "",
-      icon: "✓"
-    }
-  }
-
-  const exp = new Date(item.expiration_date)
-  const diff = (exp - today) / (1000 * 60 * 60 * 24)
-
-  if (diff < 0) {
-    return { 
-      label: "Expired", 
-      bgClass: "bg-red-500/90 text-white",
-      iconClass: "animate-pulse",
-      icon: "⚠"
-    }
-  }
-  if (diff < 30) {
-    return { 
-      label: "Soon", 
-      bgClass: "bg-orange-500/90 text-white",
-      iconClass: "",
-      icon: "⏰"
-    }
-  }
-
-  return { 
-    label: "Valid", 
-    bgClass: "bg-green-500/90 text-white",
-    iconClass: "",
-    icon: "✓"
-  }
+  if (diff < 0) return { label: "Expired", bgClass: "bg-rose-500/10 border-rose-500/20 text-rose-400", iconClass: "animate-pulse", icon: "●" }
+  if (diff < 30) return { label: "Soon", bgClass: "bg-orange-500/10 border-orange-500/20 text-orange-400", iconClass: "", icon: "●" }
+  return { label: "Active", bgClass: "bg-emerald-500/10 border-emerald-500/20 text-emerald-400", iconClass: "", icon: "●" }
 }
 
-/* -----------------------------
-   PROGRESS BAR WIDTH
------------------------------ */
 function getProgressWidth(days) {
   if (days < 0) return '100%'
   if (days > 365) return '100%'
-  
-  const maxDays = 365
-  const percentage = Math.min((days / maxDays) * 100, 100)
-  return `${percentage}%`
+  return `${Math.min((days / 365) * 100, 100)}%`
 }
 
-/* -----------------------------
-   FORMAT DATE
------------------------------ */
 function formatDate(date) {
   if (!date) return 'N/A'
-  return new Date(date).toLocaleDateString('en-US', { 
-    month: 'short', 
-    day: 'numeric', 
-    year: 'numeric' 
-  })
+  return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
 
-/* -----------------------------
-   CATEGORY COLORS + ICONS
------------------------------ */
 const categoryColors = {
-  Travel: "bg-blue-100 text-blue-700",
-  Health: "bg-red-100 text-red-700",
-  Finance: "bg-green-100 text-green-700",
-  Work: "bg-yellow-100 text-yellow-700",
-  Personal: "bg-purple-100 text-purple-700",
-  Subscriptions: "bg-indigo-100 text-indigo-700"
+  Travel: "bg-blue-500/10 border-blue-500/20 text-blue-400",
+  Health: "bg-rose-500/10 border-rose-500/20 text-rose-400",
+  Finance: "bg-emerald-500/10 border-emerald-500/20 text-emerald-400",
+  Work: "bg-amber-500/10 border-amber-500/20 text-amber-400",
+  Personal: "bg-purple-500/10 border-purple-500/20 text-purple-400",
+  Subscriptions: "bg-indigo-500/10 border-indigo-500/20 text-indigo-400"
 }
 
 function getCategoryIcon(category) {
-  const icons = {
-    Travel: Plane,
-    Health: Heart,
-    Finance: DollarSign,
-    Work: Briefcase,
-    Personal: User,
-    Subscriptions: Repeat
-  }
+  const icons = { Travel: Plane, Health: Heart, Finance: DollarSign, Work: Briefcase, Personal: User, Subscriptions: Repeat }
   return icons[category] || FileText
 }
 
-/* -----------------------------
-   DEFAULT IMAGES
------------------------------ */
 const defaultImages = {
   Travel: "/src/assets/category-defaults/travel.jpg",
   Health: "/src/assets/category-defaults/health.jpg",
@@ -422,15 +191,10 @@ const subscriptionIcons = {
 
 function getSubscriptionIcon(name) {
   if (!name) return null
-
   const key = name.toLowerCase()
-
   for (const brand in subscriptionIcons) {
-    if (key.includes(brand)) {
-      return subscriptionIcons[brand]
-    }
+    if (key.includes(brand)) return subscriptionIcons[brand]
   }
-
   return null
 }
 </script>

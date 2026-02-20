@@ -57,166 +57,193 @@ async function handleUpgradeClick() {
 </script>
 
 <template>
-  <section id="pricing" class="py-16 bg-gradient-to-b from-white to-[#f7fdfc] relative overflow-hidden">
+  <section id="pricing" class="py-24 md:py-32 relative overflow-hidden z-10">
     
-    <!-- Decorative gradient -->
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(20,184,166,0.05),transparent_70%)]"></div>
+    <!-- Ambient glowing backgrounds -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[500px] bg-teal-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
 
     <div class="max-w-screen-xl mx-auto px-6 text-center relative z-10">
 
       <!-- Section Label -->
-      <div class="inline-flex items-center gap-2 px-4 py-2 bg-teal-100 text-teal-700 rounded-full mb-4 text-sm font-semibold">
-        <Award :size="16" />
+      <div class="inline-flex items-center gap-2 px-4 py-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 rounded-full mb-6 text-sm font-semibold tracking-wide">
+        <Award :size="16" class="fill-current/20" />
         Simple Pricing
       </div>
 
       <!-- Title -->
-      <h2 class="text-5xl font-extrabold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-4 pb-1">
-        Choose the Plan That Fits You
+      <h2 class="text-4xl md:text-5xl font-extrabold text-slate-50 tracking-tight mb-6">
+        Choose the plan that <span class="bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">fits you.</span>
       </h2>
 
-      <!-- Underline -->
-      <div class="w-16 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 mx-auto mb-12"></div>
+      <p class="text-lg text-slate-400 max-w-2xl mx-auto mb-16">
+        Start for free, upgrade when you need to. No hidden fees, cancel anytime.
+      </p>
 
       <!-- Pricing Grid -->
-      <div class="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
+      <div class="grid lg:grid-cols-3 gap-8 lg:gap-8 max-w-6xl mx-auto items-center">
 
-        <!-- FREE PLAN -->
-        <div class="group p-10 bg-white rounded-3xl border-2 border-gray-200 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 text-left">
-          <div class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-semibold mb-4">
-            Free Forever
+        <!-- FREE PLAN (Left Card) -->
+        <div class="group relative p-8 lg:p-10 bg-slate-900/40 backdrop-blur-md rounded-[2.5rem] border border-white/5 hover:border-white/10 transition-all duration-300 text-left flex flex-col h-full">
+          <div class="mb-8">
+            <div class="inline-block px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs font-bold uppercase tracking-wider mb-6 border border-white/5">
+              Free Forever
+            </div>
+            <h3 class="text-2xl font-bold text-slate-100 mb-2">Basic</h3>
+            <!-- Removed fixed height, added min-h for responsive wrapping -->
+            <p class="text-slate-400 text-sm min-h-[3rem]">Perfect for getting your life organized.</p>
           </div>
-          <h3 class="text-3xl font-semibold mb-2">Free</h3>
-          <p class="text-gray-600 mb-6">Perfect for getting started.</p>
 
-          <p class="text-5xl font-bold text-gray-900 mb-2">€0</p>
-          <p class="text-gray-500 mb-8">No credit card required</p>
+          <div class="mb-8">
+            <p class="text-5xl font-extrabold text-slate-50 tracking-tight mb-2">€0</p>
+            <p class="text-slate-500 text-sm font-medium">No credit card required</p>
+          </div>
 
-          <ul class="space-y-4 text-gray-700 mb-10">
+          <ul class="space-y-4 text-slate-300 mb-10 flex-1">
             <li class="flex items-start gap-3">
-              <CheckCircle2 :size="20" class="text-teal-500 flex-shrink-0 mt-0.5" />
+              <CheckCircle2 :size="20" class="text-teal-500/70 flex-shrink-0 mt-0.5" />
               <span>Track up to 20 items</span>
             </li>
             <li class="flex items-start gap-3">
-              <CheckCircle2 :size="20" class="text-teal-500 flex-shrink-0 mt-0.5" />
+              <CheckCircle2 :size="20" class="text-teal-500/70 flex-shrink-0 mt-0.5" />
               <span>Smart reminders</span>
             </li>
             <li class="flex items-start gap-3">
-              <CheckCircle2 :size="20" class="text-teal-500 flex-shrink-0 mt-0.5" />
+              <CheckCircle2 :size="20" class="text-teal-500/70 flex-shrink-0 mt-0.5" />
               <span>Document uploads (100MB)</span>
             </li>
             <li class="flex items-start gap-3">
-              <CheckCircle2 :size="20" class="text-teal-500 flex-shrink-0 mt-0.5" />
+              <CheckCircle2 :size="20" class="text-teal-500/70 flex-shrink-0 mt-0.5" />
               <span>Secure cloud storage</span>
             </li>
           </ul>
 
           <RouterLink
             to="/register"
-            class="block text-center px-7 py-4 bg-gray-100 text-gray-900 rounded-xl text-lg font-semibold hover:bg-gray-200 transition group-hover:shadow-lg"
+            class="block text-center px-7 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-2xl text-lg font-semibold transition-all duration-300 w-full mt-auto"
           >
             Start Free
           </RouterLink>
         </div>
 
-        <!-- PREMIUM MONTHLY -->
-        <div class="relative p-10 bg-gradient-to-br from-white to-teal-50 rounded-3xl border-2 border-teal-400 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 text-left transform scale-105">
+        <!-- PREMIUM MONTHLY (Center Hero Card) -->
+        <!-- Added pt-12 to ensure the badge doesn't overlap the inner content -->
+        <div class="relative px-8 pt-12 pb-8 lg:px-10 lg:pt-14 lg:pb-10 bg-gradient-to-b from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-[2.5rem] border border-teal-500/50 shadow-[0_0_40px_rgba(45,212,191,0.15)] transition-all duration-300 lg:-mt-8 lg:mb-8 text-left flex flex-col z-20">
+
+          <!-- Glowing accent overlay -->
+          <div class="absolute inset-0 bg-gradient-to-br from-teal-500/5 via-transparent to-cyan-500/5 rounded-[2.5rem] pointer-events-none"></div>
 
           <!-- Most Popular Badge -->
-          <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white text-sm font-bold px-6 py-2 rounded-full shadow-lg flex items-center gap-2">
-            <Star :size="16" class="fill-white" />
+          <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-teal-400 to-cyan-400 text-slate-950 text-xs font-extrabold uppercase tracking-widest px-5 py-2 rounded-full shadow-[0_0_20px_rgba(45,212,191,0.4)] flex items-center gap-1.5 whitespace-nowrap">
+            <Star :size="14" class="fill-slate-950" />
             Most Popular
           </div>
 
-          <div class="inline-block px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-sm font-semibold mb-4">
-            Best Value
+          <div class="relative z-10 flex-1 flex flex-col">
+            <div class="mb-8">
+              <div class="inline-block px-3 py-1 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+                Best Value
+              </div>
+              <h3 class="text-2xl font-bold text-slate-50 mb-2">Premium</h3>
+              <!-- Removed fixed height, added min-h for responsive wrapping -->
+              <p class="text-slate-400 text-sm min-h-[3rem]">Full access. No limits. Total peace of mind.</p>
+            </div>
+
+            <div class="mb-8">
+              <div class="flex items-baseline gap-1 mb-2">
+                <p class="text-5xl font-extrabold text-white tracking-tight">€2.99</p>
+                <span class="text-lg text-slate-400 font-medium">/mo</span>
+              </div>
+              <p class="text-teal-400 text-sm font-semibold">Billed monthly</p>
+            </div>
+
+            <ul class="space-y-4 text-slate-200 mb-10 flex-1">
+              <li class="flex items-start gap-3">
+                <CheckCircle2 :size="20" class="text-teal-400 flex-shrink-0 mt-0.5 shadow-[0_0_10px_rgba(45,212,191,0.3)] rounded-full" />
+                <span class="font-semibold text-white">Unlimited items</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <CheckCircle2 :size="20" class="text-teal-400 flex-shrink-0 mt-0.5" />
+                <span>Priority reminders</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <CheckCircle2 :size="20" class="text-teal-400 flex-shrink-0 mt-0.5" />
+                <span>Unlimited document uploads</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <CheckCircle2 :size="20" class="text-teal-400 flex-shrink-0 mt-0.5" />
+                <span>Advanced insights & analytics</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <CheckCircle2 :size="20" class="text-teal-400 flex-shrink-0 mt-0.5" />
+                <span>Priority support</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <CheckCircle2 :size="20" class="text-teal-400 flex-shrink-0 mt-0.5" />
+                <span>Early access to new features</span>
+              </li>
+            </ul>
+
+            <div class="mt-auto">
+              <button
+                @click="handleUpgradeClick"
+                :disabled="isLoading"
+                class="group block text-center px-7 py-4 bg-gradient-to-r from-teal-400 to-cyan-400 text-slate-950 rounded-2xl text-lg font-bold shadow-[0_0_20px_rgba(45,212,191,0.3)] hover:shadow-[0_0_30px_rgba(45,212,191,0.5)] hover:from-teal-300 hover:to-cyan-300 transition-all items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed w-full"
+              >
+                <span v-if="isLoading" class="flex items-center justify-center gap-2">
+                  <svg class="animate-spin h-5 w-5 text-slate-950" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  Processing...
+                </span>
+                <span v-else class="flex items-center justify-center gap-2">
+                  Upgrade Monthly
+                  <ArrowRight :size="20" class="group-hover:translate-x-1 transition-transform" />
+                </span>
+              </button>
+              <p v-if="errorMessage" class="text-rose-400 text-sm mt-3 text-center font-medium">{{ errorMessage }}</p>
+            </div>
           </div>
-          <h3 class="text-3xl font-semibold mb-2 text-teal-600">Premium Monthly</h3>
-          <p class="text-gray-600 mb-6">Full access. No limits.</p>
-
-          <div class="flex items-baseline gap-2 mb-2">
-            <p class="text-5xl font-bold text-gray-900">€2.99</p>
-            <span class="text-xl text-gray-500">/mo</span>
-          </div>
-          <p class="text-teal-600 font-medium mb-8">Billed monthly</p>
-
-          <ul class="space-y-4 text-gray-700 mb-10">
-            <li class="flex items-start gap-3">
-              <CheckCircle2 :size="20" class="text-teal-500 flex-shrink-0 mt-0.5" />
-              <span><strong>Unlimited items</strong></span>
-            </li>
-            <li class="flex items-start gap-3">
-              <CheckCircle2 :size="20" class="text-teal-500 flex-shrink-0 mt-0.5" />
-              <span>Priority reminders</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <CheckCircle2 :size="20" class="text-teal-500 flex-shrink-0 mt-0.5" />
-              <span>Unlimited document uploads</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <CheckCircle2 :size="20" class="text-teal-500 flex-shrink-0 mt-0.5" />
-              <span>Advanced insights & analytics</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <CheckCircle2 :size="20" class="text-teal-500 flex-shrink-0 mt-0.5" />
-              <span>Priority support</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <CheckCircle2 :size="20" class="text-teal-500 flex-shrink-0 mt-0.5" />
-              <span>Early access to new features</span>
-            </li>
-          </ul>
-
-          <button
-            @click="handleUpgradeClick"
-            :disabled="isLoading"
-            class="group block text-center px-7 py-4 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl text-lg font-bold shadow-lg hover:shadow-2xl hover:from-teal-400 hover:to-cyan-400 transition-all items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed w-full"
-          >
-            <span v-if="isLoading">Processing...</span>
-            <span v-else class="flex items-center justify-center gap-2">
-              Upgrade Monthly
-              <ArrowRight :size="20" class="group-hover:translate-x-1 transition-transform" />
-            </span>
-          </button>
-          <p v-if="errorMessage" class="text-red-600 text-sm mt-2 text-center">{{ errorMessage }}</p>
         </div>
 
-        <!-- PREMIUM YEARLY -->
-        <div class="group p-10 bg-white rounded-3xl border-2 border-teal-200 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 text-left">
-          <div class="inline-block px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-sm font-semibold mb-4">
-            Save 33%
+        <!-- PREMIUM YEARLY (Right Card) -->
+        <div class="group relative p-8 lg:p-10 bg-slate-900/40 backdrop-blur-md rounded-[2.5rem] border border-white/5 hover:border-teal-500/30 transition-all duration-300 text-left flex flex-col h-full">
+          <div class="mb-8">
+            <div class="inline-block px-3 py-1 bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+              Save 33%
+            </div>
+            <h3 class="text-2xl font-bold text-slate-100 mb-2">Yearly</h3>
+            <!-- Removed fixed height, added min-h for responsive wrapping -->
+            <p class="text-slate-400 text-sm min-h-[3rem]">Save money with a one-time yearly payment.</p>
           </div>
-          <h3 class="text-3xl font-semibold mb-2 text-teal-600">Premium Yearly</h3>
-          <p class="text-gray-600 mb-6">Save money with the yearly plan.</p>
 
-          <div class="flex items-baseline gap-2 mb-2">
-            <p class="text-5xl font-bold text-gray-900">€24</p>
-            <span class="text-xl text-gray-500">/yr</span>
+          <div class="mb-8">
+            <div class="flex items-baseline gap-1 mb-2">
+              <p class="text-5xl font-extrabold text-slate-50 tracking-tight">€24</p>
+              <span class="text-lg text-slate-500 font-medium">/yr</span>
+            </div>
+            <p class="text-cyan-400 text-sm font-semibold">€2/mo · Save €12/year</p>
           </div>
-          <p class="text-teal-600 font-semibold mb-8">€2/month · Save €12/year</p>
 
-          <ul class="space-y-4 text-gray-700 mb-10">
+          <ul class="space-y-4 text-slate-300 mb-10 flex-1">
             <li class="flex items-start gap-3">
-              <CheckCircle2 :size="20" class="text-teal-500 flex-shrink-0 mt-0.5" />
+              <CheckCircle2 :size="20" class="text-teal-500/70 flex-shrink-0 mt-0.5" />
               <span>Everything in Monthly</span>
             </li>
             <li class="flex items-start gap-3">
-              <CheckCircle2 :size="20" class="text-teal-500 flex-shrink-0 mt-0.5" />
-              <span><strong>33% discount</strong></span>
+              <CheckCircle2 :size="20" class="text-teal-500 flex-shrink-0 mt-0.5 shadow-[0_0_10px_rgba(45,212,191,0.2)] rounded-full" />
+              <span class="font-semibold text-white">33% annual discount</span>
             </li>
             <li class="flex items-start gap-3">
-              <CheckCircle2 :size="20" class="text-teal-500 flex-shrink-0 mt-0.5" />
+              <CheckCircle2 :size="20" class="text-teal-500/70 flex-shrink-0 mt-0.5" />
               <span>Priority support</span>
             </li>
             <li class="flex items-start gap-3">
-              <CheckCircle2 :size="20" class="text-teal-500 flex-shrink-0 mt-0.5" />
+              <CheckCircle2 :size="20" class="text-teal-500/70 flex-shrink-0 mt-0.5" />
               <span>Exclusive yearly-only perks</span>
             </li>
           </ul>
 
           <RouterLink
             to="/register"
-            class="block text-center px-7 py-4 bg-teal-500 text-white rounded-xl text-lg font-semibold shadow-lg hover:bg-teal-600 hover:shadow-xl transition group-hover:scale-105"
+            class="block text-center px-7 py-4 bg-teal-500/10 hover:bg-teal-500/20 border border-teal-500/20 text-teal-400 rounded-2xl text-lg font-semibold transition-all duration-300 w-full group-hover:border-teal-500/40 mt-auto"
           >
             Upgrade Yearly
           </RouterLink>
@@ -224,14 +251,16 @@ async function handleUpgradeClick() {
 
       </div>
 
-      <!-- Money Back Guarantee -->
-      <div class="mt-16 p-6 bg-gradient-to-r from-teal-50 to-cyan-50 rounded-2xl border border-teal-200 inline-flex items-center gap-3">
-        <div class="w-12 h-12 rounded-full bg-teal-500 flex items-center justify-center">
-          <Shield :size="24" class="text-white" />
-        </div>
-        <div class="text-left">
-          <p class="font-semibold text-gray-900">30-day money-back guarantee</p>
-          <p class="text-sm text-gray-600">No questions asked. Full refund if you're not satisfied.</p>
+      <!-- Trust Badge / Money Back Guarantee -->
+      <div class="mt-20 p-1 bg-gradient-to-r from-teal-500/20 via-cyan-500/20 to-teal-500/20 rounded-3xl inline-block max-w-xl w-full">
+        <div class="flex items-center gap-4 sm:gap-6 p-6 sm:p-8 bg-slate-950 rounded-[1.4rem]">
+          <div class="w-14 h-14 shrink-0 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center shadow-[0_0_15px_rgba(45,212,191,0.15)]">
+            <Shield :size="28" class="text-teal-400" />
+          </div>
+          <div class="text-left">
+            <p class="text-lg font-bold text-slate-100 mb-1">30-day money-back guarantee</p>
+            <p class="text-sm text-slate-400 leading-relaxed">No questions asked. Try it completely risk-free. Full refund if you're not entirely satisfied.</p>
+          </div>
         </div>
       </div>
 

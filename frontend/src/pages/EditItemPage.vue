@@ -238,16 +238,16 @@ onMounted(async () => {
 
     <!-- Breadcrumb -->
     <div class="mb-6">
-      <div class="flex items-center gap-2 text-sm text-gray-600">
-        <RouterLink to="/dashboard" class="hover:text-teal-600 transition-colors">Dashboard</RouterLink>
+      <div class="flex items-center gap-2 text-sm text-gray-400">
+        <RouterLink to="/dashboard" class="hover:text-teal-400 transition-colors">Dashboard</RouterLink>
         <ChevronRight :size="16" />
-        <RouterLink to="/items" class="hover:text-teal-600 transition-colors">Items</RouterLink>
+        <RouterLink to="/items" class="hover:text-teal-400 transition-colors">Items</RouterLink>
         <ChevronRight :size="16" />
-        <RouterLink :to="`/items/${route.params.id}`" class="hover:text-teal-600 transition-colors">
+        <RouterLink :to="`/items/${route.params.id}`" class="hover:text-teal-400 transition-colors">
           {{ item.name || 'Item' }}
         </RouterLink>
         <ChevronRight :size="16" />
-        <span class="text-gray-900 font-medium">Edit</span>
+        <span class="text-white font-medium">Edit</span>
       </div>
     </div>
 
@@ -255,16 +255,16 @@ onMounted(async () => {
     <div class="flex justify-between items-center mb-8">
       <button
         @click="$router.back()"
-        class="group inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-gray-200 rounded-xl shadow-sm hover:border-teal-300 hover:shadow-md transition-all duration-200"
+        class="group inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-br from-gray-900 to-gray-800/80 border border-gray-700/40 text-gray-300 rounded-lg hover:border-gray-600 transition-all duration-200"
       >
         <ArrowLeft :size="18" class="group-hover:-translate-x-1 transition-transform" />
-        <span class="font-medium text-gray-700">Back</span>
+        <span class="font-medium">Back</span>
       </button>
 
       <button
         @click="showDeleteModal = true"
         :disabled="saving || deleting"
-        class="group inline-flex items-center gap-2 px-4 py-2 bg-red-50 border-2 border-red-200 text-red-600 rounded-xl font-medium hover:bg-red-100 hover:border-red-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        class="group inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-br from-red-950/40 to-red-900/20 border border-red-800/50 text-red-400 rounded-lg font-medium hover:bg-red-950/60 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <Trash2 :size="18" />
         Delete Item
@@ -275,7 +275,7 @@ onMounted(async () => {
     <div v-if="loading" class="flex items-center justify-center py-20">
       <div class="text-center">
         <Loader2 :size="48" class="text-teal-500 animate-spin mx-auto mb-4" />
-        <p class="text-gray-600">Loading item...</p>
+        <p class="text-gray-400">Loading item...</p>
       </div>
     </div>
 
@@ -293,12 +293,12 @@ onMounted(async () => {
       >
         <div
           v-if="successMessage"
-          class="mb-6 p-4 bg-green-50 border-2 border-green-200 rounded-xl flex items-start gap-3 animate-bounce-in"
+          class="mb-6 p-4 bg-gradient-to-br from-green-950/40 to-green-900/20 border border-green-800/50 rounded-xl flex items-start gap-3 animate-bounce-in"
         >
-          <CheckCircle2 :size="20" class="text-green-500 flex-shrink-0 mt-0.5" />
+          <CheckCircle2 :size="20" class="text-green-400 flex-shrink-0 mt-0.5" />
           <div>
-            <p class="text-sm font-semibold text-green-700">{{ successMessage }}</p>
-            <p class="text-xs text-green-600 mt-1">Redirecting...</p>
+            <p class="text-sm font-semibold text-green-300">{{ successMessage }}</p>
+            <p class="text-xs text-green-400 mt-1">Redirecting...</p>
           </div>
         </div>
       </Transition>
@@ -314,27 +314,27 @@ onMounted(async () => {
       >
         <div
           v-if="errorMessage"
-          class="mb-6 p-4 bg-red-50 border-2 border-red-200 rounded-xl flex items-start gap-3 animate-shake"
+          class="mb-6 p-4 bg-gradient-to-br from-red-950/40 to-red-900/20 border border-red-800/50 rounded-xl flex items-start gap-3 animate-shake"
         >
-          <AlertTriangle :size="20" class="text-red-500 flex-shrink-0 mt-0.5" />
-          <p class="text-sm text-red-700">{{ errorMessage }}</p>
+          <AlertTriangle :size="20" class="text-red-400 flex-shrink-0 mt-0.5" />
+          <p class="text-sm text-red-300">{{ errorMessage }}</p>
         </div>
       </Transition>
 
       <!-- FORM CARD -->
-      <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-gray-100 p-8 md:p-10">
+      <div class="bg-gradient-to-br from-gray-900 to-gray-800/80 backdrop-blur-xl rounded-xl border border-gray-700/40 p-8 md:p-10">
 
         <!-- Header -->
-        <div class="flex items-center gap-3 mb-8 pb-6 border-b border-gray-200">
+        <div class="flex items-center gap-3 mb-8 pb-6 border-b border-gray-700/50">
           <div :class="[
-            'w-12 h-12 rounded-xl flex items-center justify-center',
-            isDocument ? 'bg-gradient-to-br from-teal-500 to-cyan-500' : 'bg-gradient-to-br from-purple-500 to-pink-500'
+            'w-12 h-12 rounded-xl flex items-center justify-center ring-1',
+            isDocument ? 'bg-teal-500/20 ring-teal-500/30' : 'bg-purple-500/20 ring-purple-500/30'
           ]">
-            <component :is="isDocument ? FileText : Repeat" :size="24" class="text-white" />
+            <component :is="isDocument ? FileText : Repeat" :size="24" :class="isDocument ? 'text-teal-400' : 'text-purple-400'" />
           </div>
           <div>
-            <h2 class="text-2xl font-bold text-gray-900">Edit Item</h2>
-            <p class="text-sm text-gray-600">Update your {{ item.type }} details</p>
+            <h2 class="text-2xl font-bold text-white">Edit Item</h2>
+            <p class="text-sm text-gray-400">Update your {{ item.type }} details</p>
           </div>
         </div>
 
@@ -346,10 +346,10 @@ onMounted(async () => {
 
             <!-- NAME -->
             <div class="space-y-2">
-              <label class="flex items-center gap-2 text-sm font-semibold text-gray-700">
-                <FileText :size="16" class="text-teal-600" />
+              <label class="flex items-center gap-2 text-sm font-semibold text-gray-300">
+                <FileText :size="16" class="text-teal-400" />
                 Name
-                <span class="text-red-500">*</span>
+                <span class="text-red-400">*</span>
               </label>
               <Autocomplete
                 v-if="isDocument"
@@ -364,7 +364,7 @@ onMounted(async () => {
                 v-else
                 v-model="item.name"
                 type="text"
-                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200"
+                class="w-full px-4 py-3 bg-white/5 border border-gray-700/50 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200"
                 required
                 :disabled="saving"
               />
@@ -372,14 +372,14 @@ onMounted(async () => {
 
             <!-- TYPE -->
             <div class="space-y-2">
-              <label class="flex items-center gap-2 text-sm font-semibold text-gray-700">
-                <Repeat :size="16" class="text-teal-600" />
+              <label class="flex items-center gap-2 text-sm font-semibold text-gray-300">
+                <Repeat :size="16" class="text-teal-400" />
                 Type
-                <span class="text-red-500">*</span>
+                <span class="text-red-400">*</span>
               </label>
               <select
                 v-model="item.type"
-                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200 appearance-none cursor-pointer"
+                class="w-full px-4 py-3 bg-white/5 border border-gray-700/50 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200 appearance-none cursor-pointer"
                 required
                 :disabled="saving"
               >
@@ -392,14 +392,14 @@ onMounted(async () => {
 
           <!-- CATEGORY -->
           <div class="space-y-2">
-            <label class="flex items-center gap-2 text-sm font-semibold text-gray-700">
-              <FolderOpen :size="16" class="text-teal-600" />
+            <label class="flex items-center gap-2 text-sm font-semibold text-gray-300">
+              <FolderOpen :size="16" class="text-teal-400" />
               Category
-              <span class="text-red-500">*</span>
+              <span class="text-red-400">*</span>
             </label>
             <select
               v-model="item.category"
-              class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200 appearance-none cursor-pointer"
+              class="w-full px-4 py-3 bg-white/5 border border-gray-700/50 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200 appearance-none cursor-pointer"
               required
               :disabled="saving"
             >
@@ -415,58 +415,58 @@ onMounted(async () => {
 
             <!-- EXPIRATION DATE (for documents) -->
             <div v-if="isDocument" class="space-y-2">
-              <label class="flex items-center gap-2 text-sm font-semibold text-gray-700">
-                <Calendar :size="16" class="text-teal-600" />
+              <label class="flex items-center gap-2 text-sm font-semibold text-gray-300">
+                <Calendar :size="16" class="text-teal-400" />
                 Expiration Date
               </label>
               <input
                 v-model="item.expiration_date"
                 type="date"
-                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200"
+                class="w-full px-4 py-3 bg-white/5 border border-gray-700/50 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200"
                 :disabled="saving"
               />
             </div>
 
             <!-- RENEWAL DATE (for subscriptions) -->
             <div v-if="isSubscription" class="space-y-2">
-              <label class="flex items-center gap-2 text-sm font-semibold text-gray-700">
-                <Calendar :size="16" class="text-purple-600" />
+              <label class="flex items-center gap-2 text-sm font-semibold text-gray-300">
+                <Calendar :size="16" class="text-purple-400" />
                 Renewal Date
               </label>
               <input
                 v-model="item.renewal_date"
                 type="date"
-                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
+                class="w-full px-4 py-3 bg-white/5 border border-gray-700/50 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
                 :disabled="saving"
               />
             </div>
 
             <!-- EXPIRATION DATE (for subscriptions - optional) -->
             <div v-if="isSubscription" class="space-y-2">
-              <label class="flex items-center gap-2 text-sm font-semibold text-gray-700">
-                <Calendar :size="16" class="text-purple-600" />
+              <label class="flex items-center gap-2 text-sm font-semibold text-gray-300">
+                <Calendar :size="16" class="text-purple-400" />
                 Expiration Date
                 <span class="text-gray-500 text-xs font-normal">(optional)</span>
               </label>
               <input
                 v-model="item.expiration_date"
                 type="date"
-                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
+                class="w-full px-4 py-3 bg-white/5 border border-gray-700/50 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
                 :disabled="saving"
               />
             </div>
 
             <!-- REMINDER SCHEDULE -->
             <div class="space-y-2">
-              <label class="flex items-center gap-2 text-sm font-semibold text-gray-700">
-                <Bell :size="16" :class="isDocument ? 'text-teal-600' : 'text-purple-600'" />
+              <label class="flex items-center gap-2 text-sm font-semibold text-gray-300">
+                <Bell :size="16" :class="isDocument ? 'text-teal-400' : 'text-purple-400'" />
                 Reminder Schedule
                 <span class="text-gray-500 text-xs font-normal">(optional)</span>
               </label>
               <div class="space-y-3">
-                <div class="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                  <Info :size="16" class="text-blue-600 flex-shrink-0" />
-                  <p class="text-xs text-blue-700">
+                <div class="flex items-center gap-2 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                  <Info :size="16" class="text-blue-400 flex-shrink-0" />
+                  <p class="text-xs text-blue-300">
                     Custom reminder for this item, or leave as default to use your account setting ({{ userDefaultReminderDays }} days).
                   </p>
                 </div>
@@ -476,10 +476,10 @@ onMounted(async () => {
                     type="button"
                     @click="item.reminder_days_before = null"
                     :class="[
-                      'flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 border-2',
+                      'flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 border',
                       item.reminder_days_before === null
-                        ? `bg-gradient-to-r ${isDocument ? 'from-teal-500 to-cyan-500 border-teal-500' : 'from-purple-500 to-pink-500 border-purple-500'} text-white shadow-md`
-                        : 'bg-white text-gray-700 border-gray-200 hover:border-teal-300'
+                        ? `bg-gradient-to-r ${isDocument ? 'from-teal-500 to-cyan-500' : 'from-purple-500 to-pink-500'} border-transparent text-white shadow-lg`
+                        : 'bg-white/5 text-gray-300 border-gray-700/50 hover:border-gray-600'
                     ]"
                     :disabled="saving"
                   >
@@ -491,10 +491,10 @@ onMounted(async () => {
                     :key="days"
                     @click="item.reminder_days_before = days"
                     :class="[
-                      'flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 border-2',
+                      'flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 border',
                       item.reminder_days_before === days
-                        ? `bg-gradient-to-r ${isDocument ? 'from-teal-500 to-cyan-500 border-teal-500' : 'from-purple-500 to-pink-500 border-purple-500'} text-white shadow-md`
-                        : 'bg-white text-gray-700 border-gray-200 hover:border-teal-300'
+                        ? `bg-gradient-to-r ${isDocument ? 'from-teal-500 to-cyan-500' : 'from-purple-500 to-pink-500'} border-transparent text-white shadow-lg`
+                        : 'bg-white/5 text-gray-300 border-gray-700/50 hover:border-gray-600'
                     ]"
                     :disabled="saving"
                   >
@@ -508,15 +508,15 @@ onMounted(async () => {
 
           <!-- NOTES -->
           <div class="space-y-2">
-            <label class="flex items-center gap-2 text-sm font-semibold text-gray-700">
-              <FileText :size="16" class="text-teal-600" />
+            <label class="flex items-center gap-2 text-sm font-semibold text-gray-300">
+              <FileText :size="16" class="text-teal-400" />
               Notes
               <span class="text-gray-500 text-xs font-normal">(optional)</span>
             </label>
             <textarea
               v-model="item.notes"
               rows="4"
-              class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200 resize-none"
+              class="w-full px-4 py-3 bg-white/5 border border-gray-700/50 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200 resize-none"
               placeholder="Add any additional details..."
               :disabled="saving"
             ></textarea>
@@ -524,8 +524,8 @@ onMounted(async () => {
 
           <!-- FILE UPLOAD -->
           <div class="space-y-2">
-            <label class="flex items-center gap-2 text-sm font-semibold text-gray-700">
-              <Upload :size="16" class="text-teal-600" />
+            <label class="flex items-center gap-2 text-sm font-semibold text-gray-300">
+              <Upload :size="16" class="text-teal-400" />
               File
               <span class="text-gray-500 text-xs font-normal">(optional)</span>
             </label>
@@ -536,11 +536,11 @@ onMounted(async () => {
           </div>
 
           <!-- ACTION BUTTONS -->
-          <div class="flex gap-4 pt-6 border-t border-gray-200">
+          <div class="flex gap-4 pt-6 border-t border-gray-700/50">
             <button
               type="button"
               @click="$router.push(`/items/${item.id}`)"
-              class="flex-1 px-6 py-4 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all duration-200 flex items-center justify-center gap-2"
+              class="flex-1 px-6 py-4 bg-white/5 text-gray-300 border border-gray-700/50 rounded-lg font-semibold hover:bg-white/10 hover:border-gray-600 transition-all duration-200 flex items-center justify-center gap-2"
               :disabled="saving"
             >
               <X :size="20" />
@@ -550,7 +550,7 @@ onMounted(async () => {
             <button
               type="submit"
               :disabled="saving"
-              class="group flex-1 px-6 py-4 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl hover:from-teal-600 hover:to-cyan-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              class="group flex-1 px-6 py-4 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl hover:from-teal-400 hover:to-cyan-400 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               <span v-if="!saving" class="flex items-center gap-2">
                 <Save :size="20" />
@@ -629,5 +629,11 @@ onMounted(async () => {
 
 .animate-spin {
   animation: spin 1s linear infinite;
+}
+
+/* Dark theme for select dropdowns */
+select option {
+  background-color: #1f2937;
+  color: white;
 }
 </style>

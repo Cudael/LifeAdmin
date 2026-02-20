@@ -1,306 +1,235 @@
 <template>
-  <DashboardLayout pageTitle="Dashboard">
+  <DashboardLayout pageTitle="Command Center">
 
-    <!-- SUMMARY CARDS - Compact Grid with Loading Skeletons -->
-    <div style="animation-delay: 0ms" class="animate-fade-in">
-      <div v-if="loading" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-        <div v-for="i in 6" :key="i" class="rounded-2xl bg-gray-800/60 animate-pulse h-32"></div>
+    <!-- Ambient Dashboard Background Mesh -->
+    <div class="fixed inset-0 z-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none"></div>
+    <div class="fixed top-0 left-1/4 w-[600px] h-[400px] bg-teal-500/5 blur-[120px] rounded-full pointer-events-none z-0 mix-blend-screen"></div>
+    <div class="fixed bottom-0 right-1/4 w-[500px] h-[400px] bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none z-0 mix-blend-screen"></div>
+
+    <div class="relative z-10 w-full max-w-[1600px] mx-auto space-y-6 pb-12">
+
+      <!-- Dynamic Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div>
+          <h1 class="text-3xl font-extrabold text-white tracking-tight">{{ greeting }}, Admin.</h1>
+          <p class="text-slate-400 text-sm mt-1">Here is the latest intelligence on your vault.</p>
+        </div>
+        <RouterLink 
+          to="/add-item" 
+          class="group relative inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-xl font-bold shadow-[0_0_20px_rgba(45,212,191,0.15)] border border-teal-500/30 hover:bg-slate-800 transition-all duration-300 w-full sm:w-auto"
+        >
+          <div class="absolute inset-0 bg-gradient-to-r from-teal-500/20 to-cyan-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity blur-md"></div>
+          <Plus :size="18" class="text-teal-400" />
+          <span>Add New Item</span>
+        </RouterLink>
       </div>
-      
-      <div v-else class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-      
-      <SummaryCard
-        label="Total Items"
-        :icon="Package"
-        accentColor="teal"
-        subtitle="Last 30 days"
-        :value="stats.total"
-        :activitySummary="activitySummaries.totalItems"
-        @click="navigateToItems('all')"
-      />
 
-      <SummaryCard
-        label="Expiring Soon"
-        :icon="Clock"
-        accentColor="orange"
-        subtitle="Within 30 days"
-        :value="stats.soon"
-        :activitySummary="activitySummaries.expiringSoon"
-        @click="navigateToItems('soon')"
-      />
+      <!-- 12-COLUMN BENTO BOX GRID -->
+      <div class="grid grid-cols-12 gap-6">
 
-      <SummaryCard
-        label="This Week"
-        :icon="Calendar"
-        accentColor="amber"
-        subtitle="Next 7 days"
-        :value="stats.week"
-        :activitySummary="activitySummaries.thisWeek"
-        @click="navigateToItems('week')"
-      />
+        <!-- METRICS ROW (Span 2 cols each on large, 4 on medium, 6 on mobile) -->
+        <template v-if="loading">
+          <div v-for="i in 6" :key="i" class="col-span-6 md:col-span-4 xl:col-span-2 rounded-3xl bg-slate-800/30 border border-white/5 animate-pulse h-44"></div>
+        </template>
+        
+        <template v-else>
+          <SummaryCard class="col-span-6 md:col-span-4 xl:col-span-2" label="Total Items" :icon="Package" accentColor="teal" :value="stats.total" :activitySummary="activitySummaries.totalItems" @click="navigateToItems('all')" />
+          <SummaryCard class="col-span-6 md:col-span-4 xl:col-span-2" label="Expiring Soon" :icon="Clock" accentColor="orange" :value="stats.soon" :activitySummary="activitySummaries.expiringSoon" @click="navigateToItems('soon')" />
+          <SummaryCard class="col-span-6 md:col-span-4 xl:col-span-2" label="This Week" :icon="Calendar" accentColor="amber" :value="stats.week" :activitySummary="activitySummaries.thisWeek" @click="navigateToItems('week')" />
+          <SummaryCard class="col-span-6 md:col-span-4 xl:col-span-2" label="Expired" :icon="AlertTriangle" accentColor="rose" isAlert :value="stats.expired" :activitySummary="activitySummaries.expired" @click="navigateToItems('expired')" />
+          <SummaryCard class="col-span-6 md:col-span-4 xl:col-span-2" label="Documents" :icon="FileText" accentColor="emerald" :value="stats.documents" :activitySummary="activitySummaries.documents" @click="navigateToItems('documents')" />
+          <SummaryCard class="col-span-6 md:col-span-4 xl:col-span-2" label="Subscriptions" :icon="CreditCard" accentColor="indigo" :value="stats.subscriptions" :activitySummary="activitySummaries.subscriptions" @click="navigateToItems('subscriptions')" />
+        </template>
 
-      <SummaryCard
-        label="Expired"
-        :icon="AlertTriangle"
-        accentColor="red"
-        subtitle="Needs attention"
-        :value="stats.expired"
-        :activitySummary="activitySummaries.expired"
-        @click="navigateToItems('expired')"
-      />
 
-      <SummaryCard
-        label="Documents"
-        :icon="FileText"
-        accentColor="green"
-        subtitle="Uploaded files"
-        :value="stats.documents"
-        :activitySummary="activitySummaries.documents"
-        @click="navigateToItems('documents')"
-      />
-
-      <SummaryCard
-        label="Subscriptions"
-        :icon="CreditCard"
-        accentColor="purple"
-        subtitle="Recurring items"
-        :value="stats.subscriptions"
-        :activitySummary="activitySummaries.subscriptions"
-        @click="navigateToItems('subscriptions')"
-      />
-
-    </div>
-    </div>
-
-    <!-- WIDGETS LAYOUT - Enhanced with better styling -->
-    <div style="animation-delay: 100ms" class="animate-fade-in grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-      <!-- RECENTLY ADDED (2 columns wide) - Enhanced -->
-      <div class="lg:col-span-2 bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-800 p-6 hover:shadow-xl transition-shadow duration-300">
-        <div class="flex items-center justify-between mb-6">
-          <h3 class="text-xl font-bold text-white flex items-center gap-2">
-            <Clock :size="24" class="text-teal-400" />
-            Recently Added
-          </h3>
-          <RouterLink to="/items" class="text-xs px-3 py-1 rounded-full bg-teal-900/40 text-teal-400 hover:bg-teal-900/60 hover:text-teal-300 transition-colors font-medium">
-            View All →
-          </RouterLink>
-        </div>
-
-        <div v-if="recentItems.length === 0" class="text-center py-12">
-          <Package :size="48" class="text-gray-600 mx-auto mb-3" />
-          <p class="text-gray-400 text-sm">No recent items yet</p>
-          <RouterLink to="/add-item" class="text-teal-400 text-sm font-medium hover:underline mt-2 inline-block">
-            Add your first item
-          </RouterLink>
-        </div>
-
-        <ul v-else class="space-y-3">
-          <li
-            v-for="item in recentItems"
-            :key="item.id"
-            class="group flex justify-between items-center p-4 rounded-xl hover:bg-teal-900/30 transition-all duration-200 border border-transparent hover:border-teal-800"
-          >
-            <div class="flex items-start gap-3">
-              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-cyan-400 flex items-center justify-center flex-shrink-0 shadow-md">
-                <FileText :size="20" class="text-white" />
+        <!-- ROW 2 -->
+        <!-- RECENTLY ADDED (Span 8) -->
+        <div class="col-span-12 lg:col-span-8 bg-slate-900/60 backdrop-blur-xl rounded-[2rem] border border-white/5 p-8 shadow-[0_8px_30px_rgba(0,0,0,0.12)] flex flex-col h-full animate-fade-in-up">
+          <div class="flex items-center justify-between mb-8">
+            <h3 class="text-lg font-bold text-white flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-teal-400 border border-white/5">
+                <History :size="16" />
               </div>
-              <div>
-                <p class="font-semibold text-white group-hover:text-teal-400 transition-colors">
-                  {{ item.name }}
-                </p>
-                <p class="text-xs text-gray-400 mt-1">
-                  Added {{ formatDate(item.created_at) }}
-                </p>
-              </div>
-            </div>
-            <RouterLink
-              :to="`/items/${item.id}`"
-              class="px-4 py-2 bg-teal-500 text-white text-sm font-medium rounded-lg hover:bg-teal-600 transition-colors shadow-sm opacity-0 group-hover:opacity-100 duration-200"
-            >
-              View
+              Recently Added
+            </h3>
+            <RouterLink to="/items" class="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-teal-400 transition-colors flex items-center gap-1 group">
+              View Database <ChevronRight :size="14" class="group-hover:translate-x-0.5 transition-transform" />
             </RouterLink>
-          </li>
-        </ul>
-      </div>
-
-      <!-- RECOMMENDED ACTIONS (1 column wide) - Enhanced -->
-      <div class="bg-gradient-to-br from-teal-500 to-cyan-500 rounded-2xl shadow-lg p-6 text-white hover:shadow-xl transition-shadow duration-300">
-        <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
-          <AlertTriangle :size="24" />
-          Action Items
-        </h3>
-
-        <div v-if="recommended.length === 0" class="text-center py-8">
-          <div class="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-3">
-            <span class="text-3xl">✨</span>
           </div>
-          <p class="text-white/90 font-medium">You're all caught up!</p>
-          <p class="text-white/70 text-sm mt-1">Great job staying organized</p>
-        </div>
 
-        <ul v-else class="space-y-4">
-          <li
-            v-for="action in recommended"
-            :key="action.id"
-            class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-colors duration-200"
-            :class="{
-              'border-l-4 border-l-red-400': action.severity === 'error',
-              'border-l-4 border-l-orange-400': action.severity === 'warning' && action.priority === 'high',
-              'border-l-4 border-l-yellow-400': action.severity === 'warning' && action.priority === 'medium'
-            }"
-          >
-            <div class="flex items-start gap-3">
-              <div 
-                class="w-2 h-2 rounded-full mt-2 flex-shrink-0"
-                :class="{
-                  'bg-red-400': action.severity === 'error',
-                  'bg-orange-400': action.severity === 'warning' && action.priority === 'high',
-                  'bg-yellow-400': action.severity === 'warning' && action.priority === 'medium',
-                  'bg-white': action.severity === 'info'
-                }"
-              ></div>
-              <div class="flex-1">
-                <p class="font-medium text-white mb-2">{{ action.text }}</p>
-                <RouterLink
-                  v-if="action.link"
-                  :to="action.link"
-                  class="inline-flex items-center gap-1 text-sm font-medium text-white/90 hover:text-white underline-offset-2 hover:underline"
-                >
-                  {{ action.cta }} →
-                </RouterLink>
+          <div v-if="recentItems.length === 0" class="flex-1 flex flex-col items-center justify-center text-center py-12 border border-dashed border-white/10 rounded-2xl bg-white/[0.01]">
+            <Package :size="32" class="text-slate-600 mb-3" />
+            <p class="text-slate-400 text-sm">Your vault is currently empty.</p>
+          </div>
+
+          <div v-else class="flex-1 -mx-2">
+            <!-- Sleek Table/List -->
+            <div 
+              v-for="item in recentItems.slice(0, 4)" 
+              :key="item.id"
+              @click="router.push(`/items/${item.id}`)"
+              class="group grid grid-cols-[auto_1fr_auto] items-center gap-4 p-3 rounded-2xl hover:bg-white/[0.03] transition-colors cursor-pointer border border-transparent hover:border-white/5"
+            >
+              <div class="w-12 h-12 rounded-xl bg-slate-800 border border-white/5 flex items-center justify-center text-slate-400 group-hover:text-teal-400 transition-colors">
+                <FileText :size="20" />
+              </div>
+              <div class="min-w-0">
+                <p class="text-sm font-bold text-slate-200 truncate group-hover:text-white transition-colors">{{ item.name }}</p>
+                <div class="flex items-center gap-2 mt-1">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-slate-800 text-slate-400">
+                    {{ item.category || 'Uncategorized' }}
+                  </span>
+                  <span class="text-xs text-slate-500 truncate">Added {{ formatDate(item.created_at) }}</span>
+                </div>
+              </div>
+              <div class="pr-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ArrowUpRight :size="18" class="text-teal-400" />
               </div>
             </div>
-          </li>
-        </ul>
-      </div>
+          </div>
+        </div>
 
-    </div>
-
-    <!-- NEW ROW: MINI CALENDAR + CATEGORIES -->
-    <div style="animation-delay: 200ms" class="animate-fade-in grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-      
-      <!-- Mini Calendar Widget -->
-      <MiniCalendar :items="itemsStore.items" />
-
-      <!-- Categories Overview (2 columns) -->
-      <div class="lg:col-span-2 bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-800 p-6 hover:shadow-xl transition-shadow duration-300">
-        <div class="flex items-center justify-between mb-6">
-          <h3 class="text-xl font-bold text-white flex items-center gap-2">
-            <FileText :size="24" class="text-teal-400" />
-            Categories Overview
+        <!-- ACTION REQUIRED (Span 4) -->
+        <div class="col-span-12 lg:col-span-4 bg-slate-900/60 backdrop-blur-xl rounded-[2rem] border border-white/5 p-8 shadow-[0_8px_30px_rgba(0,0,0,0.12)] flex flex-col h-full relative overflow-hidden animate-fade-in-up animation-delay-100">
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500 opacity-50"></div>
+          
+          <h3 class="text-lg font-bold text-white flex items-center gap-3 mb-8">
+            <div class="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400 border border-rose-500/20">
+              <Zap :size="16" />
+            </div>
+            Action Required
           </h3>
-        </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          <div
-            v-for="category in categoryStats"
-            :key="category.name"
-            class="p-4 bg-teal-900/20 rounded-xl border border-teal-800 hover:shadow-md transition-all hover:scale-105 duration-200 cursor-pointer"
-            :class="{ 'opacity-40 grayscale': category.count === 0 }"
-          >
-            <div class="text-3xl mb-2">{{ category.icon }}</div>
-            <p class="text-sm text-gray-400 mb-1">{{ category.name }}</p>
-            <p class="text-2xl font-bold text-white">{{ category.count }}</p>
+          <div v-if="recommended.length === 0" class="flex-1 flex flex-col items-center justify-center text-center">
+            <div class="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4">
+              <CheckCircle2 :size="28" class="text-emerald-400" />
+            </div>
+            <p class="text-white font-medium">All clear.</p>
+            <p class="text-slate-400 text-sm mt-1">No pending actions required.</p>
+          </div>
+
+          <div v-else class="space-y-3 flex-1">
+            <RouterLink
+              v-for="action in recommended"
+              :key="action.id"
+              :to="action.link"
+              class="group block bg-slate-950/50 rounded-2xl p-4 border transition-colors duration-300"
+              :class="{
+                'border-rose-500/30 hover:border-rose-500/50': action.severity === 'error',
+                'border-orange-500/30 hover:border-orange-500/50': action.severity === 'warning' && action.priority === 'high',
+                'border-amber-500/30 hover:border-amber-500/50': action.severity === 'warning' && action.priority === 'medium',
+                'border-white/5 hover:border-teal-500/30': action.severity === 'info'
+              }"
+            >
+              <div class="flex items-start gap-3">
+                <div 
+                  class="w-2 h-2 rounded-full mt-1.5 shrink-0 shadow-lg"
+                  :class="{
+                    'bg-rose-400 shadow-rose-500/50 animate-pulse': action.severity === 'error',
+                    'bg-orange-400 shadow-orange-500/50': action.severity === 'warning' && action.priority === 'high',
+                    'bg-amber-400 shadow-amber-500/50': action.severity === 'warning' && action.priority === 'medium',
+                    'bg-teal-400 shadow-teal-500/50': action.severity === 'info'
+                  }"
+                ></div>
+                <div>
+                  <p class="font-medium text-slate-200 text-sm leading-relaxed mb-2">{{ action.text }}</p>
+                  <span class="text-xs font-bold uppercase tracking-wider text-slate-500 group-hover:text-white transition-colors flex items-center gap-1">
+                    {{ action.cta }} <ArrowUpRight :size="12" />
+                  </span>
+                </div>
+              </div>
+            </RouterLink>
           </div>
         </div>
-      </div>
 
-    </div>
-
-    <!-- UPCOMING EXPIRATIONS (full width) - Enhanced -->
-    <div style="animation-delay: 300ms" class="animate-fade-in mt-6 bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-800 p-6 hover:shadow-xl transition-shadow duration-300">
-      <div class="flex items-center justify-between mb-6">
-        <h3 class="text-xl font-bold text-white flex items-center gap-2">
-          <AlertTriangle :size="24" class="text-orange-400" />
-          Upcoming Expirations
-        </h3>
-        <span class="px-3 py-1 bg-orange-900/40 text-orange-400 text-xs font-semibold rounded-full">
-          {{ upcoming.length }} items
-        </span>
-      </div>
-
-      <div v-if="upcoming.length === 0" class="text-center py-12">
-        <Calendar :size="48" class="text-gray-600 mx-auto mb-3" />
-        <p class="text-gray-400 text-sm">Nothing expiring soon</p>
-        <p class="text-gray-500 text-xs mt-1">You're all set! 🎉</p>
-      </div>
-
-      <ul v-else class="space-y-3">
-        <li
-          v-for="item in upcoming"
-          :key="item.id"
-          class="group flex justify-between items-center p-4 rounded-xl hover:bg-orange-900/20 transition-all duration-200 border border-transparent hover:border-orange-800"
-        >
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 to-red-400 flex items-center justify-center flex-shrink-0 shadow-md">
-              <Clock :size="20" class="text-white" />
+        <!-- ROW 3 -->
+        <!-- CATEGORY DISTRIBUTION (Span 4) -->
+        <div class="col-span-12 lg:col-span-4 bg-slate-900/60 backdrop-blur-xl rounded-[2rem] border border-white/5 p-8 shadow-[0_8px_30px_rgba(0,0,0,0.12)] animate-fade-in-up animation-delay-200">
+          <h3 class="text-lg font-bold text-white flex items-center gap-3 mb-8">
+            <div class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 border border-indigo-500/20">
+              <LayoutGrid :size="16" />
             </div>
-            <div>
-              <p class="font-semibold text-white">{{ item.name }}</p>
-              <p class="text-xs text-gray-400 mt-1 flex items-center gap-2">
-                <span>Expires {{ formatDate(item.expiration_date) }}</span>
-                <span class="px-2 py-0.5 bg-orange-900/40 text-orange-400 rounded-full font-medium">
-                  {{ daysLeft(item.expiration_date) }} days
+            Vault Distribution
+          </h3>
+
+          <div class="space-y-5">
+            <div 
+              v-for="category in categoryStats" 
+              :key="category.name"
+              class="group cursor-pointer"
+              @click="navigateToItems(category.key)"
+            >
+              <div class="flex justify-between text-sm mb-2">
+                <span class="text-slate-300 font-medium flex items-center gap-2">
+                  <span>{{ category.icon }}</span> {{ category.name }}
                 </span>
-              </p>
-            </div>
-          </div>
-          <RouterLink
-            :to="`/items/${item.id}`"
-            class="px-4 py-2 bg-orange-500 text-white text-sm font-medium rounded-lg hover:bg-orange-600 transition-colors shadow-sm opacity-0 group-hover:opacity-100 duration-200"
-          >
-            Review
-          </RouterLink>
-        </li>
-      </ul>
-    </div>
-
-    <!-- TIMELINE (full width) - Enhanced -->
-    <div style="animation-delay: 400ms" class="animate-fade-in mt-6 bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-800 p-6 hover:shadow-xl transition-shadow duration-300">
-      <div class="flex items-center justify-between mb-6">
-        <h3 class="text-xl font-bold text-white flex items-center gap-2">
-          <Calendar :size="24" class="text-teal-400" />
-          Next Deadlines
-        </h3>
-      </div>
-
-      <div v-if="timeline.length === 0" class="text-center py-12">
-        <Calendar :size="48" class="text-gray-600 mx-auto mb-3" />
-        <p class="text-gray-400 text-sm">No upcoming deadlines</p>
-      </div>
-
-      <div v-else class="relative pl-8 space-y-6">
-        <!-- Timeline line -->
-        <div class="absolute left-2 top-3 bottom-3 w-0.5 bg-gradient-to-b from-teal-400 to-cyan-400"></div>
-
-        <div
-          v-for="(item, index) in timeline"
-          :key="item.id"
-          class="relative"
-        >
-          <!-- Timeline dot -->
-          <div class="absolute -left-6 w-4 h-4 rounded-full bg-gradient-to-br from-teal-400 to-cyan-400 shadow-lg border-2 border-gray-950"></div>
-
-          <div class="bg-teal-900/20 rounded-xl p-4 border border-teal-800 hover:shadow-md transition-shadow duration-200">
-            <p class="font-semibold text-white mb-1">{{ item.name }}</p>
-            <div class="flex items-center gap-3 text-xs text-gray-400">
-              <span class="flex items-center gap-1">
-                <Calendar :size="14" />
-                {{ formatDate(item.expiration_date) }}
-              </span>
-              <span 
-                class="px-2 py-1 rounded-full font-medium"
-                :class="getTimelineBadgeClasses(item.expiration_date)"
-              >
-                {{ getTimelineBadgeText(item.expiration_date) }}
-              </span>
+                <span class="text-slate-500 font-bold">{{ category.count }}</span>
+              </div>
+              <div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                <div 
+                  class="h-full rounded-full transition-all duration-1000 ease-out"
+                  :class="category.count > 0 ? 'bg-gradient-to-r from-indigo-500 to-purple-500' : 'bg-transparent'"
+                  :style="{ width: `${maxCategoryCount > 0 ? (category.count / maxCategoryCount) * 100 : 0}%` }"
+                ></div>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- MINI CALENDAR (Span 4) -->
+        <div class="col-span-12 lg:col-span-4 bg-slate-900/60 backdrop-blur-xl rounded-[2rem] border border-white/5 p-8 shadow-[0_8px_30px_rgba(0,0,0,0.12)] animate-fade-in-up animation-delay-300">
+          <MiniCalendar :items="itemsStore.items" />
+        </div>
+
+        <!-- TIMELINE (Span 4) -->
+        <div class="col-span-12 lg:col-span-4 bg-slate-900/60 backdrop-blur-xl rounded-[2rem] border border-white/5 p-8 shadow-[0_8px_30px_rgba(0,0,0,0.12)] animate-fade-in-up animation-delay-400">
+          <div class="flex items-center justify-between mb-8">
+            <h3 class="text-lg font-bold text-white flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 border border-teal-500/20">
+                <GitCommit :size="16" />
+              </div>
+              Upcoming Timeline
+            </h3>
+          </div>
+
+          <div v-if="timeline.length === 0" class="text-center py-10 border border-dashed border-white/10 rounded-2xl bg-white/[0.01]">
+            <Calendar :size="32" class="text-slate-600 mx-auto mb-3" />
+            <p class="text-slate-400 text-sm">No upcoming deadlines</p>
+          </div>
+
+          <div v-else class="relative pl-6 space-y-6">
+            <!-- The glowing laser line -->
+            <div class="absolute left-[7px] top-2 bottom-4 w-px bg-gradient-to-b from-teal-400 via-cyan-500 to-transparent opacity-30"></div>
+
+            <div
+              v-for="(item, index) in timeline"
+              :key="item.id"
+              class="relative"
+            >
+              <!-- Glowing Dot -->
+              <div class="absolute -left-[29px] top-1.5 w-3 h-3 rounded-full bg-slate-900 border-2 border-teal-400 shadow-[0_0_10px_rgba(45,212,191,0.5)] z-10"></div>
+
+              <div class="pl-4">
+                <p class="font-bold text-slate-200 mb-1 text-sm truncate pr-2">{{ item.name }}</p>
+                <div class="flex items-center gap-3 mt-1.5">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-slate-800 text-slate-300">
+                    {{ formatDate(item.expiration_date) }}
+                  </span>
+                  <span 
+                    class="text-[10px] font-bold uppercase tracking-widest flex items-center gap-1"
+                    :class="getTimelineBadgeTextClasses(item.expiration_date)"
+                  >
+                    <Clock :size="10" />
+                    {{ getTimelineBadgeText(item.expiration_date) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
-
   </DashboardLayout>
 </template>
 
@@ -321,37 +250,52 @@ import {
   Calendar,
   AlertTriangle,
   FileText,
-  CreditCard
+  CreditCard,
+  Zap,
+  History,
+  LayoutGrid,
+  ChevronRight,
+  ArrowUpRight,
+  CheckCircle2,
+  GitCommit,
+  Plus
 } from "lucide-vue-next"
 
 const itemsStore = useItemsStore()
 const router = useRouter()
 const { getStatus, daysLeft } = useItemStatus()
 
-// Store API stats
 const apiStats = ref(null)
 const loading = ref(true)
+
+// Generate dynamic greeting
+const greeting = computed(() => {
+  const hour = new Date().getHours()
+  if (hour < 12) return 'Good morning'
+  if (hour < 18) return 'Good afternoon'
+  return 'Good evening'
+})
 
 function navigateToItems(filter) {
   router.push({ path: '/items', query: { filter } })
 }
 
 function formatDate(date) {
-  return new Date(date).toLocaleDateString()
+  return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
 
-function getTimelineBadgeClasses(expirationDate) {
+function getTimelineBadgeTextClasses(expirationDate) {
   const days = daysLeft(expirationDate)
-  if (days === null) return 'bg-gray-900/40 text-gray-400'
+  if (days === null) return 'text-slate-500'
   
   if (days <= 0) {
-    return 'bg-red-900/40 text-red-400'
+    return 'text-rose-400'
   } else if (days <= 7) {
-    return 'bg-red-900/40 text-red-400'
+    return 'text-rose-400'
   } else if (days <= 30) {
-    return 'bg-orange-900/40 text-orange-400'
+    return 'text-orange-400'
   } else {
-    return 'bg-teal-900/40 text-teal-400'
+    return 'text-teal-400'
   }
 }
 
@@ -364,7 +308,7 @@ function getTimelineBadgeText(expirationDate) {
   } else if (days === 0) {
     return 'Expires today'
   } else {
-    return `${days} days left`
+    return `In ${days} days`
   }
 }
 
@@ -382,27 +326,24 @@ const stats = computed(() => ({
   }).length
 }))
 
-// Generate activity summaries from API stats
 const activitySummaries = computed(() => {
   if (!apiStats.value?.activity_summaries) {
     return {
-      totalItems: "",
-      expiringSoon: "",
-      thisWeek: "",
-      expired: "",
-      documents: "",
-      subscriptions: ""
+      totalItems: "Loading...",
+      expiringSoon: "Loading...",
+      thisWeek: "Loading...",
+      expired: "Loading...",
+      documents: "Loading...",
+      subscriptions: "Loading..."
     }
   }
-
   const summaries = apiStats.value.activity_summaries
-
   return {
-    totalItems: `${summaries.items_added_this_month} ${summaries.items_added_this_month === 1 ? 'item' : 'items'} added in last 30 days`,
-    expiringSoon: `${summaries.items_expiring_this_month} ${summaries.items_expiring_this_month === 1 ? 'item' : 'items'} expiring this month`,
-    thisWeek: `${summaries.items_expiring_this_week} ${summaries.items_expiring_this_week === 1 ? 'item' : 'items'} expiring this week`,
-    expired: `${summaries.expired_items} ${summaries.expired_items === 1 ? 'item needs' : 'items need'} review`,
-    documents: `${summaries.documents_total} ${summaries.documents_total === 1 ? 'document' : 'documents'} stored`,
+    totalItems: `${summaries.items_added_this_month} added in last 30 days`,
+    expiringSoon: `${summaries.items_expiring_this_month} expiring this month`,
+    thisWeek: `${summaries.items_expiring_this_week} expiring this week`,
+    expired: `${summaries.expired_items} items need review`,
+    documents: `${summaries.documents_total} securely stored`,
     subscriptions: `${summaries.subscriptions_renewing_week} renewing in 7 days`
   }
 })
@@ -426,25 +367,21 @@ const categoryStats = computed(() => {
   }))
 })
 
+// Used to calculate the percentage width of the category progress bars
+const maxCategoryCount = computed(() => {
+  const max = Math.max(...categoryStats.value.map(c => c.count))
+  return max > 0 ? max : 1
+})
+
 const recentItems = computed(() =>
   [...itemsStore.items]
     .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
     .slice(0, 5)
 )
 
-const upcoming = computed(() =>
-  itemsStore.items
-    .filter(i => {
-      const status = getStatus(i.expiration_date)
-      return status.key === "soon" || status.key === "week"
-    })
-    .sort((a, b) => new Date(a.expiration_date) - new Date(b.expiration_date))
-    .slice(0, 5)
-)
-
 const timeline = computed(() =>
   itemsStore.items
-    .filter(i => i.expiration_date)
+    .filter(i => i.expiration_date && daysLeft(i.expiration_date) >= 0)
     .sort((a, b) => new Date(a.expiration_date) - new Date(b.expiration_date))
     .slice(0, 5)
 )
@@ -457,7 +394,7 @@ const recommended = computed(() => {
       id: 1,
       severity: 'error',
       priority: 'high',
-      text: `${stats.value.expired} items have expired — review them`,
+      text: `${stats.value.expired} items have expired and need review.`,
       link: "/items?filter=expired",
       cta: "Review Now"
     })
@@ -468,7 +405,7 @@ const recommended = computed(() => {
       id: 2,
       severity: 'warning',
       priority: 'high',
-      text: `${stats.value.soon} items are expiring soon`,
+      text: `${stats.value.soon} items are expiring in the next 30 days.`,
       link: "/items?filter=soon",
       cta: "View Items"
     })
@@ -479,7 +416,7 @@ const recommended = computed(() => {
       id: 3,
       severity: 'warning',
       priority: 'medium',
-      text: `${stats.value.missingDocs} items are missing documents`,
+      text: `${stats.value.missingDocs} items are missing attached documents.`,
       link: "/items?filter=missingDocs",
       cta: "Fix Now"
     })
@@ -490,7 +427,7 @@ const recommended = computed(() => {
       id: 4,
       severity: 'info',
       priority: 'low',
-      text: "Add your first item to get started",
+      text: "Your vault is empty. Add your first item to get started.",
       link: "/add-item",
       cta: "Add Item"
     })
@@ -500,12 +437,14 @@ const recommended = computed(() => {
 })
 
 onMounted(async () => {
-  // Fetch items
-  const itemsRes = await apiFetch("/items")
-  const itemsData = await itemsRes.json()
-  itemsStore.setItems(itemsData.items || itemsData)
+  try {
+    const itemsRes = await apiFetch("/items")
+    const itemsData = await itemsRes.json()
+    itemsStore.setItems(itemsData.items || itemsData)
+  } catch (error) {
+    console.error("Failed to fetch items:", error)
+  }
   
-  // Fetch stats
   try {
     const statsRes = await apiFetch("/items/stats")
     apiStats.value = await statsRes.json()
@@ -513,7 +452,22 @@ onMounted(async () => {
     console.error("Failed to fetch stats:", error)
   }
   
-  // Set loading to false
   loading.value = false
 })
 </script>
+
+<style scoped>
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animation-delay-100 { animation-delay: 0.1s; }
+.animation-delay-200 { animation-delay: 0.2s; }
+.animation-delay-300 { animation-delay: 0.3s; }
+.animation-delay-400 { animation-delay: 0.4s; }
+</style>

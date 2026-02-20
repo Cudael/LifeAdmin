@@ -1,137 +1,144 @@
 <template>
-  <!-- SIDEBAR (Fixed left, dark theme) -->
+  <!-- SIDEBAR (Fixed left, Deep Slate Theme) -->
   <aside
-    class="hidden lg:flex fixed top-0 left-0 h-screen w-64 bg-gray-900 flex-col border-r border-gray-800 z-50"
+    class="hidden lg:flex fixed top-0 left-0 h-screen w-64 bg-slate-950 flex-col border-r border-white/5 z-50 selection:bg-teal-500/30 selection:text-teal-200"
   >
-    
+    <!-- Ambient top glow -->
+    <div class="absolute top-0 left-0 w-full h-32 bg-teal-500/5 blur-[50px] pointer-events-none"></div>
+
     <!-- LOGO + BRAND -->
-    <div class="p-6 border-b border-gray-800">
-      <RouterLink to="/dashboard" class="flex items-center gap-3 group">
-        <div class="w-9 h-9 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
-          <Sparkles :size="18" class="text-white" />
+    <div class="px-6 py-6 relative z-10">
+      <RouterLink to="/dashboard" class="flex items-center gap-3 group w-max">
+        <div class="w-8 h-8 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(45,212,191,0.2)] group-hover:scale-105 transition-transform duration-300">
+          <Sparkles :size="16" class="text-slate-950" />
         </div>
-        <span class="text-xl font-bold text-white">
-          Remindes
+        <span class="text-xl font-extrabold text-white tracking-tight">
+          Life<span class="text-slate-500">Admin</span>
         </span>
       </RouterLink>
     </div>
 
-    <!-- SEARCH HINT -->
-    <div class="px-4 pt-4 pb-2">
+    <!-- SEARCH / COMMAND PALETTE HINT -->
+    <div class="px-4 mb-4 relative z-10">
       <button
-        class="w-full px-4 py-2.5 bg-gray-800 hover:bg-gray-700 rounded-lg flex items-center justify-between text-gray-400 hover:text-gray-300 transition-colors duration-200 group"
+        class="w-full h-10 bg-slate-900/50 hover:bg-slate-900 border border-white/5 hover:border-white/10 rounded-xl flex items-center justify-between px-3 text-slate-500 hover:text-slate-300 transition-all duration-200 group shadow-inner"
       >
-        <div class="flex items-center gap-2">
-          <Search :size="16" />
-          <span class="text-sm">Search</span>
+        <div class="flex items-center gap-2.5">
+          <Search :size="14" class="group-hover:text-teal-400 transition-colors" />
+          <span class="text-sm font-medium">Search vault...</span>
         </div>
-        <kbd class="px-2 py-1 text-xs bg-gray-700 group-hover:bg-gray-600 rounded border border-gray-600 text-gray-400">⌘F</kbd>
+        <div class="flex items-center gap-1">
+          <kbd class="px-1.5 py-0.5 text-[10px] font-sans font-bold bg-slate-800 rounded text-slate-400 group-hover:text-slate-300">⌘</kbd>
+          <kbd class="px-1.5 py-0.5 text-[10px] font-sans font-bold bg-slate-800 rounded text-slate-400 group-hover:text-slate-300">K</kbd>
+        </div>
       </button>
     </div>
 
     <!-- QUICK ADD BUTTON -->
-    <div class="px-4 pt-2 pb-4">
+    <div class="px-4 mb-6 relative z-10">
       <RouterLink
         to="/add-item"
-        class="w-full px-4 py-2.5 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white rounded-lg flex items-center justify-center gap-2 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
+        class="group relative w-full h-10 bg-slate-50 hover:bg-white text-slate-950 rounded-xl flex items-center justify-center gap-2 font-bold shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all duration-300"
       >
-        <Plus :size="18" class="group-hover:rotate-90 transition-transform duration-300" />
-        <span>Add Item</span>
+        <Plus :size="16" class="text-teal-600 group-hover:scale-110 transition-transform" />
+        <span>New Item</span>
       </RouterLink>
     </div>
 
     <!-- NAVIGATION SECTIONS -->
-    <nav class="flex-1 px-4 py-2 overflow-y-auto">
+    <nav class="flex-1 px-3 overflow-y-auto custom-scrollbar relative z-10 space-y-6 pb-4">
       
-      <!-- GENERAL SECTION -->
-      <div class="mb-6">
-        <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-widest text-gray-500">
-          General
+      <!-- VAULT SECTION -->
+      <div>
+        <p class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+          Your Vault
         </p>
         <div class="space-y-1">
           <RouterLink
             to="/dashboard"
-            class="nav-item"
+            class="nav-item group"
             :class="{ 'nav-item-active': $route.path === '/dashboard' }"
           >
-            <LayoutDashboard :size="18" />
+            <LayoutDashboard :size="18" class="nav-icon" />
             <span>Overview</span>
           </RouterLink>
 
           <RouterLink
             to="/items"
-            class="nav-item"
+            class="nav-item group"
             :class="{ 'nav-item-active': $route.path.startsWith('/items') }"
           >
-            <Package :size="18" />
-            <span>Items</span>
+            <Package :size="18" class="nav-icon" />
+            <span>All Items</span>
           </RouterLink>
 
           <RouterLink
             to="/calendar"
-            class="nav-item"
+            class="nav-item group"
             :class="{ 'nav-item-active': $route.path === '/calendar' }"
           >
-            <Calendar :size="18" />
-            <span>Calendar</span>
+            <Calendar :size="18" class="nav-icon" />
+            <span>Timeline</span>
           </RouterLink>
         </div>
       </div>
 
-      <!-- ACCOUNT SECTION -->
+      <!-- PREFERENCES SECTION -->
       <div>
-        <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-widest text-gray-500">
-          Account
+        <p class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+          Preferences
         </p>
         <div class="space-y-1">
           <RouterLink
             to="/profile"
-            class="nav-item"
+            class="nav-item group"
             :class="{ 'nav-item-active': $route.path === '/profile' }"
           >
-            <User :size="18" />
+            <User :size="18" class="nav-icon" />
             <span>Profile</span>
           </RouterLink>
 
           <RouterLink
             to="/settings"
-            class="nav-item"
+            class="nav-item group"
             :class="{ 'nav-item-active': $route.path === '/settings' }"
           >
-            <Settings :size="18" />
+            <Settings :size="18" class="nav-icon" />
             <span>Settings</span>
           </RouterLink>
 
           <RouterLink
             to="/subscription"
-            class="nav-item"
+            class="nav-item group"
             :class="{ 'nav-item-active': $route.path === '/subscription' }"
           >
-            <CreditCard :size="18" />
-            <span>Subscription</span>
+            <CreditCard :size="18" class="nav-icon" />
+            <span>Billing</span>
+            
+            <!-- Premium/Free Badge -->
             <span
               v-if="isPremium"
-              class="ml-auto px-2 py-0.5 text-xs font-semibold bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-full"
+              class="ml-auto px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-teal-500/20 to-cyan-500/20 text-teal-400 border border-teal-500/20 rounded-md"
             >
-              Premium
+              Pro
             </span>
             <span
               v-else
-              class="ml-auto px-2 py-0.5 text-xs font-semibold bg-gray-700 text-gray-400 rounded-full"
+              class="ml-auto px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-slate-800 text-slate-400 rounded-md"
             >
               Free
             </span>
           </RouterLink>
         </div>
       </div>
-
     </nav>
 
-    <!-- USER SECTION AT BOTTOM -->
-    <div class="p-4 border-t border-gray-800">
-      <div class="flex items-center gap-3">
+    <!-- FLOATING USER PROFILE CARD -->
+    <div class="p-4 relative z-10">
+      <div class="bg-slate-900/80 border border-white/5 rounded-2xl p-2.5 flex items-center gap-3 hover:bg-slate-800/80 transition-colors duration-200 shadow-lg group">
+        
         <!-- User Avatar -->
-        <div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-gray-700">
+        <div class="w-9 h-9 rounded-xl overflow-hidden flex-shrink-0 border border-white/10 shadow-inner bg-slate-800">
           <img
             v-if="userAvatar"
             :src="userAvatar"
@@ -140,43 +147,30 @@
           />
           <div
             v-else
-            class="w-full h-full bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center"
+            class="w-full h-full bg-gradient-to-br from-teal-400 to-cyan-400 flex items-center justify-center"
           >
-            <span class="font-bold text-white text-sm">
+            <span class="font-bold text-slate-950 text-xs shadow-sm">
               {{ initials }}
             </span>
           </div>
         </div>
 
         <!-- User Info -->
-        <div class="flex-1 min-w-0">
-          <p class="text-sm font-semibold text-white truncate">{{ userName }}</p>
-          <p class="text-xs text-gray-400 truncate">{{ userEmail }}</p>
+        <div class="flex-1 min-w-0 cursor-pointer">
+          <p class="text-sm font-bold text-slate-200 truncate group-hover:text-white transition-colors">{{ userName }}</p>
+          <p class="text-[10px] text-slate-500 truncate font-medium">{{ userEmail }}</p>
         </div>
 
         <!-- Logout Button -->
         <button
           @click="logout"
-          class="w-8 h-8 rounded-lg bg-gray-800 hover:bg-red-600 flex items-center justify-center text-gray-400 hover:text-white transition-colors duration-200"
-          title="Logout"
+          class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-500 hover:bg-rose-500/10 hover:text-rose-400 transition-colors duration-200"
+          title="Sign out"
         >
           <LogOut :size="16" />
         </button>
       </div>
     </div>
-
-    <!-- NOTIFICATION BELL (optional - placed at bottom if needed) -->
-    <!-- Uncomment if you want the bell in the sidebar instead of content area
-    <div class="px-4 pb-4">
-      <button
-        class="w-full px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg flex items-center justify-center gap-2 text-gray-400 hover:text-gray-300 transition-colors duration-200 relative"
-      >
-        <Bell :size="18" />
-        <span class="text-sm">Notifications</span>
-        <span v-if="unreadCount > 0" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-      </button>
-    </div>
-    -->
 
   </aside>
 </template>
@@ -230,29 +224,43 @@ function logout() {
 </script>
 
 <style scoped>
+/* Base Nav Item Styles */
 .nav-item {
-  @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-all duration-200;
+  @apply relative flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-white/5 transition-all duration-200;
 }
 
+/* Icon base styles to handle transition */
+.nav-icon {
+  @apply text-slate-500 group-hover:text-slate-300 transition-colors duration-200;
+}
+
+/* ACTIVE STATE STYLES */
+/* This creates the beautiful glowing left-border marker and highlights the text/icon */
 .nav-item-active {
-  @apply bg-teal-500/20 text-teal-400 border-l-2 border-teal-400 pl-[10px];
+  @apply text-white bg-teal-500/10 hover:bg-teal-500/10;
 }
 
-/* Custom scrollbar for nav */
-nav::-webkit-scrollbar {
-  width: 6px;
+.nav-item-active .nav-icon {
+  @apply text-teal-400 drop-shadow-[0_0_8px_rgba(45,212,191,0.5)];
 }
 
-nav::-webkit-scrollbar-track {
+/* The Glowing Left Pill Marker */
+.nav-item-active::before {
+  content: '';
+  @apply absolute left-0 top-1/2 -translate-y-1/2 h-1/2 w-1 bg-teal-400 rounded-r-full shadow-[0_0_10px_rgba(45,212,191,1)];
+}
+
+/* Stealthy custom scrollbar for navigation */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
-
-nav::-webkit-scrollbar-thumb {
-  background: #374151;
-  border-radius: 3px;
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-slate-800 rounded-full;
 }
-
-nav::-webkit-scrollbar-thumb:hover {
-  background: #4b5563;
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-700;
 }
 </style>

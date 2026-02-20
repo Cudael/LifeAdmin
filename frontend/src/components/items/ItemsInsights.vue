@@ -1,147 +1,88 @@
-<script setup>
-import { TrendingUp, Clock, AlertTriangle, Upload, Calendar } from "lucide-vue-next"
-
-const props = defineProps({
-  insights: {
-    type: Object,
-    required: true
-  },
-  totalItems: {
-    type: Number,
-    required: true
-  },
-  documentsCount: {
-    type: Number,
-    required: true
-  },
-  subscriptionsCount: {
-    type: Number,
-    required: true
-  },
-  isPremium: {
-    type: Boolean,
-    default: false
-  }
-})
-
-const emit = defineEmits(['filter'])
-
-function handleFilter(filter) {
-  emit('filter', filter)
-}
-</script>
-
 <template>
-  <div class="mb-6 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 rounded-2xl p-6 border-2 border-purple-200/50 shadow-lg">
-    <div class="flex items-center gap-2 mb-4">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-md">
-        <TrendingUp :size="20" class="text-white" />
-      </div>
-      <h3 class="text-lg font-bold text-white">Insights</h3>
-    </div>
-
-    <!-- Stats Grid - Top Row (4 insights) -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
-      
-      <!-- Expiring This Month -->
-      <div class="bg-orange-900/20 backdrop-blur-sm rounded-xl p-3 border border-orange-800 hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-2 mb-1">
-          <Clock :size="14" class="text-orange-500" />
-          <p class="text-xs text-gray-300 font-medium">Expiring This Month</p>
+  <div class="mb-6">
+    <!-- Header Toggle -->
+    <button
+      @click="$emit('update:showInsights', !showInsights)"
+      class="w-full flex items-center justify-between p-4 bg-slate-900/60 backdrop-blur-xl rounded-[2rem] border border-white/5 hover:border-white/10 transition-colors group"
+    >
+      <div class="flex items-center gap-4 px-2">
+        <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 shadow-inner">
+          <BarChart3 :size="20" />
         </div>
-        <p class="text-2xl font-bold text-orange-400">
-          {{ insights.expiringThisMonth }}
-        </p>
-        <button
-          v-if="insights.expiringThisMonth > 0"
-          @click="handleFilter('soon')"
-          class="mt-1 text-xs text-orange-400 hover:text-orange-500 font-medium hover:underline"
-        >
-          View items →
-        </button>
-      </div>
-
-      <!-- Needs Attention -->
-      <div class="bg-red-900/20 backdrop-blur-sm rounded-xl p-3 border border-red-800 hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-2 mb-1">
-          <AlertTriangle :size="14" class="text-red-500" />
-          <p class="text-xs text-gray-300 font-medium">Needs Attention</p>
+        <div class="text-left">
+          <h3 class="text-white font-bold tracking-tight">Vault Insights</h3>
+          <p class="text-slate-500 text-xs font-medium mt-0.5">Key metrics and distribution</p>
         </div>
-        <p class="text-2xl font-bold text-red-400">
-          {{ insights.needsAttention }}
-        </p>
-        <button
-          v-if="insights.needsAttention > 0"
-          @click="handleFilter('expired')"
-          class="mt-1 text-xs text-red-400 hover:text-red-500 font-medium hover:underline"
-        >
-          View expired →
-        </button>
       </div>
+      <div class="flex items-center gap-2 px-2">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-500 group-hover:text-slate-400">{{ showInsights ? 'Hide' : 'View' }}</span>
+        <component :is="showInsights ? ChevronUp : ChevronDown" :size="18" class="text-slate-500 group-hover:text-slate-400" />
+      </div>
+    </button>
 
-      <!-- Files Uploaded -->
-      <div class="bg-teal-900/20 backdrop-blur-sm rounded-xl p-3 border border-teal-800 hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-2 mb-1">
-          <Upload :size="14" class="text-teal-400" />
-          <p class="text-xs text-gray-300 font-medium">Files Uploaded</p>
+    <!-- Content -->
+    <Transition
+      enter-active-class="transition-all duration-300 ease-out"
+      enter-from-class="opacity-0 -translate-y-4 max-h-0"
+      enter-to-class="opacity-100 translate-y-0 max-h-[800px]"
+      leave-active-class="transition-all duration-200 ease-in"
+      leave-from-class="opacity-100 translate-y-0 max-h-[800px]"
+      leave-to-class="opacity-0 -translate-y-4 max-h-0"
+    >
+      <div v-if="showInsights" class="mt-4 overflow-hidden">
+        <div class="bg-slate-900/60 backdrop-blur-xl rounded-[2rem] p-8 border border-white/5 shadow-2xl">
+          
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+            
+            <!-- Needs Attention -->
+            <button @click="$emit('filter', 'expired')" class="p-6 bg-slate-950/50 rounded-2xl border border-rose-500/10 hover:border-rose-500/30 hover:bg-rose-500/5 transition-all text-left group relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-24 h-24 bg-rose-500/10 blur-2xl rounded-full"></div>
+              <AlertTriangle :size="20" class="text-rose-400 mb-4 group-hover:scale-110 transition-transform" />
+              <p class="text-4xl font-extrabold text-white mb-1">{{ insights.needsAttention }}</p>
+              <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Needs Attention</p>
+            </button>
+
+            <!-- Expiring Soon -->
+            <button @click="$emit('filter', 'soon')" class="p-6 bg-slate-950/50 rounded-2xl border border-orange-500/10 hover:border-orange-500/30 hover:bg-orange-500/5 transition-all text-left group relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-24 h-24 bg-orange-500/10 blur-2xl rounded-full"></div>
+              <Clock :size="20" class="text-orange-400 mb-4 group-hover:scale-110 transition-transform" />
+              <p class="text-4xl font-extrabold text-white mb-1">{{ insights.expiringThisMonth }}</p>
+              <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Expiring Soon</p>
+            </button>
+
+            <!-- Documents -->
+            <button @click="$emit('filter', 'documents')" class="p-6 bg-slate-950/50 rounded-2xl border border-teal-500/10 hover:border-teal-500/30 hover:bg-teal-500/5 transition-all text-left group relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-24 h-24 bg-teal-500/10 blur-2xl rounded-full"></div>
+              <FileText :size="20" class="text-teal-400 mb-4 group-hover:scale-110 transition-transform" />
+              <p class="text-4xl font-extrabold text-white mb-1">{{ documentsCount }}</p>
+              <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Documents</p>
+            </button>
+
+            <!-- Subscriptions -->
+            <button @click="$emit('filter', 'subscriptions')" class="p-6 bg-slate-950/50 rounded-2xl border border-indigo-500/10 hover:border-indigo-500/30 hover:bg-indigo-500/5 transition-all text-left group relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-500/10 blur-2xl rounded-full"></div>
+              <Repeat :size="20" class="text-indigo-400 mb-4 group-hover:scale-110 transition-transform" />
+              <p class="text-4xl font-extrabold text-white mb-1">{{ subscriptionsCount }}</p>
+              <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Subscriptions</p>
+            </button>
+
+          </div>
         </div>
-        <p class="text-2xl font-bold text-teal-400">
-          {{ insights.filesUploaded }}
-        </p>
-        <p class="mt-1 text-xs text-gray-400">
-          {{ totalItems > 0 
-            ? Math.round((insights.filesUploaded / totalItems) * 100) 
-            : 0 
-          }}% of items
-        </p>
       </div>
-
-      <!-- Added This Week -->
-      <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-3 border border-gray-800 hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-2 mb-1">
-          <Calendar :size="14" class="text-blue-500" />
-          <p class="text-xs text-gray-300 font-medium">Added This Week</p>
-        </div>
-        <p class="text-2xl font-bold text-blue-600">
-          {{ insights.addedThisWeek }}
-        </p>
-        <p class="mt-1 text-xs text-gray-400">
-          Last 7 days
-        </p>
-      </div>
-
-    </div>
-
-    <!-- Stats Grid - Bottom Row (3 quick stats) -->
-    <div class="grid grid-cols-2 lg:grid-cols-3 gap-3">
-      
-      <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-3 border border-gray-800 hover:shadow-md transition-shadow">
-        <p class="text-xs text-gray-400 mb-1">Total Items</p>
-        <p class="text-2xl font-bold text-white">
-          {{ isPremium ? totalItems : `${totalItems}/20` }}
-        </p>
-        <p v-if="!isPremium" class="text-xs text-gray-400 mt-1">
-          Free plan limit
-        </p>
-        <p v-else class="text-xs text-teal-600 mt-1">
-          Unlimited
-        </p>
-      </div>
-
-      <div class="bg-teal-900/20 backdrop-blur-sm rounded-xl p-3 border border-gray-800 hover:shadow-md transition-shadow">
-        <p class="text-xs text-gray-400 mb-1">Documents</p>
-        <p class="text-2xl font-bold text-teal-600">
-          {{ documentsCount }}
-        </p>
-      </div>
-
-      <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-3 border border-gray-800 hover:shadow-md transition-shadow">
-        <p class="text-xs text-gray-400 mb-1">Subscriptions</p>
-        <p class="text-2xl font-bold text-purple-600">
-          {{ subscriptionsCount }}
-        </p>
-      </div>
-
-    </div>
+    </Transition>
   </div>
 </template>
+
+<script setup>
+import { AlertTriangle, FileText, Repeat, ChevronDown, ChevronUp, BarChart3, Clock } from 'lucide-vue-next'
+
+defineProps({
+  showInsights: Boolean,
+  insights: Object,
+  totalItems: Number,
+  documentsCount: Number,
+  subscriptionsCount: Number,
+  isPremium: Boolean
+})
+defineEmits(['filter', 'update:showInsights'])
+</script>

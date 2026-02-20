@@ -305,12 +305,14 @@ onMounted(async () => {
       </div>
 
       <!-- ACTION BUTTONS SLOT (for page-specific actions - optional) -->
-      <div v-if="$slots.actions" class="px-6 py-4 bg-gray-950">
-        <slot name="actions" />
+      <div v-if="$slots.actions" class="px-4 md:px-6 lg:px-8 py-4 bg-gray-950">
+        <div class="max-w-7xl mx-auto">
+          <slot name="actions" />
+        </div>
       </div>
 
       <!-- MAIN CONTENT -->
-      <main class="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto">
+      <main class="flex-1 px-4 md:px-6 lg:px-8 py-4 md:py-6 lg:py-8 overflow-y-auto bg-gray-950">
         <div class="max-w-7xl mx-auto">
           <div class="animate-fade-in">
             <slot />

@@ -1,36 +1,42 @@
 <template>
-  <div class="sticky top-0 z-40 h-14 bg-gray-900 border-b border-gray-800 flex items-center justify-between px-6">
+  <div class="sticky top-0 z-40 h-16 bg-slate-950/80 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-8 transition-all duration-300">
     
-    <!-- LEFT: Page Title -->
-    <div class="text-white font-semibold text-sm">
-      {{ pageTitle }}
+    <!-- LEFT: Page Title & Breadcrumb -->
+    <div class="flex items-center gap-3">
+      <!-- Optional: Add a subtle logo or home icon here if you want it next to the title -->
+      <h2 class="text-white font-bold text-lg tracking-tight">
+        {{ pageTitle }}
+      </h2>
     </div>
 
-    <!-- RIGHT: Actions (Upgrade + Bell + Profile) -->
-    <div class="flex items-center gap-3">
+    <!-- RIGHT: Actions -->
+    <div class="flex items-center gap-4">
       
-      <!-- UPGRADE BUTTON (show only if NOT premium) -->
+      <!-- UPGRADE BUTTON (sleek pill) -->
       <button
         v-if="!isPremium"
         @click="handleUpgrade"
-        class="bg-gradient-to-r from-teal-500 to-cyan-500 text-white text-xs font-semibold px-3 py-1.5 rounded-full hover:from-teal-600 hover:to-cyan-600 transition-all flex items-center gap-1.5"
+        class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-teal-500/10 to-cyan-500/10 border border-teal-500/20 text-teal-400 text-xs font-bold uppercase tracking-wider rounded-full hover:bg-teal-500/20 transition-all duration-300"
       >
-        <span>⭐</span>
+        <Sparkles :size="12" />
         <span>Upgrade</span>
       </button>
+
+      <div class="h-6 w-px bg-white/10 hidden sm:block"></div>
 
       <!-- NOTIFICATION BELL -->
       <div class="relative" ref="notificationsRef">
         <button
           @click="handleNotifications"
-          class="relative text-gray-400 hover:text-white transition-colors"
+          class="relative w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200"
           title="Notifications"
         >
           <Bell :size="18" />
-          <!-- Red badge if there are expiring/expired items -->
+          
+          <!-- Pulsing Red Dot for Alerts -->
           <span
             v-if="hasNotifications"
-            class="absolute top-0.5 right-0.5 w-2 h-2 bg-red-500 rounded-full"
+            class="absolute top-1.5 right-2 w-2 h-2 bg-rose-500 rounded-full shadow-[0_0_10px_rgba(225,29,72,0.8)] animate-pulse"
           ></span>
         </button>
 
@@ -45,34 +51,39 @@
         >
           <div
             v-if="notificationsOpen"
-            class="absolute right-0 top-full mt-2 w-80 bg-gray-800 border border-gray-700 rounded-xl shadow-xl overflow-hidden max-h-96"
+            class="absolute right-0 top-full mt-2 w-80 bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] overflow-hidden z-[60]"
           >
             <!-- Header -->
-            <div class="px-4 py-3 border-b border-gray-700">
-              <p class="text-white font-semibold text-sm">Notifications</p>
+            <div class="px-4 py-3 border-b border-white/5 bg-white/[0.02]">
+              <p class="text-white font-bold text-sm">Action Required</p>
             </div>
 
             <!-- Notifications list -->
-            <div class="overflow-y-auto max-h-80">
-              <div v-if="notificationItems.length === 0" class="px-4 py-8 text-center">
-                <p class="text-gray-400 text-sm">All clear! 🎉</p>
+            <div class="overflow-y-auto max-h-80 custom-scrollbar">
+              <div v-if="notificationItems.length === 0" class="px-4 py-10 text-center flex flex-col items-center">
+                <div class="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center mb-3 text-emerald-400">
+                  <CheckCircle2 :size="24" />
+                </div>
+                <p class="text-slate-300 font-bold text-sm mb-1">Vault Secure</p>
+                <p class="text-slate-500 text-xs font-medium">No expiring items to review.</p>
               </div>
+
               <div v-else>
                 <RouterLink
                   v-for="item in notificationItems"
                   :key="item.id"
                   :to="`/items/${item.id}`"
                   @click="closeNotifications"
-                  class="flex items-start gap-3 px-4 py-3 text-sm hover:bg-gray-700 transition-colors border-b border-gray-700/50 last:border-b-0"
+                  class="flex items-start gap-3 px-4 py-3 hover:bg-white/5 transition-colors border-b border-white/5 last:border-b-0 group"
                 >
                   <div class="flex-1 min-w-0">
-                    <p class="text-white font-medium truncate">{{ item.name }}</p>
-                    <p class="text-gray-400 text-xs mt-1">
+                    <p class="text-slate-200 font-bold text-sm truncate group-hover:text-white transition-colors">{{ item.name }}</p>
+                    <p class="text-slate-500 text-xs mt-1 font-medium">
                       Expires {{ formatExpiryDate(item.expiration_date) }}
                     </p>
                   </div>
                   <span
-                    class="px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap"
+                    class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-widest whitespace-nowrap border"
                     :class="getUrgencyClasses(item.urgency)"
                   >
                     {{ item.urgencyLabel }}
@@ -86,30 +97,23 @@
 
       <!-- USER PROFILE DROPDOWN -->
       <div class="relative" ref="dropdownRef">
-        <!-- Avatar + Name (clickable) -->
+        <!-- Avatar Button -->
         <button
           @click.stop="toggleDropdown"
-          class="flex items-center gap-2 hover:opacity-80 transition-opacity"
+          class="flex items-center gap-2 w-9 h-9 rounded-xl overflow-hidden border border-white/10 hover:border-teal-500/50 transition-colors shadow-inner group"
         >
-          <!-- Avatar -->
-          <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-            <img
-              v-if="userAvatar"
-              :src="userAvatar"
-              :alt="userName"
-              class="w-full h-full object-cover"
-            />
-            <div
-              v-else
-              class="w-full h-full bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center"
-            >
-              <span class="font-bold text-white text-xs">{{ initials }}</span>
-            </div>
+          <img
+            v-if="userAvatar"
+            :src="userAvatar"
+            :alt="userName"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          />
+          <div
+            v-else
+            class="w-full h-full bg-slate-800 flex items-center justify-center group-hover:bg-slate-700 transition-colors"
+          >
+            <span class="font-bold text-slate-300 text-xs">{{ initials }}</span>
           </div>
-          <!-- Username (hidden on mobile) -->
-          <span class="text-sm font-medium text-gray-300 hidden sm:block">
-            {{ userName }}
-          </span>
         </button>
 
         <!-- DROPDOWN MENU -->
@@ -123,47 +127,37 @@
         >
           <div
             v-if="dropdownOpen"
-            class="absolute right-0 top-full mt-2 w-56 bg-gray-800 border border-gray-700 rounded-xl shadow-xl overflow-hidden"
+            class="absolute right-0 top-full mt-3 w-56 bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] p-1.5 z-[60]"
           >
             <!-- Header: User Info -->
-            <div class="px-4 py-3 border-b border-gray-700">
-              <p class="text-white font-semibold text-sm truncate">{{ userName }}</p>
-              <p class="text-gray-500 text-xs truncate">{{ userEmail }}</p>
+            <div class="px-3 py-3 border-b border-white/5 mb-1.5 flex flex-col items-center text-center">
+              <div class="w-12 h-12 rounded-full overflow-hidden border border-white/10 mb-2">
+                <img v-if="userAvatar" :src="userAvatar" class="w-full h-full object-cover" />
+                <div v-else class="w-full h-full bg-slate-800 flex items-center justify-center">
+                  <span class="font-bold text-white text-sm">{{ initials }}</span>
+                </div>
+              </div>
+              <p class="text-white font-bold text-sm truncate w-full">{{ userName }}</p>
+              <p class="text-slate-500 text-[10px] font-medium uppercase tracking-wider truncate w-full">{{ userEmail }}</p>
             </div>
 
             <!-- Menu Items -->
-            <div class="py-2">
-              <!-- Profile -->
-              <RouterLink
-                to="/profile"
-                @click="closeDropdown"
-                class="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-700 transition-colors"
-              >
-                <User :size="16" />
-                <span>Profile</span>
-              </RouterLink>
+            <RouterLink to="/profile" @click="closeDropdown" class="dropdown-item group">
+              <User :size="16" class="text-slate-500 group-hover:text-teal-400 transition-colors" />
+              <span>Profile Settings</span>
+            </RouterLink>
 
-              <!-- Settings -->
-              <RouterLink
-                to="/settings"
-                @click="closeDropdown"
-                class="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-700 transition-colors"
-              >
-                <Settings :size="16" />
-                <span>Settings</span>
-              </RouterLink>
-            </div>
+            <RouterLink to="/settings" @click="closeDropdown" class="dropdown-item group">
+              <Settings :size="16" class="text-slate-500 group-hover:text-teal-400 transition-colors" />
+              <span>App Preferences</span>
+            </RouterLink>
 
-            <!-- Divider + Logout -->
-            <div class="border-t border-gray-700">
-              <button
-                @click="handleLogout"
-                class="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:text-red-400 hover:bg-gray-700 transition-colors"
-              >
-                <LogOut :size="16" />
-                <span>Logout</span>
-              </button>
-            </div>
+            <div class="h-px bg-white/5 my-1.5"></div>
+
+            <button @click="handleLogout" class="dropdown-item group text-rose-400 hover:bg-rose-500/10">
+              <LogOut :size="16" class="text-rose-500/70 group-hover:text-rose-400 transition-colors" />
+              <span>Secure Sign Out</span>
+            </button>
           </div>
         </Transition>
       </div>
@@ -175,7 +169,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue"
 import { useRouter } from "vue-router"
-import { Bell, User, Settings, LogOut } from "lucide-vue-next"
+import { Bell, User, Settings, LogOut, Sparkles, CheckCircle2 } from "lucide-vue-next"
 import { useAuthStore } from "../../stores/auth"
 import { useItemsStore } from "../../stores/items"
 import { clearTokens } from "../../utils/auth"
@@ -188,13 +182,11 @@ const router = useRouter()
 const authStore = useAuthStore()
 const itemsStore = useItemsStore()
 
-// Dropdown state
 const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
 const notificationsOpen = ref(false)
 const notificationsRef = ref(null)
 
-// Computed values from stores
 const userName = computed(() => {
   const u = authStore.user
   return u?.full_name || u?.username || u?.name || "User"
@@ -203,7 +195,6 @@ const userEmail = computed(() => authStore.user?.email || "")
 const userAvatar = computed(() => authStore.user?.profile_picture || null)
 const isPremium = computed(() => authStore.isPremium)
 
-// User initials for avatar fallback
 const initials = computed(() => {
   const names = userName.value.split(" ")
   if (names.length >= 2) {
@@ -212,11 +203,9 @@ const initials = computed(() => {
   return userName.value.charAt(0).toUpperCase() + (userName.value.charAt(1) || '').toUpperCase()
 })
 
-// Check for notifications (expired or soon-expiring items)
 const hasNotifications = computed(() => {
   const now = new Date()
   const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
-  
   return itemsStore.items.some(item => {
     if (!item.expiration_date) return false
     const expiryDate = new Date(item.expiration_date)
@@ -224,12 +213,11 @@ const hasNotifications = computed(() => {
   })
 })
 
-// Get notification items
 const notificationItems = computed(() => {
   const now = new Date()
   const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
   
-  const items = itemsStore.items
+  return itemsStore.items
     .filter(item => {
       if (!item.expiration_date) return false
       const expiryDate = new Date(item.expiration_date)
@@ -254,45 +242,18 @@ const notificationItems = computed(() => {
         urgency = 'orange'
         urgencyLabel = `${daysUntil} days`
       }
-      
-      return {
-        ...item,
-        daysUntil,
-        urgency,
-        urgencyLabel
-      }
+      return { ...item, daysUntil, urgency, urgencyLabel }
     })
     .sort((a, b) => a.daysUntil - b.daysUntil)
     .slice(0, 8)
-  
-  return items
 })
 
-// Functions
-function toggleDropdown() {
-  dropdownOpen.value = !dropdownOpen.value
-}
-
-function closeDropdown() {
-  dropdownOpen.value = false
-}
-
-function toggleNotifications() {
-  notificationsOpen.value = !notificationsOpen.value
-}
-
-function closeNotifications() {
-  notificationsOpen.value = false
-}
-
-function handleUpgrade() {
-  router.push("/subscription")
-}
-
-function handleNotifications() {
-  // Toggle notifications dropdown
-  toggleNotifications()
-}
+function toggleDropdown() { dropdownOpen.value = !dropdownOpen.value }
+function closeDropdown() { dropdownOpen.value = false }
+function toggleNotifications() { notificationsOpen.value = !notificationsOpen.value }
+function closeNotifications() { notificationsOpen.value = false }
+function handleUpgrade() { router.push("/subscription") }
+function handleNotifications() { toggleNotifications() }
 
 function handleLogout() {
   clearTokens()
@@ -300,14 +261,9 @@ function handleLogout() {
   router.push("/login")
 }
 
-// Close dropdown when clicking outside
 function handleClickOutside(event) {
-  if (dropdownRef.value && !dropdownRef.value.contains(event.target)) {
-    closeDropdown()
-  }
-  if (notificationsRef.value && !notificationsRef.value.contains(event.target)) {
-    closeNotifications()
-  }
+  if (dropdownRef.value && !dropdownRef.value.contains(event.target)) closeDropdown()
+  if (notificationsRef.value && !notificationsRef.value.contains(event.target)) closeNotifications()
 }
 
 function formatExpiryDate(dateString) {
@@ -316,28 +272,29 @@ function formatExpiryDate(dateString) {
 
 function getUrgencyClasses(urgency) {
   if (urgency === 'red') {
-    return 'bg-red-900/40 text-red-400'
+    return 'bg-rose-500/10 text-rose-400 border-rose-500/20'
   } else if (urgency === 'orange') {
-    return 'bg-orange-900/40 text-orange-400'
+    return 'bg-orange-500/10 text-orange-400 border-orange-500/20'
   } else {
-    return 'bg-yellow-900/40 text-yellow-400'
+    return 'bg-amber-500/10 text-amber-400 border-amber-500/20'
   }
 }
 
-onMounted(() => {
-  document.addEventListener("click", handleClickOutside)
-})
-
-onUnmounted(() => {
-  document.removeEventListener("click", handleClickOutside)
-})
+onMounted(() => document.addEventListener("click", handleClickOutside))
+onUnmounted(() => document.removeEventListener("click", handleClickOutside))
 </script>
 
 <style scoped>
-button:focus-visible,
-a:focus-visible {
-  outline: 2px solid #14b8a6;
-  outline-offset: 2px;
-  border-radius: 6px;
+.dropdown-item {
+  @apply flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:bg-white/5 hover:text-white transition-colors duration-150;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-slate-800 rounded-full;
 }
 </style>

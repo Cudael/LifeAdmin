@@ -1,86 +1,88 @@
 <template>
-  <div class="bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-800 p-6 hover:shadow-xl transition-shadow duration-300">
+  <div class="flex flex-col h-full">
     
-    <!-- Header -->
-    <div class="flex items-center justify-between mb-4">
+    <!-- Header: Month & Navigation -->
+    <div class="flex items-center justify-between mb-6">
       <h3 class="text-lg font-bold text-white flex items-center gap-2">
-        <Calendar :size="20" class="text-teal-400" />
+        <div class="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 border border-teal-500/20">
+          <Calendar :size="16" />
+        </div>
         {{ currentMonth }}
       </h3>
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1 bg-slate-900/50 rounded-lg border border-white/5 p-1 shadow-inner">
         <button
           @click="previousMonth"
-          class="p-1.5 hover:bg-gray-800 rounded-lg transition-colors"
+          class="p-1.5 hover:bg-slate-800 rounded-md text-slate-400 hover:text-white transition-colors"
           aria-label="Previous month"
         >
-          <ChevronLeft :size="16" class="text-gray-300" />
+          <ChevronLeft :size="14" />
         </button>
+        <div class="w-px h-4 bg-white/10"></div>
         <button
           @click="nextMonth"
-          class="p-1.5 hover:bg-gray-800 rounded-lg transition-colors"
+          class="p-1.5 hover:bg-slate-800 rounded-md text-slate-400 hover:text-white transition-colors"
           aria-label="Next month"
         >
-          <ChevronRight :size="16" class="text-gray-300" />
+          <ChevronRight :size="14" />
         </button>
       </div>
     </div>
 
-    <!-- Day headers -->
-    <div class="grid grid-cols-7 gap-1 mb-2">
-      <div
-        v-for="(day, index) in DAY_NAMES"
-        :key="`day-${index}`"
-        class="text-center text-xs font-semibold text-gray-400 py-1"
-      >
-        {{ day.charAt(0) }}
-      </div>
-    </div>
-
-    <!-- Calendar grid -->
-    <div class="grid grid-cols-7 gap-1">
-      <button
-        v-for="(day, index) in calendarDays"
-        :key="index"
-        @click="handleDayClick(day)"
-        :class="[
-          'aspect-square flex items-center justify-center text-sm rounded-lg transition-all duration-200 relative',
-          day.isCurrentMonth ? 'text-white hover:bg-teal-900/30' : 'text-gray-300',
-          day.isToday ? 'bg-teal-500 text-white font-bold hover:bg-teal-600' : '',
-          day.hasItems && !day.isToday ? 'font-semibold' : '',
-          !day.isCurrentMonth ? 'cursor-default' : 'cursor-pointer'
-        ]"
-        :disabled="!day.isCurrentMonth"
-      >
-        <span>{{ day.date.getDate() }}</span>
-        
-        <!-- Item indicator dots -->
-        <div v-if="day.hasItems && !day.isToday" class="absolute bottom-1 left-1/2 -translate-x-1/2 flex gap-0.5">
-          <div
-            v-for="i in Math.min(day.itemCount, 3)"
-            :key="i"
-            :class="[
-              'w-1 h-1 rounded-full',
-              getItemDotColor(day)
-            ]"
-          ></div>
-        </div>
-      </button>
-    </div>
-
-    <!-- Footer - Quick stats -->
-    <div class="mt-4 pt-4 border-t border-gray-800">
-      <div class="flex items-center justify-between text-xs">
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 rounded-full bg-red-500"></div>
-          <span class="text-gray-300">{{ expiringSoonCount }} expiring soon</span>
-        </div>
-        <RouterLink
-          to="/calendar"
-          class="text-teal-400 font-medium hover:text-teal-300 hover:underline"
+    <!-- Calendar Matrix -->
+    <div class="flex-1 flex flex-col">
+      <!-- Day headers (M, T, W, T, F, S, S) -->
+      <div class="grid grid-cols-7 gap-1 mb-3">
+        <div
+          v-for="(day, index) in DAY_NAMES"
+          :key="`day-${index}`"
+          class="text-center text-[10px] font-bold text-slate-500 uppercase tracking-widest py-1"
         >
-          View Calendar →
-        </RouterLink>
+          {{ day.charAt(0) }}
+        </div>
       </div>
+
+      <!-- Calendar grid -->
+      <div class="grid grid-cols-7 gap-1 flex-1">
+        <button
+          v-for="(day, index) in calendarDays"
+          :key="index"
+          @click="handleDayClick(day)"
+          class="relative aspect-square flex flex-col items-center justify-center rounded-full transition-all duration-200 group"
+          :class="[
+            !day.isCurrentMonth ? 'text-slate-700 cursor-default opacity-40' : 'cursor-pointer hover:bg-white/5',
+            day.isToday ? 'bg-teal-500/10 text-teal-400 font-bold ring-1 ring-teal-500 shadow-[0_0_15px_rgba(45,212,191,0.2)]' : 'text-slate-300 font-medium',
+            day.hasItems && !day.isToday ? 'text-white' : ''
+          ]"
+          :disabled="!day.isCurrentMonth"
+        >
+          <span class="text-[13px] leading-none mt-0.5">{{ day.date.getDate() }}</span>
+          
+          <!-- Item indicator dots (Data Heatmap) -->
+          <div v-if="day.hasItems" class="absolute bottom-1.5 flex gap-[3px]">
+            <div
+              v-for="i in Math.min(day.itemCount, 3)"
+              :key="i"
+              class="w-1 h-1 rounded-full shadow-sm"
+              :class="getItemDotColor(day)"
+            ></div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer: Quick Stats & CTA -->
+    <div class="mt-6 pt-5 border-t border-white/5 flex items-center justify-between">
+      <div class="flex items-center gap-2 px-2.5 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full">
+        <div class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.6)]"></div>
+        <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">{{ expiringSoonCount }} Action Items</span>
+      </div>
+      
+      <RouterLink
+        to="/calendar"
+        class="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-teal-400 transition-colors flex items-center gap-1 group"
+      >
+        Full Timeline <ArrowUpRight :size="12" class="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+      </RouterLink>
     </div>
 
   </div>
@@ -93,7 +95,8 @@ import { useItemStatus } from "../composables/useItemStatus"
 import {
   Calendar,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  ArrowUpRight
 } from "lucide-vue-next"
 
 const props = defineProps({
@@ -137,9 +140,12 @@ const calendarDays = computed(() => {
   
   while (currentDay <= endDate) {
     const dateStr = currentDay.toISOString().split('T')[0]
+    // Account for timezone offsets to ensure correct date mapping
     const dayItems = props.items.filter(item => {
       if (!item.expiration_date) return false
-      return item.expiration_date.split('T')[0] === dateStr
+      // Extract just the YYYY-MM-DD part from the ISO string to avoid TZ issues
+      const itemDateStr = item.expiration_date.split('T')[0]
+      return itemDateStr === dateStr
     })
     
     const today = new Date()
@@ -175,15 +181,15 @@ function getDaysUntil(dateString) {
 }
 
 function getItemDotColor(day) {
-  if (!day.items.length) return 'bg-gray-400'
+  if (!day.items.length) return 'bg-slate-600'
   
-  // Find the most urgent item
+  // Find the most urgent item to color the dots
   const minDays = Math.min(...day.items.map(item => getDaysUntil(item.expiration_date)))
   
-  if (minDays < 0) return 'bg-gray-400'
-  if (minDays <= 7) return 'bg-red-500'
-  if (minDays <= 30) return 'bg-orange-500'
-  return 'bg-blue-500'
+  if (minDays < 0) return 'bg-rose-500 shadow-rose-500/50' // Expired
+  if (minDays <= 7) return 'bg-rose-400 shadow-rose-500/50' // < 1 week
+  if (minDays <= 30) return 'bg-amber-400 shadow-amber-500/50' // < 1 month
+  return 'bg-teal-400 shadow-teal-500/50' // standard upcoming
 }
 
 function previousMonth() {

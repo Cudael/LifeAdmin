@@ -1,255 +1,202 @@
 <template>
-  <div class="space-y-8">
+  <div class="space-y-12">
 
-    <!-- PASSWORD CHANGE SECTION -->
+    <!-- PASSWORD UPDATE SECTION -->
     <div>
-      <div class="flex items-start gap-3 mb-6">
-        <div class="w-10 h-10 rounded-lg bg-teal-900/40 flex items-center justify-center flex-shrink-0">
-          <Lock :size="20" class="text-teal-400" />
-        </div>
-        <div>
-          <h3 class="text-lg font-bold text-white">Change Password</h3>
-          <p class="text-sm text-gray-300 mt-1">Update your password to keep your account secure</p>
-        </div>
-      </div>
+      <h3 class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-6 ml-1">Authentication Credentials</h3>
 
-      <form @submit.prevent="updatePassword" class="space-y-4">
+      <form @submit.prevent="updatePassword" class="space-y-6">
         
         <!-- Current Password -->
-        <div>
-          <label class="block text-sm font-medium text-gray-300 mb-2">
-            Current Password *
+        <div class="space-y-2">
+          <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">
+            Current Password <span class="text-rose-400">*</span>
           </label>
-          <div class="relative">
+          <div class="relative group/input">
             <input
               v-model="passwordForm.current"
               :type="showCurrentPassword ? 'text' : 'password'"
-              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white placeholder:text-gray-500 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+              class="w-full px-4 py-3.5 bg-slate-950/50 border border-white/10 text-white placeholder:text-slate-600 rounded-xl focus:outline-none focus:ring-1 focus:ring-teal-500/50 focus:border-teal-500/50 transition-all hover:border-white/20 font-medium shadow-inner"
               placeholder="Enter current password"
               required
             />
             <button
               type="button"
               @click="showCurrentPassword = !showCurrentPassword"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
             >
-              <EyeOff v-if="showCurrentPassword" :size="20" />
-              <Eye v-else :size="20" />
+              <EyeOff v-if="showCurrentPassword" :size="18" />
+              <Eye v-else :size="18" />
             </button>
           </div>
         </div>
 
-        <!-- New Password -->
-        <div>
-          <label class="block text-sm font-medium text-gray-300 mb-2">
-            New Password *
-          </label>
-          <div class="relative">
-            <input
-              v-model="passwordForm.new"
-              :type="showNewPassword ? 'text' : 'password'"
-              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white placeholder:text-gray-500 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
-              placeholder="Enter new password"
-              required
-              @input="checkPasswordStrength"
-            />
-            <button
-              type="button"
-              @click="showNewPassword = !showNewPassword"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            >
-              <EyeOff v-if="showNewPassword" :size="20" />
-              <Eye v-else :size="20" />
-            </button>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- New Password -->
+          <div class="space-y-2">
+            <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">
+              New Password <span class="text-rose-400">*</span>
+            </label>
+            <div class="relative group/input">
+              <input
+                v-model="passwordForm.new"
+                :type="showNewPassword ? 'text' : 'password'"
+                class="w-full px-4 py-3.5 bg-slate-950/50 border border-white/10 text-white placeholder:text-slate-600 rounded-xl focus:outline-none focus:ring-1 focus:ring-teal-500/50 focus:border-teal-500/50 transition-all hover:border-white/20 font-medium shadow-inner"
+                placeholder="Enter new password"
+                required
+                @input="checkPasswordStrength"
+              />
+              <button
+                type="button"
+                @click="showNewPassword = !showNewPassword"
+                class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+              >
+                <EyeOff v-if="showNewPassword" :size="18" />
+                <Eye v-else :size="18" />
+              </button>
+            </div>
+
+            <!-- Password Strength Neon Indicator -->
+            <div v-if="passwordForm.new" class="pt-2">
+              <div class="flex items-center gap-1 h-1.5 rounded-full overflow-hidden bg-slate-900">
+                <div class="h-full transition-all duration-300 flex-1" :class="passwordStrength === 'weak' || passwordStrength === 'medium' || passwordStrength === 'strong' ? 'bg-rose-500 shadow-[0_0_10px_rgba(225,29,72,0.8)]' : ''"></div>
+                <div class="h-full transition-all duration-300 flex-1" :class="passwordStrength === 'medium' || passwordStrength === 'strong' ? 'bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.8)]' : ''"></div>
+                <div class="h-full transition-all duration-300 flex-1" :class="passwordStrength === 'strong' ? 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)]' : ''"></div>
+              </div>
+              <div class="flex justify-between items-center mt-2">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Strength</span>
+                <span class="text-[10px] font-bold uppercase tracking-widest" :class="{
+                  'text-rose-400': passwordStrength === 'weak',
+                  'text-amber-400': passwordStrength === 'medium',
+                  'text-emerald-400': passwordStrength === 'strong'
+                }">{{ passwordStrength }}</span>
+              </div>
+            </div>
+
+            <!-- Checklist -->
+            <div v-if="passwordForm.new" class="mt-3 space-y-1.5 bg-slate-950/30 p-3 rounded-xl border border-white/5">
+              <div class="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider" :class="passwordChecks.length ? 'text-emerald-400' : 'text-slate-600'">
+                <CheckCircle2 v-if="passwordChecks.length" :size="14" />
+                <div v-else class="w-3.5 h-3.5 rounded-full border-2 border-slate-700"></div>
+                8+ Characters
+              </div>
+              <div class="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider" :class="passwordChecks.uppercase ? 'text-emerald-400' : 'text-slate-600'">
+                <CheckCircle2 v-if="passwordChecks.uppercase" :size="14" />
+                <div v-else class="w-3.5 h-3.5 rounded-full border-2 border-slate-700"></div>
+                1+ Uppercase
+              </div>
+              <div class="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider" :class="passwordChecks.number ? 'text-emerald-400' : 'text-slate-600'">
+                <CheckCircle2 v-if="passwordChecks.number" :size="14" />
+                <div v-else class="w-3.5 h-3.5 rounded-full border-2 border-slate-700"></div>
+                1+ Number
+              </div>
+            </div>
           </div>
 
-          <!-- Password Strength Indicator -->
-          <div v-if="passwordForm.new" class="mt-3">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-medium text-gray-300">Password strength:</span>
-              <span :class="[
-                'text-xs font-semibold',
-                passwordStrength === 'weak' ? 'text-red-600' :
-                passwordStrength === 'medium' ? 'text-orange-600' :
-                'text-green-600'
-              ]">
-                {{ passwordStrength.toUpperCase() }}
-              </span>
+          <!-- Confirm New Password -->
+          <div class="space-y-2">
+            <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">
+              Verify Password <span class="text-rose-400">*</span>
+            </label>
+            <div class="relative group/input">
+              <input
+                v-model="passwordForm.confirm"
+                :type="showConfirmPassword ? 'text' : 'password'"
+                class="w-full px-4 py-3.5 bg-slate-950/50 border border-white/10 text-white placeholder:text-slate-600 rounded-xl focus:outline-none focus:ring-1 focus:ring-teal-500/50 focus:border-teal-500/50 transition-all hover:border-white/20 font-medium shadow-inner"
+                placeholder="Confirm new password"
+                required
+              />
+              <button
+                type="button"
+                @click="showConfirmPassword = !showConfirmPassword"
+                class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+              >
+                <EyeOff v-if="showConfirmPassword" :size="18" />
+                <Eye v-else :size="18" />
+              </button>
             </div>
-            <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-              <div
-                :class="[
-                  'h-full transition-all duration-300',
-                  passwordStrength === 'weak' ? 'w-1/3 bg-red-500' :
-                  passwordStrength === 'medium' ? 'w-2/3 bg-orange-500' :
-                  'w-full bg-green-500'
-                ]"
-              ></div>
-            </div>
+            
+            <Transition enter-active-class="transition-all duration-200" enter-from-class="opacity-0 -translate-y-2" leave-to-class="opacity-0 -translate-y-2">
+              <p v-if="passwordForm.confirm && passwordForm.new !== passwordForm.confirm" class="text-xs font-bold text-rose-400 mt-2 flex items-center gap-1.5 ml-1">
+                <AlertCircle :size="14" />
+                Passwords do not match
+              </p>
+            </Transition>
           </div>
-
-          <!-- Password Requirements -->
-          <div class="mt-3 space-y-1">
-            <div class="flex items-center gap-2 text-xs">
-              <CheckCircle2 v-if="passwordChecks.length" :size="14" class="text-green-400" />
-              <XCircle v-else :size="14" class="text-gray-600" />
-              <span :class="passwordChecks.length ? 'text-gray-300' : 'text-gray-500'">
-                At least 8 characters
-              </span>
-            </div>
-            <div class="flex items-center gap-2 text-xs">
-              <CheckCircle2 v-if="passwordChecks.uppercase" :size="14" class="text-green-400" />
-              <XCircle v-else :size="14" class="text-gray-600" />
-              <span :class="passwordChecks.uppercase ? 'text-gray-300' : 'text-gray-500'">
-                One uppercase letter
-              </span>
-            </div>
-            <div class="flex items-center gap-2 text-xs">
-              <CheckCircle2 v-if="passwordChecks.number" :size="14" class="text-green-400" />
-              <XCircle v-else :size="14" class="text-gray-600" />
-              <span :class="passwordChecks.number ? 'text-gray-300' : 'text-gray-500'">
-                One number
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Confirm New Password -->
-        <div>
-          <label class="block text-sm font-medium text-gray-300 mb-2">
-            Confirm New Password *
-          </label>
-          <div class="relative">
-            <input
-              v-model="passwordForm.confirm"
-              :type="showConfirmPassword ? 'text' : 'password'"
-              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white placeholder:text-gray-500 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
-              placeholder="Confirm new password"
-              required
-            />
-            <button
-              type="button"
-              @click="showConfirmPassword = !showConfirmPassword"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            >
-              <EyeOff v-if="showConfirmPassword" :size="20" />
-              <Eye v-else :size="20" />
-            </button>
-          </div>
-          <p v-if="passwordForm.confirm && passwordForm.new !== passwordForm.confirm" class="text-xs text-red-600 mt-2 flex items-center gap-1">
-            <AlertCircle :size="14" />
-            Passwords do not match
-          </p>
         </div>
 
         <!-- Submit Button -->
-        <div class="flex items-center gap-3 pt-2">
+        <div class="flex items-center gap-4 pt-2">
           <button
             type="submit"
             :disabled="!isPasswordFormValid || updatingPassword"
-            class="px-6 py-3 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl hover:from-teal-600 hover:to-cyan-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            class="group px-6 py-3.5 bg-gradient-to-r from-teal-500 to-cyan-500 text-slate-950 rounded-xl font-bold shadow-[0_0_20px_rgba(45,212,191,0.2)] hover:shadow-[0_0_30px_rgba(45,212,191,0.4)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             <Loader2 :size="18" class="animate-spin" v-if="updatingPassword" />
-            <Check :size="18" v-else />
-            {{ updatingPassword ? 'Updating...' : 'Update Password' }}
+            <ShieldCheck :size="18" class="group-hover:scale-110 transition-transform" v-else />
+            {{ updatingPassword ? 'Encrypting...' : 'Update Password' }}
           </button>
 
           <button
             v-if="passwordForm.current || passwordForm.new || passwordForm.confirm"
             type="button"
             @click="resetPasswordForm"
-            class="px-6 py-3 bg-gray-800 text-gray-300 rounded-xl font-semibold hover:bg-gray-700 transition-all duration-200"
+            class="px-6 py-3.5 bg-white/5 hover:bg-white/10 border border-white/5 text-white rounded-xl font-bold transition-all duration-200"
           >
-            Cancel
+            Clear
           </button>
         </div>
 
-        <!-- Success Message -->
-        <Transition
-          enter-active-class="transition-all duration-200 ease-out"
-          enter-from-class="opacity-0 translate-y-2"
-          enter-to-class="opacity-100 translate-y-0"
-          leave-active-class="transition-all duration-150 ease-in"
-          leave-from-class="opacity-100 translate-y-0"
-          leave-to-class="opacity-0 translate-y-2"
-        >
-          <div v-if="passwordSuccess" class="flex items-center gap-2 p-4 bg-green-50 border border-green-200 rounded-xl text-green-800 text-sm">
-            <CheckCircle2 :size="18" class="text-green-600" />
-            <span>Password updated successfully!</span>
+        <!-- Messages -->
+        <Transition enter-active-class="transition-all duration-300 ease-out" enter-from-class="opacity-0 translate-y-2 scale-95" enter-to-class="opacity-100 translate-y-0 scale-100" leave-active-class="transition-all duration-200 ease-in" leave-from-class="opacity-100 translate-y-0 scale-100" leave-to-class="opacity-0 translate-y-2 scale-95">
+          <div v-if="passwordSuccess" class="flex items-center gap-3 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl shadow-inner">
+            <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0"><CheckCircle2 :size="16" /></div>
+            <span class="text-sm font-bold text-emerald-300">Authentication credentials successfully updated.</span>
           </div>
         </Transition>
 
-        <!-- Error Message -->
-        <Transition
-          enter-active-class="transition-all duration-200 ease-out"
-          enter-from-class="opacity-0 translate-y-2"
-          enter-to-class="opacity-100 translate-y-0"
-          leave-active-class="transition-all duration-150 ease-in"
-          leave-from-class="opacity-100 translate-y-0"
-          leave-to-class="opacity-0 translate-y-2"
-        >
-          <div v-if="error" class="flex items-center gap-2 p-4 bg-red-900/20 border border-red-800 rounded-xl text-red-400 text-sm">
-            <AlertCircle :size="18" class="text-red-400" />
-            <span>{{ error }}</span>
+        <Transition enter-active-class="transition-all duration-300 ease-out" enter-from-class="opacity-0 translate-y-2 scale-95" enter-to-class="opacity-100 translate-y-0 scale-100" leave-active-class="transition-all duration-200 ease-in" leave-from-class="opacity-100 translate-y-0 scale-100" leave-to-class="opacity-0 translate-y-2 scale-95">
+          <div v-if="error" class="flex items-center gap-3 p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl shadow-inner">
+            <div class="w-8 h-8 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 shrink-0"><AlertCircle :size="16" /></div>
+            <span class="text-sm font-bold text-rose-300">{{ error }}</span>
           </div>
         </Transition>
-
       </form>
     </div>
 
-    <!-- DIVIDER -->
-    <div class="border-t border-gray-800"></div>
+    <div class="h-px bg-white/5 w-full"></div>
 
-    <!-- DELETE ACCOUNT SECTION (DANGER ZONE) -->
-    <div>
-      <div class="flex items-start gap-3 mb-6">
-        <div class="w-10 h-10 rounded-lg bg-red-900/40 flex items-center justify-center flex-shrink-0">
-          <AlertTriangle :size="20" class="text-red-400" />
-        </div>
-        <div>
-          <h3 class="text-lg font-bold text-white">Danger Zone</h3>
-          <p class="text-sm text-gray-300 mt-1">Irreversible and destructive actions</p>
-        </div>
-      </div>
+    <!-- DANGER ZONE -->
+    <div class="relative">
+      <h3 class="text-[10px] font-bold uppercase tracking-widest text-rose-500 mb-4 ml-1 flex items-center gap-2">
+        <AlertTriangle :size="12" /> Critical Operations
+      </h3>
 
-      <div class="border-2 border-red-800 rounded-xl p-6 bg-red-900/20">
-        <div class="flex items-start justify-between gap-4">
+      <div class="relative border border-rose-500/30 rounded-[2rem] p-8 bg-rose-500/5 overflow-hidden group hover:bg-rose-500/10 transition-colors">
+        <!-- Warning Glow -->
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-rose-500/20 blur-[80px] rounded-full pointer-events-none transition-opacity opacity-50 group-hover:opacity-100"></div>
+
+        <div class="relative z-10 flex flex-col md:flex-row items-start justify-between gap-8">
           <div class="flex-1">
-            <h4 class="text-base font-bold text-red-300 mb-2 flex items-center gap-2">
-              <Trash2 :size="18" />
-              Delete Account
-            </h4>
-            <p class="text-sm text-red-400 mb-3">
-              Permanently delete your account and all associated data. This action cannot be undone.
+            <h4 class="text-xl font-extrabold text-white mb-2 tracking-tight">Delete Secure Vault</h4>
+            <p class="text-sm font-medium text-rose-200/70 mb-4 leading-relaxed">
+              Initiating this protocol will permanently destroy your account and purge all encrypted data from our servers. This action is irreversible.
             </p>
-            <ul class="text-xs text-red-400 space-y-1 mb-4">
-              <li class="flex items-center gap-2">
-                <div class="w-1 h-1 rounded-full bg-red-600"></div>
-                All your items and documents will be deleted
-              </li>
-              <li class="flex items-center gap-2">
-                <div class="w-1 h-1 rounded-full bg-red-600"></div>
-                All uploaded files will be permanently removed
-              </li>
-              <li class="flex items-center gap-2">
-                <div class="w-1 h-1 rounded-full bg-red-600"></div>
-                Your profile and settings will be lost forever
-              </li>
-              <li class="flex items-center gap-2">
-                <div class="w-1 h-1 rounded-full bg-red-600"></div>
-                This action is irreversible
-              </li>
+            <ul class="text-xs font-bold uppercase tracking-widest text-rose-400 space-y-2">
+              <li class="flex items-center gap-2.5"><div class="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(225,29,72,0.8)]"></div> Identities & Subscriptions Purged</li>
+              <li class="flex items-center gap-2.5"><div class="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(225,29,72,0.8)]"></div> Secure Documents Deleted</li>
+              <li class="flex items-center gap-2.5"><div class="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(225,29,72,0.8)]"></div> Access Credentials Terminated</li>
             </ul>
           </div>
-        </div>
 
-        <button
-          @click="showDeleteModal = true"
-          class="px-6 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl"
-        >
-          <Trash2 :size="18" />
-          Delete My Account
-        </button>
+          <button
+            @click="showDeleteModal = true"
+            class="shrink-0 px-6 py-3.5 bg-rose-500/10 hover:bg-rose-500 border border-rose-500/50 hover:border-transparent text-rose-400 hover:text-white rounded-xl font-bold transition-all duration-300 flex items-center gap-2 shadow-[0_0_20px_rgba(225,29,72,0.1)] hover:shadow-[0_0_30px_rgba(225,29,72,0.5)]"
+          >
+            <Trash2 :size="18" />
+            Delete Account
+          </button>
+        </div>
       </div>
     </div>
 
@@ -270,28 +217,11 @@ import { ref, computed } from "vue"
 import { useRouter } from "vue-router"
 import { apiFetch } from "../../utils/api"
 import DeleteAccountModal from "../../components/DeleteAccountModal.vue"
-import {
-  Lock,
-  Eye,
-  EyeOff,
-  Check,
-  CheckCircle2,
-  XCircle,
-  AlertCircle,
-  AlertTriangle,
-  Trash2,
-  Loader2
-} from "lucide-vue-next"
+import { Lock, Eye, EyeOff, Check, CheckCircle2, ShieldCheck, AlertCircle, AlertTriangle, Trash2, Loader2 } from "lucide-vue-next"
 
 const router = useRouter()
 
-// Password form state
-const passwordForm = ref({
-  current: '',
-  new: '',
-  confirm: ''
-})
-
+const passwordForm = ref({ current: '', new: '', confirm: '' })
 const showCurrentPassword = ref(false)
 const showNewPassword = ref(false)
 const showConfirmPassword = ref(false)
@@ -307,105 +237,56 @@ const passwordChecks = computed(() => ({
 }))
 
 const isPasswordFormValid = computed(() => {
-  return (
-    passwordForm.value.current &&
-    passwordForm.value.new &&
-    passwordForm.value.confirm &&
+  return passwordForm.value.current && passwordForm.value.new && passwordForm.value.confirm &&
     passwordForm.value.new === passwordForm.value.confirm &&
-    passwordChecks.value.length &&
-    passwordChecks.value.uppercase &&
-    passwordChecks.value.number
-  )
+    passwordChecks.value.length && passwordChecks.value.uppercase && passwordChecks.value.number
 })
 
-// Delete account state
 const showDeleteModal = ref(false)
 const deleteLoading = ref(false)
 const deleteError = ref('')
 
 function checkPasswordStrength() {
   const { length, uppercase, number } = passwordChecks.value
-  
-  if (length && uppercase && number) {
-    passwordStrength.value = 'strong'
-  } else if (length && (uppercase || number)) {
-    passwordStrength.value = 'medium'
-  } else {
-    passwordStrength.value = 'weak'
-  }
+  if (length && uppercase && number) passwordStrength.value = 'strong'
+  else if (length && (uppercase || number)) passwordStrength.value = 'medium'
+  else passwordStrength.value = 'weak'
 }
 
 function resetPasswordForm() {
   passwordForm.value = { current: '', new: '', confirm: '' }
-  passwordSuccess.value = false
-  error.value = ''
+  passwordSuccess.value = false; error.value = ''
 }
 
 async function updatePassword() {
-  updatingPassword.value = true
-  error.value = ''
-  passwordSuccess.value = false
-  
+  updatingPassword.value = true; error.value = ''; passwordSuccess.value = false
   try {
     const res = await apiFetch('/auth/change-password', {
       method: 'POST',
-      body: JSON.stringify({
-        current_password: passwordForm.value.current,
-        new_password: passwordForm.value.new
-      })
+      body: JSON.stringify({ current_password: passwordForm.value.current, new_password: passwordForm.value.new })
     })
-    
-    if (!res.ok) {
-      const data = await res.json()
-      throw new Error(data.detail || 'Failed to update password')
-    }
-    
+    if (!res.ok) throw new Error((await res.json()).detail || 'Failed to update password')
     passwordSuccess.value = true
-    setTimeout(() => {
-      resetPasswordForm()
-    }, 3000)
-    
+    setTimeout(resetPasswordForm, 3000)
   } catch (err) {
-    console.error('Failed to update password:', err)
     error.value = err.message || 'Failed to update password. Please try again.'
-    setTimeout(() => {
-      error.value = ''
-    }, 5000)
+    setTimeout(() => { error.value = '' }, 5000)
   } finally {
     updatingPassword.value = false
   }
 }
 
 async function handleDeleteAccount(password) {
-  deleteError.value = ""
-  deleteLoading.value = true
-
+  deleteError.value = ""; deleteLoading.value = true
   try {
-    const res = await apiFetch("/auth/me", {
-      method: "DELETE",
-      body: JSON.stringify({ password })
-    })
-
+    const res = await apiFetch("/auth/me", { method: "DELETE", body: JSON.stringify({ password }) })
     if (!res.ok) {
-      const data = await res.json()
-      deleteError.value = data.detail || "Failed to delete account"
-      deleteLoading.value = false
-      return
+      deleteError.value = (await res.json()).detail || "Failed to delete account"
+      deleteLoading.value = false; return
     }
-
-    // Account deleted successfully
-    // Clear tokens
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('refresh_token')
-    
-    // Close modal
-    showDeleteModal.value = false
-    
-    // Redirect to landing page
-    router.push('/')
-    
+    localStorage.removeItem('access_token'); localStorage.removeItem('refresh_token')
+    showDeleteModal.value = false; router.push('/')
   } catch (err) {
-    console.error("Delete account error:", err)
     deleteError.value = "Something went wrong. Please try again."
     deleteLoading.value = false
   }

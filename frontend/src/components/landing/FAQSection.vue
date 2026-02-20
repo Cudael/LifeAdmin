@@ -3,142 +3,142 @@ import { MessageCircle, Mail, ArrowRight, ChevronDown } from "lucide-vue-next"
 </script>
 
 <template>
-  <section id="faq" class="py-16 bg-gradient-to-b from-[#f7fdfc] to-white relative overflow-hidden">
+  <section id="faq" class="py-24 md:py-32 relative overflow-hidden z-10">
     
-    <!-- Decorative shapes -->
-    <div class="absolute top-10 left-10 w-96 h-96 bg-teal-100 rounded-full opacity-10 blur-3xl"></div>
-    <div class="absolute bottom-10 right-10 w-80 h-80 bg-cyan-100 rounded-full opacity-10 blur-3xl"></div>
+    <!-- Ambient glowing backgrounds -->
+    <div class="absolute top-1/4 left-0 w-96 h-96 bg-teal-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="absolute bottom-1/4 right-0 w-96 h-96 bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none"></div>
 
     <div class="max-w-screen-xl mx-auto px-6 relative z-10">
 
-      <!-- Label -->
-      <div class="text-center mb-12">
-        <div class="inline-flex items-center gap-2 px-4 py-2 bg-teal-100 text-teal-700 rounded-full mb-4 text-sm font-semibold">
-          <MessageCircle :size="16" />
-          FAQ
+      <!-- Section Header -->
+      <div class="text-center mb-16 max-w-2xl mx-auto">
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-teal-500/10 border border-teal-500/20 text-teal-400 rounded-full mb-6 text-sm font-semibold tracking-wide">
+          <MessageCircle :size="16" class="fill-current/20" />
+          Got Questions?
         </div>
 
-        <!-- Title -->
-        <h2 class="text-5xl font-extrabold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-4 pb-1">
-          Frequently Asked Questions
+        <h2 class="text-4xl md:text-5xl font-extrabold text-slate-50 tracking-tight mb-6">
+          Frequently asked <span class="bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">questions.</span>
         </h2>
-
-        <!-- Underline -->
-        <div class="w-16 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 mx-auto"></div>
+        
+        <p class="text-lg text-slate-400">
+          Everything you need to know about the product and billing.
+        </p>
       </div>
 
+      <!-- FAQ Accordions Container -->
       <div class="max-w-3xl mx-auto space-y-4">
 
-        <!-- FAQ ITEM -->
-        <details class="group bg-white border-2 border-teal-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-          <summary class="flex justify-between items-center cursor-pointer text-lg font-semibold text-gray-900 list-none">
-            <span>How does Remindes remind me about upcoming expirations?</span>
-            <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 ml-4 group-open:bg-teal-500 transition-colors">
-              <ChevronDown :size="20" class="text-teal-600 group-open:text-white group-open:rotate-180 transition-transform" />
+        <!-- FAQ ITEM 1 -->
+        <details class="group bg-slate-900/40 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden shadow-sm hover:border-teal-500/30 transition-colors duration-300">
+          <summary class="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-slate-100 list-none outline-none select-none">
+            <span class="pr-6">How does LifeAdmin remind me about upcoming expirations?</span>
+            <div class="w-8 h-8 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center flex-shrink-0 group-open:bg-teal-500/20 group-open:border-teal-500/40 transition-all duration-300">
+              <ChevronDown :size="18" class="text-slate-400 group-open:text-teal-400 group-open:rotate-180 transition-transform duration-300" />
             </div>
           </summary>
-
-          <div class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
-            Remindes sends you smart reminders days or weeks before something expires. 
+          <div class="px-6 pb-6 text-slate-400 leading-relaxed text-base">
+            LifeAdmin sends you smart reminders days or weeks before something expires. 
             You choose how early you want to be notified via email, push notifications, or both.
           </div>
         </details>
 
-        <!-- FAQ ITEM -->
-        <details class="group bg-white border-2 border-teal-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-          <summary class="flex justify-between items-center cursor-pointer text-lg font-semibold text-gray-900 list-none">
-            <span>Is my data secure?</span>
-            <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 ml-4 group-open:bg-teal-500 transition-colors">
-              <ChevronDown :size="20" class="text-teal-600 group-open:text-white group-open:rotate-180 transition-transform" />
+        <!-- FAQ ITEM 2 -->
+        <details class="group bg-slate-900/40 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden shadow-sm hover:border-teal-500/30 transition-colors duration-300">
+          <summary class="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-slate-100 list-none outline-none select-none">
+            <span class="pr-6">Is my data secure?</span>
+            <div class="w-8 h-8 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center flex-shrink-0 group-open:bg-teal-500/20 group-open:border-teal-500/40 transition-all duration-300">
+              <ChevronDown :size="18" class="text-slate-400 group-open:text-teal-400 group-open:rotate-180 transition-transform duration-300" />
             </div>
           </summary>
-          <div class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
+          <div class="px-6 pb-6 text-slate-400 leading-relaxed text-base">
             Yes — all your data is encrypted at rest and in transit using bank-level AES-256 encryption. 
             We never sell your information, and you stay in full control of your documents.
           </div>
         </details>
 
-        <!-- FAQ ITEM -->
-        <details class="group bg-white border-2 border-teal-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-          <summary class="flex justify-between items-center cursor-pointer text-lg font-semibold text-gray-900 list-none">
-            <span>What's included in the free plan?</span>
-            <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 ml-4 group-open:bg-teal-500 transition-colors">
-              <ChevronDown :size="20" class="text-teal-600 group-open:text-white group-open:rotate-180 transition-transform" />
+        <!-- FAQ ITEM 3 -->
+        <details class="group bg-slate-900/40 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden shadow-sm hover:border-teal-500/30 transition-colors duration-300">
+          <summary class="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-slate-100 list-none outline-none select-none">
+            <span class="pr-6">What's included in the free plan?</span>
+            <div class="w-8 h-8 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center flex-shrink-0 group-open:bg-teal-500/20 group-open:border-teal-500/40 transition-all duration-300">
+              <ChevronDown :size="18" class="text-slate-400 group-open:text-teal-400 group-open:rotate-180 transition-transform duration-300" />
             </div>
           </summary>
-          <div class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
+          <div class="px-6 pb-6 text-slate-400 leading-relaxed text-base">
             The free plan includes tracking for up to 20 items, smart reminders, and secure document storage up to 100MB.
-            It's perfect for getting started and seeing if Remindes is right for you.
+            It's perfect for getting started and seeing if LifeAdmin is right for you.
           </div>
         </details>
 
-        <!-- FAQ ITEM -->
-        <details class="group bg-white border-2 border-teal-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-          <summary class="flex justify-between items-center cursor-pointer text-lg font-semibold text-gray-900 list-none">
-            <span>Can I cancel my Premium subscription anytime?</span>
-            <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 ml-4 group-open:bg-teal-500 transition-colors">
-              <ChevronDown :size="20" class="text-teal-600 group-open:text-white group-open:rotate-180 transition-transform" />
+        <!-- FAQ ITEM 4 -->
+        <details class="group bg-slate-900/40 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden shadow-sm hover:border-teal-500/30 transition-colors duration-300">
+          <summary class="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-slate-100 list-none outline-none select-none">
+            <span class="pr-6">Can I cancel my Premium subscription anytime?</span>
+            <div class="w-8 h-8 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center flex-shrink-0 group-open:bg-teal-500/20 group-open:border-teal-500/40 transition-all duration-300">
+              <ChevronDown :size="18" class="text-slate-400 group-open:text-teal-400 group-open:rotate-180 transition-transform duration-300" />
             </div>
           </summary>
-          <div class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
+          <div class="px-6 pb-6 text-slate-400 leading-relaxed text-base">
             Absolutely. You can cancel anytime with a single click from your account settings — no hidden steps, no hassle.
             Your data remains accessible even after cancellation.
           </div>
         </details>
 
-        <!-- FAQ ITEM -->
-        <details class="group bg-white border-2 border-teal-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-          <summary class="flex justify-between items-center cursor-pointer text-lg font-semibold text-gray-900 list-none">
-            <span>Do you offer refunds?</span>
-            <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 ml-4 group-open:bg-teal-500 transition-colors">
-              <ChevronDown :size="20" class="text-teal-600 group-open:text-white group-open:rotate-180 transition-transform" />
+        <!-- FAQ ITEM 5 -->
+        <details class="group bg-slate-900/40 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden shadow-sm hover:border-teal-500/30 transition-colors duration-300">
+          <summary class="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-slate-100 list-none outline-none select-none">
+            <span class="pr-6">Do you offer refunds?</span>
+            <div class="w-8 h-8 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center flex-shrink-0 group-open:bg-teal-500/20 group-open:border-teal-500/40 transition-all duration-300">
+              <ChevronDown :size="18" class="text-slate-400 group-open:text-teal-400 group-open:rotate-180 transition-transform duration-300" />
             </div>
           </summary>
-          <div class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
+          <div class="px-6 pb-6 text-slate-400 leading-relaxed text-base">
             Yes — all Premium plans come with a 30‑day money‑back guarantee. 
             If you're not satisfied for any reason, we'll refund you with no questions asked.
           </div>
         </details>
 
-        <!-- FAQ ITEM -->
-        <details class="group bg-white border-2 border-teal-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-          <summary class="flex justify-between items-center cursor-pointer text-lg font-semibold text-gray-900 list-none">
-            <span>What types of items can I track?</span>
-            <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 ml-4 group-open:bg-teal-500 transition-colors">
-              <ChevronDown :size="20" class="text-teal-600 group-open:text-white group-open:rotate-180 transition-transform" />
+        <!-- FAQ ITEM 6 -->
+        <details class="group bg-slate-900/40 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden shadow-sm hover:border-teal-500/30 transition-colors duration-300">
+          <summary class="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-slate-100 list-none outline-none select-none">
+            <span class="pr-6">What types of items can I track?</span>
+            <div class="w-8 h-8 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center flex-shrink-0 group-open:bg-teal-500/20 group-open:border-teal-500/40 transition-all duration-300">
+              <ChevronDown :size="18" class="text-slate-400 group-open:text-teal-400 group-open:rotate-180 transition-transform duration-300" />
             </div>
           </summary>
-          <div class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
+          <div class="px-6 pb-6 text-slate-400 leading-relaxed text-base">
             Anything with an expiration date — IDs, passports, warranties, subscriptions, insurance policies, 
             contracts, certifications, licenses, memberships, and more. If it expires, you can track it.
           </div>
         </details>
 
-        <!-- FAQ ITEM -->
-        <details class="group bg-white border-2 border-teal-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-          <summary class="flex justify-between items-center cursor-pointer text-lg font-semibold text-gray-900 list-none">
-            <span>Can I share items with family members?</span>
-            <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 ml-4 group-open:bg-teal-500 transition-colors">
-              <ChevronDown :size="20" class="text-teal-600 group-open:text-white group-open:rotate-180 transition-transform" />
+        <!-- FAQ ITEM 7 -->
+        <details class="group bg-slate-900/40 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden shadow-sm hover:border-teal-500/30 transition-colors duration-300">
+          <summary class="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-slate-100 list-none outline-none select-none">
+            <span class="pr-6">Can I share items with family members?</span>
+            <div class="w-8 h-8 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center flex-shrink-0 group-open:bg-teal-500/20 group-open:border-teal-500/40 transition-all duration-300">
+              <ChevronDown :size="18" class="text-slate-400 group-open:text-teal-400 group-open:rotate-180 transition-transform duration-300" />
             </div>
           </summary>
-          <div class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
+          <div class="px-6 pb-6 text-slate-400 leading-relaxed text-base">
             Yes! Premium users can share documents and reminders with family members. 
             Perfect for managing household documents, kids' school forms, or family insurance policies.
           </div>
         </details>
 
-        <!-- FAQ ITEM -->
-        <details class="group bg-white border-2 border-teal-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-          <summary class="flex justify-between items-center cursor-pointer text-lg font-semibold text-gray-900 list-none">
-            <span>Do you have a mobile app?</span>
-            <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 ml-4 group-open:bg-teal-500 transition-colors">
-              <ChevronDown :size="20" class="text-teal-600 group-open:text-white group-open:rotate-180 transition-transform" />
+        <!-- FAQ ITEM 8 -->
+        <details class="group bg-slate-900/40 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden shadow-sm hover:border-teal-500/30 transition-colors duration-300">
+          <summary class="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-slate-100 list-none outline-none select-none">
+            <span class="pr-6">Do you have a mobile app?</span>
+            <div class="w-8 h-8 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center flex-shrink-0 group-open:bg-teal-500/20 group-open:border-teal-500/40 transition-all duration-300">
+              <ChevronDown :size="18" class="text-slate-400 group-open:text-teal-400 group-open:rotate-180 transition-transform duration-300" />
             </div>
           </summary>
-          <div class="mt-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
+          <div class="px-6 pb-6 text-slate-400 leading-relaxed text-base">
             Our web app is fully responsive and works great on mobile browsers. 
-            Native iOS and Android apps are coming in Q2 2026. Join our waitlist to be notified!
+            Native iOS and Android apps are currently in development. Join our waitlist to be notified!
           </div>
         </details>
 
@@ -146,43 +146,56 @@ import { MessageCircle, Mail, ArrowRight, ChevronDown } from "lucide-vue-next"
 
     </div>
 
-    <!-- Still have a question? -->
-    <div class="max-w-screen-md mx-auto px-6 text-center mt-16 relative z-10">
-
-      <div class="p-12 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-3xl shadow-2xl text-white">
-        <Mail :size="48" class="mx-auto mb-6 opacity-90" />
+    <!-- Contact Support Banner -->
+    <div class="max-w-4xl mx-auto px-6 mt-24 relative z-10">
+      <div class="relative p-10 md:p-14 bg-gradient-to-br from-slate-900 to-slate-950 rounded-[2.5rem] border border-white/10 shadow-2xl overflow-hidden text-center">
         
-        <h3 class="text-3xl font-bold mb-4">
-          Still have a question?
-        </h3>
+        <!-- Background Banner Gradients -->
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(45,212,191,0.15),transparent_70%)]"></div>
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-teal-500/50 to-transparent"></div>
 
-        <p class="text-lg text-white/90 mb-10">
-          We're here to help. If you didn't find the answer you were looking for, 
-          reach out and we'll get back to you as soon as possible.
-        </p>
+        <div class="relative z-10">
+          <div class="w-16 h-16 mx-auto bg-teal-500/10 border border-teal-500/20 rounded-2xl flex items-center justify-center mb-6 text-teal-400 shadow-[0_0_15px_rgba(45,212,191,0.15)]">
+            <Mail :size="32" />
+          </div>
+          
+          <h3 class="text-3xl font-bold text-white mb-4 tracking-tight">
+            Still have questions?
+          </h3>
 
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <RouterLink
-            to="/contact"
-            class="group px-10 py-4 bg-white text-teal-600 rounded-full text-lg font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2"
-          >
-            Contact Support
-            <ArrowRight :size="20" class="group-hover:translate-x-1 transition-transform" />
-          </RouterLink>
+          <p class="text-lg text-slate-400 mb-10 max-w-xl mx-auto">
+            We're here to help. If you didn't find the answer you were looking for, reach out and we'll get back to you as soon as possible.
+          </p>
 
-          <a
-            href="mailto:support@remindes.com"
-            class="px-10 py-4 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white rounded-full text-lg font-medium hover:bg-white/20 transition-all duration-300"
-          >
-            support@remindes.com
-          </a>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <RouterLink
+              to="/contact"
+              class="group px-8 py-3.5 bg-white text-slate-900 rounded-full text-lg font-bold shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:bg-slate-200 transition-all duration-300 flex items-center gap-2 w-full sm:w-auto justify-center"
+            >
+              Contact Support
+              <ArrowRight :size="18" class="group-hover:translate-x-1 transition-transform" />
+            </RouterLink>
+
+            <a
+              href="mailto:support@lifeadmin.com"
+              class="px-8 py-3.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-full text-lg font-medium transition-all duration-300 w-full sm:w-auto justify-center flex"
+            >
+              support@lifeadmin.com
+            </a>
+          </div>
+
+          <p class="text-sm text-slate-500 mt-8 font-medium">
+            Average response time: <span class="text-teal-400">under 24 hours</span>
+          </p>
         </div>
-
-        <p class="text-sm text-white/70 mt-8">
-          Average response time: <span class="text-white font-semibold">under 24 hours</span>
-        </p>
       </div>
-
     </div>
   </section>
 </template>
+
+<style scoped>
+/* Remove default arrow from <details> tag in Webkit browsers */
+details > summary::-webkit-details-marker {
+  display: none;
+}
+</style>
