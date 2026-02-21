@@ -157,7 +157,7 @@ class TestContactEndpoint:
         })
         assert res.status_code == 422  # Pydantic validation error
 
-    def test_contact_email_failure_returns_500(self):
+    def test_contact_email_failure_returns_503(self):
         with patch("routes.contact.send_email", return_value=False):
             res = client.post("/contact/", json={
                 "name": "John Doe",
@@ -165,7 +165,7 @@ class TestContactEndpoint:
                 "type": "Technical Support",
                 "message": "This should fail because email sending fails."
             })
-            assert res.status_code == 500
+            assert res.status_code == 503
 
     def test_contact_routes_to_correct_email(self):
         with patch("routes.contact.send_email", return_value=True) as mock_send:
