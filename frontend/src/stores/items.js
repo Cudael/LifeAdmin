@@ -12,12 +12,30 @@ export const useItemsStore = defineStore("items", () => {
   const documents = computed(() => items.value.filter(i => i.type === "document"))
   const subscriptions = computed(() => items.value.filter(i => i.type === "subscription"))
 
+  // Helper function to parse dynamic_fields and merge with item
+  function parseItemDynamicFields(item) {
+    if (item.dynamic_fields) {
+      try {
+        const dynamicData = JSON.parse(item.dynamic_fields)
+        return { ...item, ...dynamicData }
+      } catch (e) {
+        console.warn('Failed to parse dynamic_fields for item:', item.id, e)
+        return item
+      }
+    }
+    return item
+  }
+
   function setItems(newItems) {
-    items.value = Array.isArray(newItems) ? newItems : []
+    // Parse dynamic_fields and merge with each item
+    const processedItems = Array.isArray(newItems) ? newItems.map(parseItemDynamicFields) : []
+    items.value = processedItems
   }
 
   function addItem(item) {
-    items.value.push(item)
+    // Parse dynamic_fields for new item
+    const processedItem = parseItemDynamicFields(item)
+    items.value.push(processedItem)
   }
 
   async function fetchItems() {
@@ -27,7 +45,9 @@ export const useItemsStore = defineStore("items", () => {
       const res = await apiFetch("/items")
       if (res && res.ok) {
         const data = await res.json()
-        items.value = Array.isArray(data) ? data : (data.items || [])
+        const rawItems = Array.isArray(data) ? data : (data.items || [])
+        // Parse dynamic_fields for all items
+        items.value = rawItems.map(parseItemDynamicFields)
       } else {
         error.value = "Failed to load items"
       }
@@ -54,9 +74,11 @@ export const useItemsStore = defineStore("items", () => {
     })
     if (res && res.ok) {
       const updated = await res.json()
+      // Parse dynamic_fields for updated item
+      const processedItem = parseItemDynamicFields(updated)
       const idx = items.value.findIndex(i => i.id === id)
-      if (idx !== -1) items.value[idx] = updated
-      return updated
+      if (idx !== -1) items.value[idx] = processedItem
+      return processedItem
     }
     return null
   }
