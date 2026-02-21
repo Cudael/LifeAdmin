@@ -98,7 +98,7 @@
         
         <div class="flex items-center gap-6">
           <p class="text-slate-500 text-sm">
-            &copy; {{ currentYear }} LifeAdmin. All rights reserved.
+            &copy; {{ currentYear }} Remindes. All rights reserved.
           </p>
 
           <!-- System Status Indicator (High-end SaaS signal) -->

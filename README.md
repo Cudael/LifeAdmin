@@ -1,4 +1,4 @@
-# LifeAdmin (Remindes)
+# Remindes
 
 A modern document and subscription management system built with FastAPI and Vue.js.
 

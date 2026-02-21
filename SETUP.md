@@ -1,4 +1,4 @@
-# LifeAdmin (Remindes) - Complete Setup Guide
+# Remindes - Complete Setup Guide
 
 ## Table of Contents
 1. [Prerequisites](#prerequisites)

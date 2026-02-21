@@ -46,7 +46,7 @@
             <div>
               <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Current Plan</p>
               <h2 class="text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
-                LifeAdmin {{ isPremium ? 'Pro' : 'Basic' }}
+                Remindes {{ isPremium ? 'Pro' : 'Basic' }}
                 <Sparkles v-if="isPremium" :size="24" class="text-teal-400" />
               </h2>
             </div>

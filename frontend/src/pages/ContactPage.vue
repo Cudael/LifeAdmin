@@ -39,8 +39,8 @@
                   <Mail :size="20" />
                 </div>
                 <h3 class="text-sm font-bold text-white mb-1">Email Support</h3>
-                <a href="mailto:support@lifeadmin.com" class="text-xs font-medium text-slate-400 hover:text-teal-400 transition-colors">
-                  support@lifeadmin.com
+                <a href="mailto:support@remindes.com" class="text-xs font-medium text-slate-400 hover:text-teal-400 transition-colors">
+                  support@remindes.com
                 </a>
               </div>
 

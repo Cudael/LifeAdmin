@@ -16,7 +16,7 @@
             <Sparkles :size="20" class="text-slate-950 drop-shadow-sm" />
           </div>
           <span class="text-xl font-extrabold text-white tracking-tight">
-            Life<span class="text-slate-500">Admin</span>
+            Remin<span class="text-slate-500">des</span>
           </span>
         </RouterLink>
 
@@ -89,7 +89,7 @@
             <div class="w-8 h-8 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-lg flex items-center justify-center shadow-md">
               <Sparkles :size="16" class="text-slate-950" />
             </div>
-            <span class="text-lg font-extrabold text-white tracking-tight">LifeAdmin</span>
+            <span class="text-lg font-extrabold text-white tracking-tight">Remindes</span>
           </div>
           <button @click="mobileOpen = false" class="p-2 rounded-full bg-white/5 text-slate-400 hover:text-white transition-colors">
             <X :size="20" />
