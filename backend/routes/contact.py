@@ -1,6 +1,7 @@
 """
 Contact form endpoint
 """
+import html as html_module
 import logging
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, EmailStr
@@ -12,6 +13,11 @@ from utils.smtp_relay import send_email
 router = APIRouter(prefix="/contact", tags=["contact"])
 limiter = Limiter(key_func=get_remote_address)
 logger = logging.getLogger(__name__)
+
+NAME_MIN_LENGTH = 2
+NAME_MAX_LENGTH = 100
+MESSAGE_MIN_LENGTH = 10
+MESSAGE_MAX_LENGTH = 5000
 
 INQUIRY_ROUTING = {
     "Technical Support": "support@remindes.com",
@@ -41,18 +47,23 @@ async def submit_contact_form(request: Request, data: ContactRequest):
     inquiry_type = data.type.strip()
     message = data.message.strip()
 
-    if not name or len(name) < 2:
-        raise HTTPException(status_code=400, detail="Name must be at least 2 characters")
-    if len(name) > 100:
-        raise HTTPException(status_code=400, detail="Name must not exceed 100 characters")
-    if not message or len(message) < 10:
-        raise HTTPException(status_code=400, detail="Message must be at least 10 characters")
-    if len(message) > 5000:
-        raise HTTPException(status_code=400, detail="Message must not exceed 5000 characters")
+    if not name or len(name) < NAME_MIN_LENGTH:
+        raise HTTPException(status_code=400, detail=f"Name must be at least {NAME_MIN_LENGTH} characters")
+    if len(name) > NAME_MAX_LENGTH:
+        raise HTTPException(status_code=400, detail=f"Name must not exceed {NAME_MAX_LENGTH} characters")
+    if not message or len(message) < MESSAGE_MIN_LENGTH:
+        raise HTTPException(status_code=400, detail=f"Message must be at least {MESSAGE_MIN_LENGTH} characters")
+    if len(message) > MESSAGE_MAX_LENGTH:
+        raise HTTPException(status_code=400, detail=f"Message must not exceed {MESSAGE_MAX_LENGTH} characters")
     if inquiry_type not in VALID_INQUIRY_TYPES:
         raise HTTPException(status_code=400, detail=f"Invalid inquiry type. Must be one of: {', '.join(VALID_INQUIRY_TYPES)}")
 
     to_email = INQUIRY_ROUTING[inquiry_type]
+
+    safe_name = html_module.escape(name)
+    safe_email = html_module.escape(email)
+    safe_inquiry_type = html_module.escape(inquiry_type)
+    safe_message = html_module.escape(message)
 
     html = f"""
     <!DOCTYPE html>
@@ -75,17 +86,17 @@ async def submit_contact_form(request: Request, data: ContactRequest):
             </div>
             <div class="content">
                 <div class="field">
-                    <span class="label">Name:</span> {name}
+                    <span class="label">Name:</span> {safe_name}
                 </div>
                 <div class="field">
-                    <span class="label">Email:</span> {email}
+                    <span class="label">Email:</span> {safe_email}
                 </div>
                 <div class="field">
-                    <span class="label">Inquiry Type:</span> {inquiry_type}
+                    <span class="label">Inquiry Type:</span> {safe_inquiry_type}
                 </div>
                 <div class="field">
                     <span class="label">Message:</span>
-                    <p>{message}</p>
+                    <p>{safe_message}</p>
                 </div>
             </div>
         </div>
