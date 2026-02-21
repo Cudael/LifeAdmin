@@ -13,26 +13,16 @@ import CTASection from "../components/landing/CTASection.vue"
 </script>
 
 <template>
-  <!-- 
-    Global Dark Theme Wrapper
-    - bg-slate-950: Deep, rich dark background
-    - text-slate-300: Soft off-white text to prevent eye strain
-    - antialiased: Crisper font rendering for dark themes
-    - selection: Custom highlight color when users select text
-  -->
-  <div class="min-h-screen flex flex-col bg-slate-950 text-slate-300 antialiased selection:bg-indigo-500 selection:text-white relative overflow-hidden">
+  <div class="min-h-screen flex flex-col bg-slate-950 text-slate-300 subpixel-antialiased selection:bg-teal-500/30 selection:text-teal-200 relative overflow-hidden font-sans">
     
-    <!-- 
-      Modern UI Improvement: Subtle Background Glows 
-      These sit fixed in the background to give the page a premium, layered dark-mode feel.
-    -->
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[600px] bg-indigo-600/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
-    <div class="absolute bottom-0 right-0 w-3/4 h-[500px] bg-blue-900/10 blur-[150px] rounded-full pointer-events-none z-0"></div>
+    <!-- Premium UI: Fixed subtle grain/noise overlay for a tactile, expensive feel -->
+    <div class="fixed inset-0 opacity-[0.025] pointer-events-none mix-blend-overlay z-[100]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+    
+    <!-- Deep, cinematic background lighting -->
+    <div class="absolute top-[-10%] left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[800px] bg-[radial-gradient(ellipse_at_top,rgba(20,184,166,0.15),transparent_70%)] pointer-events-none z-0"></div>
+    <div class="absolute bottom-0 right-[-10%] w-3/4 h-[800px] bg-[radial-gradient(ellipse_at_bottom_right,rgba(6,182,212,0.1),transparent_70%)] pointer-events-none z-0"></div>
 
-    <!-- 
-      Content needs relative and z-10 so it sits on top of the background glows 
-    -->
-    <AppHeader class="relative z-10" />
+    <AppHeader class="relative z-50" />
 
     <main class="flex-1 flex flex-col relative z-10">
       <HeroSection />

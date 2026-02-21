@@ -25,7 +25,31 @@
           </div>
         </div>
 
-        <div class="flex items-center gap-3 w-full sm:w-auto">
+        <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+          
+          <!-- Filter Toggle Button -->
+          <button
+            @click="showFilters = !showFilters"
+            :class="[
+              'group relative inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold transition-all duration-300 w-full sm:w-auto border',
+              showFilters || hasActiveFilters 
+                ? 'bg-teal-500/10 border-teal-500/30 text-teal-400 shadow-[0_0_15px_rgba(20,184,166,0.15)]' 
+                : 'bg-slate-950/50 border-white/5 text-slate-300 hover:bg-slate-800'
+            ]"
+          >
+            <Filter :size="18" class="transition-transform duration-300" :class="{ 'scale-110': showFilters }" />
+            <span>{{ hasActiveFilters ? 'Filters Active' : 'Filters' }}</span>
+            
+            <!-- Active Indicator Ping -->
+            <span 
+              v-if="hasActiveFilters" 
+              class="absolute -top-1 -right-1 flex h-3.5 w-3.5"
+            >
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-teal-500 border-2 border-slate-900"></span>
+            </span>
+          </button>
+
           <!-- Add Item Button -->
           <RouterLink
             to="/add-item"
@@ -37,16 +61,27 @@
         </div>
       </div>
 
-      <!-- FILTER PANEL (with built-in toggle) -->
-      <FilterPanel
-        :activeCategory="activeCategory"
-        :activeStatFilter="activeStatFilter"
-        :categoryFilters="categoryFilters"
-        :hasActiveFilters="hasActiveFilters"
-        @update:activeCategory="activeCategory = $event"
-        @update:activeStatFilter="activeStatFilter = $event"
-        @clearFilters="clearFilters"
-      />
+      <!-- FILTER PANEL CONTENT -->
+      <Transition
+        enter-active-class="transition-all duration-300 ease-out overflow-hidden"
+        enter-from-class="opacity-0 max-h-0 -translate-y-4"
+        enter-to-class="opacity-100 max-h-[800px] translate-y-0"
+        leave-active-class="transition-all duration-200 ease-in overflow-hidden"
+        leave-from-class="opacity-100 max-h-[800px] translate-y-0"
+        leave-to-class="opacity-0 max-h-0 -translate-y-4"
+      >
+        <div v-show="showFilters" class="w-full">
+          <FilterPanel
+            :activeCategory="activeCategory"
+            :activeStatFilter="activeStatFilter"
+            :categoryFilters="categoryFilters"
+            :hasActiveFilters="hasActiveFilters"
+            @update:activeCategory="activeCategory = $event"
+            @update:activeStatFilter="activeStatFilter = $event"
+            @clearFilters="clearFilters"
+          />
+        </div>
+      </Transition>
 
       <!-- INSIGHTS CARD -->
       <ItemsInsights 
@@ -155,7 +190,7 @@ import ItemsInsights from "../components/items/ItemsInsights.vue"
 import FilterPanel from "../components/items/FilterPanel.vue"
 import ItemsEmptyState from "../components/items/ItemsEmptyState.vue"
 
-import { Search, Plus, FileText, Repeat, Layers, Heart, Wallet, Briefcase, User, Plane, Home, AlertTriangle, Sparkles } from "lucide-vue-next"
+import { Search, Plus, FileText, Repeat, Layers, Heart, Wallet, Briefcase, User, Plane, Home, AlertTriangle, Sparkles, Filter } from "lucide-vue-next"
 
 const itemsStore = useItemsStore()
 const authStore = useAuthStore()
@@ -170,6 +205,7 @@ const search = ref("")
 const deleteModalOpen = ref(false)
 const itemToDelete = ref(null)
 const showInsights = ref(false)
+const showFilters = ref(false)
 
 // Computed properties
 const insights = computed(() => {
@@ -284,6 +320,7 @@ onMounted(async () => {
   const validFilters = ['all', 'soon', 'week', 'expired', 'documents', 'subscriptions', 'missingDocs']
   if (filterParam && validFilters.includes(filterParam)) {
     activeStatFilter.value = filterParam
+    showFilters.value = true
   }
 })
 </script>

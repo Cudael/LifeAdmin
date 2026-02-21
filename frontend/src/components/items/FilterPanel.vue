@@ -1,95 +1,67 @@
 <template>
-  <div class="space-y-3">
-    <!-- Filter Toggle Button -->
-    <div class="flex items-center gap-3">
+  <div class="bg-slate-900/60 backdrop-blur-xl rounded-[2rem] p-6 sm:p-8 border border-white/5 shadow-2xl w-full">
+    
+    <div class="flex items-center justify-between mb-8">
+      <h3 class="text-lg font-bold text-white flex items-center gap-2 tracking-tight">
+        <Filter :size="18" class="text-teal-400" /> Advanced Filters
+      </h3>
       <button
-        @click="showFilters = !showFilters"
-        class="flex items-center gap-2 px-5 py-3 bg-slate-800/60 hover:bg-slate-700/60 border border-white/5 hover:border-white/10 text-white rounded-xl font-medium transition-all duration-200"
-        :class="hasActiveFilters ? 'ring-1 ring-teal-500/50 text-teal-400' : ''"
+        v-if="hasActiveFilters"
+        @click="$emit('clearFilters')"
+        class="text-[10px] font-bold uppercase tracking-widest text-rose-400 hover:text-rose-300 transition-colors px-3 py-1.5 rounded-lg hover:bg-rose-500/10"
       >
-        <Filter :size="18" />
-        <span>Filters</span>
-        <div v-if="hasActiveFilters" class="w-2 h-2 rounded-full bg-teal-400 shadow-[0_0_8px_rgba(45,212,191,0.8)]"></div>
+        Clear All
       </button>
     </div>
-
-    <!-- Expandable Filter Panel -->
-    <Transition
-      enter-active-class="transition-all duration-300 ease-out"
-      enter-from-class="opacity-0 -translate-y-4 max-h-0"
-      enter-to-class="opacity-100 translate-y-0 max-h-[800px]"
-      leave-active-class="transition-all duration-200 ease-in"
-      leave-from-class="opacity-100 translate-y-0 max-h-[800px]"
-      leave-to-class="opacity-0 -translate-y-4 max-h-0"
-    >
-      <div v-show="showFilters" class="overflow-hidden">
-        <div class="bg-slate-900/60 backdrop-blur-xl rounded-[2rem] p-8 border border-white/5 shadow-2xl">
-          
-          <div class="flex items-center justify-between mb-8">
-            <h3 class="text-lg font-bold text-white flex items-center gap-2 tracking-tight">
-              <Filter :size="18" class="text-teal-400" /> Advanced Filters
-            </h3>
-            <button
-              v-if="hasActiveFilters"
-              @click="$emit('clearFilters')"
-              class="text-[10px] font-bold uppercase tracking-widest text-rose-400 hover:text-rose-300 transition-colors"
-            >
-              Clear All
-            </button>
-          </div>
-          
-          <!-- Status Grid -->
-          <div class="mb-8">
-            <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-3">Item Status</p>
-            <div class="flex flex-wrap gap-2">
-              <button
-                v-for="filter in statusFilters"
-                :key="filter.value"
-                @click="$emit('update:activeStatFilter', filter.value)"
-                class="px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 border"
-                :class="activeStatFilter === filter.value
-                  ? 'bg-teal-500/10 text-teal-400 border-teal-500/30 shadow-[0_0_15px_rgba(45,212,191,0.15)]'
-                  : 'bg-slate-950/50 text-slate-400 border-white/5 hover:border-white/10 hover:text-slate-200'"
-              >
-                <component :is="filter.icon" :size="16" />
-                {{ filter.label }}
-              </button>
-            </div>
-          </div>
-
-          <!-- Category Grid -->
-          <div>
-            <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-3">Vault Categories</p>
-            <div class="flex flex-wrap gap-2">
-              <button
-                v-for="cat in categoryFilters"
-                :key="cat.value"
-                @click="$emit('update:activeCategory', cat.value)"
-                class="px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 border"
-                :class="activeCategory === cat.value
-                  ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30 shadow-[0_0_15px_rgba(99,102,241,0.15)]'
-                  : 'bg-slate-950/50 text-slate-400 border-white/5 hover:border-white/10 hover:text-slate-200'"
-              >
-                <component :is="cat.icon" :size="16" />
-                {{ cat.label }}
-                <span 
-                  class="ml-1 px-1.5 py-0.5 rounded text-[10px] bg-slate-950"
-                  :class="activeCategory === cat.value ? 'text-indigo-400' : 'text-slate-500'"
-                >
-                  {{ cat.count }}
-                </span>
-              </button>
-            </div>
-          </div>
-
-        </div>
+    
+    <!-- Status Grid -->
+    <div class="mb-8">
+      <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-3">Item Status</p>
+      <div class="flex flex-wrap gap-2">
+        <button
+          v-for="filter in statusFilters"
+          :key="filter.value"
+          @click="$emit('update:activeStatFilter', filter.value)"
+          class="px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 border"
+          :class="activeStatFilter === filter.value
+            ? 'bg-teal-500/10 text-teal-400 border-teal-500/30 shadow-[0_0_15px_rgba(45,212,191,0.15)]'
+            : 'bg-slate-950/50 text-slate-400 border-white/5 hover:border-white/10 hover:text-slate-200'"
+        >
+          <component :is="filter.icon" :size="16" />
+          {{ filter.label }}
+        </button>
       </div>
-    </Transition>
+    </div>
+
+    <!-- Category Grid -->
+    <div>
+      <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-3">Vault Categories</p>
+      <div class="flex flex-wrap gap-2">
+        <button
+          v-for="cat in categoryFilters"
+          :key="cat.value"
+          @click="$emit('update:activeCategory', cat.value)"
+          class="px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 border"
+          :class="activeCategory === cat.value
+            ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30 shadow-[0_0_15px_rgba(99,102,241,0.15)]'
+            : 'bg-slate-950/50 text-slate-400 border-white/5 hover:border-white/10 hover:text-slate-200'"
+        >
+          <component :is="cat.icon" :size="16" />
+          {{ cat.label }}
+          <span 
+            class="ml-1 px-1.5 py-0.5 rounded text-[10px] bg-slate-950"
+            :class="activeCategory === cat.value ? 'text-indigo-400' : 'text-slate-500'"
+          >
+            {{ cat.count }}
+          </span>
+        </button>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import { Filter, Layers, AlertTriangle, FileText, Repeat } from 'lucide-vue-next'
 
 defineProps({
@@ -100,8 +72,6 @@ defineProps({
 })
 
 defineEmits(['update:activeCategory', 'update:activeStatFilter', 'clearFilters'])
-
-const showFilters = ref(false)
 
 const statusFilters = [
   { label: 'All Items', value: 'all', icon: Layers },
