@@ -17,7 +17,7 @@ import { Users, Briefcase, Home, Building2, Globe } from "lucide-vue-next"
         </h2>
         
         <p class="text-lg text-slate-400 text-balance">
-          Whether you're managing a busy household or a growing business, LifeAdmin adapts to what matters most to you.
+          Whether you're managing a busy household or a growing business, Remindes adapts to what matters most to you.
         </p>
       </div>
 

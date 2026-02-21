@@ -90,7 +90,7 @@ import { TrendingUp, AlertCircle, DollarSign, SearchX, ShieldCheck, Flame } from
                 </h3>
                 
                 <p class="text-slate-300 leading-relaxed mb-8">
-                  Stop reacting to deadlines. Let LifeAdmin handle the mental load so you can focus on simply living.
+                  Stop reacting to deadlines. Let Remindes handle the mental load so you can focus on simply living.
                 </p>
 
                 <!-- Small inline CTA -->

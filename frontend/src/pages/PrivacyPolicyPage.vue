@@ -38,7 +38,7 @@ import { Shield, Lock, Eye, Database, Mail, UserCheck } from "lucide-vue-next"
           <!-- Introduction -->
           <div class="mb-16">
             <p class="text-lg text-slate-400">
-              At LifeAdmin, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service. Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the site.
+              At Remindes, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service. Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the site.
             </p>
           </div>
 
@@ -144,13 +144,13 @@ import { Shield, Lock, Eye, Database, Mail, UserCheck } from "lucide-vue-next"
               If you have any questions about this Privacy Policy, please contact us:
             </p>
             <div class="flex flex-col sm:flex-row gap-4">
-              <a href="mailto:privacy@lifeadmin.com" class="px-6 py-3 bg-white/5 border border-white/10 rounded-xl font-medium text-white hover:bg-white/10 transition-colors flex items-center justify-center gap-2 no-underline">
+              <a href="mailto:info@remindes.com" class="px-6 py-3 bg-white/5 border border-white/10 rounded-xl font-medium text-white hover:bg-white/10 transition-colors flex items-center justify-center gap-2 no-underline">
                 <Mail :size="16" class="text-teal-400" />
-                privacy@lifeadmin.com
+                info@remindes.com
               </a>
-              <a href="mailto:support@lifeadmin.com" class="px-6 py-3 bg-white/5 border border-white/10 rounded-xl font-medium text-white hover:bg-white/10 transition-colors flex items-center justify-center gap-2 no-underline">
+              <a href="mailto:support@remindes.com" class="px-6 py-3 bg-white/5 border border-white/10 rounded-xl font-medium text-white hover:bg-white/10 transition-colors flex items-center justify-center gap-2 no-underline">
                 <Mail :size="16" class="text-teal-400" />
-                support@lifeadmin.com
+                support@remindes.com
               </a>
             </div>
           </div>

@@ -220,7 +220,7 @@ function signInWithGoogle() {
         </div>
         
         <h3 class="text-3xl font-bold text-white mb-4 tracking-tight leading-snug">
-          "LifeAdmin completely eliminated the mental load of keeping track of my documents."
+          "Remindes completely eliminated the mental load of keeping track of my documents."
         </h3>
         
         <div class="flex items-center gap-4 mt-8 pt-8 border-t border-white/10">

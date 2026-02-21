@@ -33,13 +33,13 @@ import { MessageCircle, Mail, ArrowRight, ChevronDown } from "lucide-vue-next"
         <!-- FAQ ITEM 1 -->
         <details class="group bg-slate-900/40 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden shadow-sm hover:border-teal-500/30 transition-colors duration-300">
           <summary class="flex justify-between items-center cursor-pointer p-6 text-lg font-semibold text-slate-100 list-none outline-none select-none">
-            <span class="pr-6">How does LifeAdmin remind me about upcoming expirations?</span>
+            <span class="pr-6">How does Remindes remind me about upcoming expirations?</span>
             <div class="w-8 h-8 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center flex-shrink-0 group-open:bg-teal-500/20 group-open:border-teal-500/40 transition-all duration-300">
               <ChevronDown :size="18" class="text-slate-400 group-open:text-teal-400 group-open:rotate-180 transition-transform duration-300" />
             </div>
           </summary>
           <div class="px-6 pb-6 text-slate-400 leading-relaxed text-base">
-            LifeAdmin sends you smart reminders days or weeks before something expires. 
+            Remindes sends you smart reminders days or weeks before something expires. 
             You choose how early you want to be notified via email, push notifications, or both.
           </div>
         </details>
@@ -68,7 +68,7 @@ import { MessageCircle, Mail, ArrowRight, ChevronDown } from "lucide-vue-next"
           </summary>
           <div class="px-6 pb-6 text-slate-400 leading-relaxed text-base">
             The free plan includes tracking for up to 20 items, smart reminders, and secure document storage up to 100MB.
-            It's perfect for getting started and seeing if LifeAdmin is right for you.
+            It's perfect for getting started and seeing if Remindes is right for you.
           </div>
         </details>
 
@@ -177,10 +177,10 @@ import { MessageCircle, Mail, ArrowRight, ChevronDown } from "lucide-vue-next"
             </RouterLink>
 
             <a
-              href="mailto:support@lifeadmin.com"
+              href="mailto:support@remindes.com"
               class="px-8 py-3.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-full text-lg font-medium transition-all duration-300 w-full sm:w-auto justify-center flex"
             >
-              support@lifeadmin.com
+              support@remindes.com
             </a>
           </div>
 

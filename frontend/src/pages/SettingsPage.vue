@@ -100,7 +100,7 @@ const menu = [
   {
     key: "notifications",
     label: "Alerts & Notifications", // Relabeled for UI clarity
-    description: "Manage how LifeAdmin contacts you",
+    description: "Manage how Remindes contacts you",
     icon: Bell,
     component: AccountSettings
   },

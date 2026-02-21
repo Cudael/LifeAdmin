@@ -1,4 +1,4 @@
-# LifeAdmin Setup Guide
+# Remindes Setup Guide
 
 ## Prerequisites
 - Python 3.9+
@@ -179,7 +179,7 @@ Create `/etc/systemd/system/lifeadmin-backend.service`:
 
 ```ini
 [Unit]
-Description=LifeAdmin Backend API
+Description=Remindes Backend API
 After=network.target
 
 [Service]

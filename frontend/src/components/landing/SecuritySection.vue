@@ -33,7 +33,7 @@ import {
           </h2>
           
           <p class="text-lg text-slate-400 leading-relaxed mb-10 max-w-lg">
-            Your life’s most important documents shouldn't sit in an unsecure email folder. We built LifeAdmin with modern encryption standards so your data stays exactly where it belongs: with you.
+            Your life’s most important documents shouldn't sit in an unsecure email folder. We built Remindes with modern encryption standards so your data stays exactly where it belongs: with you.
           </p>
 
           <!-- Glowing Security Visual Anchor -->
