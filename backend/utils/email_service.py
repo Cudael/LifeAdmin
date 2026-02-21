@@ -1,16 +1,8 @@
 # utils/email_service.py
 import os
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 from datetime import date
 
-SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
-SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
-SMTP_USER = os.getenv("SMTP_USER")
-SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
-SMTP_FROM = os.getenv("SMTP_FROM", SMTP_USER)
-SMTP_FROM_NAME = os.getenv("SMTP_FROM_NAME", "Remindes")
+from utils.smtp_relay import send_email
 
 def send_expiry_notification_email(
     to_email: str,
@@ -22,19 +14,10 @@ def send_expiry_notification_email(
 ):
     """Send an expiry notification email"""
     
-    if not SMTP_USER or not SMTP_PASSWORD:
-        print("⚠️ Email not configured - skipping email send")
-        return False
+    subject = f"⚠️ {item_name} expiring in {days_until_expiry} day{'s' if days_until_expiry != 1 else ''}"
     
-    try:
-        # Create message
-        msg = MIMEMultipart('alternative')
-        msg['Subject'] = f"⚠️ {item_name} expiring in {days_until_expiry} day{'s' if days_until_expiry != 1 else ''}"
-        msg['From'] = f"{SMTP_FROM_NAME} <{SMTP_FROM}>"
-        msg['To'] = to_email
-        
-        # Plain text version
-        text = f"""
+    # Plain text version
+    text = f"""
 Hello {user_name},
 
 This is a reminder that your {item_type} "{item_name}" is expiring soon.
@@ -46,10 +29,10 @@ Please take action to renew or update this item.
 
 ---
 Remindes - Never miss an important date
-        """
-        
-        # HTML version
-        html = f"""
+    """
+
+    # HTML version
+    html = f"""
 <!DOCTYPE html>
 <html>
 <head>
@@ -202,26 +185,14 @@ Remindes - Never miss an important date
     </div>
 </body>
 </html>
-        """
-        
-        # Attach parts
-        part1 = MIMEText(text, 'plain')
-        part2 = MIMEText(html, 'html')
-        msg.attach(part1)
-        msg.attach(part2)
-        
-        # Send email
-        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
-            server.starttls()
-            server.login(SMTP_USER, SMTP_PASSWORD)
-            server.send_message(msg)
-        
-        print(f"✅ Email sent to {to_email}")
-        return True
-        
-    except Exception as e:
-        print(f"❌ Failed to send email to {to_email}: {str(e)}")
-        return False
+    """
+    return send_email(
+        to_email=to_email,
+        subject=subject,
+        html_body=html,
+        from_email="no-reply@remindes.com",
+        plain_body=text,
+    )
 
 
 def send_expired_notification_email(
@@ -234,19 +205,10 @@ def send_expired_notification_email(
 ):
     """Send an expired item notification email"""
     
-    if not SMTP_USER or not SMTP_PASSWORD:
-        print("⚠️ Email not configured - skipping email send")
-        return False
-    
-    try:
-        # Create message
-        msg = MIMEMultipart('alternative')
-        msg['Subject'] = f"❌ {item_name} has expired"
-        msg['From'] = f"{SMTP_FROM_NAME} <{SMTP_FROM}>"
-        msg['To'] = to_email
-        
-        # Plain text version
-        text = f"""
+    subject = f"❌ {item_name} has expired"
+
+    # Plain text version
+    text = f"""
 Hello {user_name},
 
 This is an urgent reminder that your {item_type} "{item_name}" has expired.
@@ -258,10 +220,10 @@ Please take immediate action to renew or update this item.
 
 ---
 Remindes - Never miss an important date
-        """
-        
-        # HTML version
-        html = f"""
+    """
+
+    # HTML version
+    html = f"""
 <!DOCTYPE html>
 <html>
 <head>
@@ -414,23 +376,12 @@ Remindes - Never miss an important date
     </div>
 </body>
 </html>
-        """
-        
-        # Attach parts
-        part1 = MIMEText(text, 'plain')
-        part2 = MIMEText(html, 'html')
-        msg.attach(part1)
-        msg.attach(part2)
-        
-        # Send email
-        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
-            server.starttls()
-            server.login(SMTP_USER, SMTP_PASSWORD)
-            server.send_message(msg)
-        
-        print(f"✅ Email sent to {to_email}")
-        return True
-        
-    except Exception as e:
-        print(f"❌ Failed to send email to {to_email}: {str(e)}")
-        return False
+    """
+
+    return send_email(
+        to_email=to_email,
+        subject=subject,
+        html_body=html,
+        from_email="no-reply@remindes.com",
+        plain_body=text,
+    )

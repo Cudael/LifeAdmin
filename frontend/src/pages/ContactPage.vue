@@ -194,6 +194,7 @@ import { ref } from 'vue'
 import AppHeader from '../components/layout/AppHeader.vue'
 import AppFooter from '../components/layout/AppFooter.vue'
 import { Mail, HelpCircle, MapPin, ChevronDown, Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-vue-next'
+import { BASE_URL } from '../utils/api'
 
 const inquiryTypes = [
   'Technical Support',
@@ -221,9 +222,18 @@ const handleSubmit = async () => {
   showError.value = false
 
   try {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
+    const response = await fetch(BASE_URL + '/contact/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form.value)
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      throw new Error(data.detail || 'Transmission failed.')
+    }
+
     showSuccess.value = true
     
     // Reset form
@@ -239,7 +249,7 @@ const handleSubmit = async () => {
     }, 5000)
   } catch (error) {
     showError.value = true
-    errorMessage.value = 'Transmission failed. Please try again or email us directly.'
+    errorMessage.value = error.message || 'Transmission failed. Please try again or email us directly.'
   } finally {
     isSubmitting.value = false
   }
