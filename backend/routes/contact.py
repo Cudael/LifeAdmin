@@ -5,13 +5,11 @@ import html as html_module
 import logging
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, EmailStr
-from slowapi import Limiter
-from slowapi.util import get_remote_address
 
+from utils.rate_limit import limiter
 from utils.smtp_relay import send_email
 
 router = APIRouter(prefix="/contact", tags=["contact"])
-limiter = Limiter(key_func=get_remote_address)
 logger = logging.getLogger(__name__)
 
 NAME_MIN_LENGTH = 2
@@ -115,8 +113,8 @@ async def submit_contact_form(request: Request, data: ContactRequest):
     )
 
     if not success:
-        logger.error(f"Failed to send contact form email from {email}")
-        raise HTTPException(status_code=500, detail="Failed to send message. Please try again later.")
+        logger.error(f"Failed to send contact form email from {email} (inquiry_type={inquiry_type}, to={to_email})")
+        raise HTTPException(status_code=503, detail="Failed to send message. Please try again later.")
 
     logger.info(f"✅ Contact form submitted: {inquiry_type} from {email} -> {to_email}")
     return {"success": True, "message": "Message sent successfully. We'll be in touch."}
