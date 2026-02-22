@@ -78,6 +78,7 @@ const categoryOptions = [
   'Finance',
   'Work',
   'Personal',
+  'Subscriptions',
   'Legal',
   'Education',
   'Vehicle'
