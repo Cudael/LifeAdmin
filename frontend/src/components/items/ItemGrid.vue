@@ -29,22 +29,16 @@
         <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent z-10 pointer-events-none"></div>
 
         <img
-          v-if="item.type === 'subscription' && getSubscriptionIcon(item.name)"
-          :src="getSubscriptionIcon(item.name)"
-          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100"
-          :alt="item.name"
-        />
-        <img
-          v-else-if="item.file_path"
+          v-if="item.file_path"
           :src="`${BASE_URL}${item.file_path}`"
           class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 group-hover:opacity-90 mix-blend-luminosity"
           :alt="item.name"
         />
         <img
           v-else
-          :src="defaultImages[item.category] || defaultImages.default"
-          class="w-full h-full object-cover opacity-40 group-hover:scale-105 group-hover:opacity-60 transition-transform duration-700 mix-blend-luminosity"
-          :alt="item.category"
+          :src="getItemTypeImage(item.item_type_name || item.name)"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100"
+          :alt="item.name"
         />
 
         <!-- Type Badge (Bottom Left) -->
@@ -127,6 +121,7 @@
 
 <script setup>
 import { BASE_URL } from "../../utils/api"
+import { getItemTypeImage } from "../../utils/itemTypeImages"
 import { useItemStatus } from "../../composables/useItemStatus"
 import { Calendar, FileText, CreditCard, Trash2, Plane, Heart, DollarSign, Briefcase, User, Repeat } from "lucide-vue-next"
 
@@ -173,28 +168,4 @@ function getCategoryIcon(category) {
   return icons[category] || FileText
 }
 
-const defaultImages = {
-  Travel: "/src/assets/category-defaults/travel.jpg",
-  Health: "/src/assets/category-defaults/health.jpg",
-  Finance: "/src/assets/category-defaults/finance.jpg",
-  Work: "/src/assets/category-defaults/work.jpg",
-  Personal: "/src/assets/category-defaults/personal.jpg",
-  Subscriptions: "/src/assets/category-defaults/subscriptions.jpg",
-  default: "/src/assets/category-defaults/default.jpg"
-}
-
-const subscriptionIcons = {
-  netflix: "/src/assets/subscription-icons/netflix.jpg",
-  spotify: "/src/assets/subscription-icons/spotify.jpg",
-  youtube: "/src/assets/subscription-icons/youtube.jpg",
-}
-
-function getSubscriptionIcon(name) {
-  if (!name) return null
-  const key = name.toLowerCase()
-  for (const brand in subscriptionIcons) {
-    if (key.includes(brand)) return subscriptionIcons[brand]
-  }
-  return null
-}
 </script>

@@ -1,7 +1,10 @@
 # backend/routes/item_types/crud.py
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import FileResponse
 from sqlmodel import Session, select
 from typing import Optional
+import os
+import re
 
 from models.item_type import ItemType
 from models.user import User
@@ -9,6 +12,8 @@ from database import get_session
 from utils.auth import get_current_user
 
 router = APIRouter()
+
+ITEM_TYPE_IMAGES_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "static", "item-type-images")
 
 
 @router.get("/item-types")
@@ -105,3 +110,24 @@ def get_item_type(
         "is_active": item_type.is_active,
         "created_at": item_type.created_at.isoformat() if item_type.created_at else None
     }
+
+
+@router.get("/item-type-image/{item_type_name}")
+def get_item_type_image(item_type_name: str):
+    """
+    Serve the image file for a given item type name.
+    Converts the name to lowercase kebab-case and looks for a .jpg file
+    in the static/item-type-images/ directory.
+    Returns 404 if the image is not found.
+    """
+    # Convert to lowercase kebab-case filename
+    filename = item_type_name.lower()
+    filename = re.sub(r"[^a-z0-9]+", "-", filename).strip("-")
+    filename = f"{filename}.jpg"
+
+    image_path = os.path.join(ITEM_TYPE_IMAGES_DIR, filename)
+
+    if not os.path.isfile(image_path):
+        raise HTTPException(status_code=404, detail="Image not found")
+
+    return FileResponse(image_path, media_type="image/jpeg")
