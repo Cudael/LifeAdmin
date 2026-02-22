@@ -275,7 +275,7 @@ def seed_item_types(cursor):
         # Financial Documents
         {
             "name": "Credit Card",
-            "category": "Financial",
+            "category": "Finance",
             "item_class": "document",
             "description": "Credit card information",
             "icon": "💳",
@@ -289,7 +289,7 @@ def seed_item_types(cursor):
         },
         {
             "name": "Bank Account",
-            "category": "Financial",
+            "category": "Finance",
             "item_class": "document",
             "description": "Bank account information",
             "icon": "🏦",
@@ -303,7 +303,7 @@ def seed_item_types(cursor):
         },
         {
             "name": "Tax Document",
-            "category": "Financial",
+            "category": "Finance",
             "item_class": "document",
             "description": "Tax-related document",
             "icon": "📑",
@@ -319,7 +319,7 @@ def seed_item_types(cursor):
         # Professional Documents
         {
             "name": "Professional Certificate",
-            "category": "Professional",
+            "category": "Work",
             "item_class": "document",
             "description": "Professional certification",
             "icon": "🎓",
@@ -333,7 +333,7 @@ def seed_item_types(cursor):
         },
         {
             "name": "Professional License",
-            "category": "Professional",
+            "category": "Work",
             "item_class": "document",
             "description": "Professional license",
             "icon": "📜",
@@ -347,7 +347,7 @@ def seed_item_types(cursor):
         },
         {
             "name": "Professional Membership",
-            "category": "Professional",
+            "category": "Work",
             "item_class": "subscription",
             "description": "Professional organization membership",
             "icon": "👔",
@@ -363,7 +363,7 @@ def seed_item_types(cursor):
         # Property/Legal Documents
         {
             "name": "Lease Agreement",
-            "category": "Property",
+            "category": "Legal",
             "item_class": "document",
             "description": "Property lease or rental agreement",
             "icon": "🏠",
@@ -378,7 +378,7 @@ def seed_item_types(cursor):
         },
         {
             "name": "Property Deed",
-            "category": "Property",
+            "category": "Legal",
             "item_class": "document",
             "description": "Property ownership deed",
             "icon": "📋",
@@ -392,7 +392,7 @@ def seed_item_types(cursor):
         },
         {
             "name": "Legal Contract",
-            "category": "Property",
+            "category": "Legal",
             "item_class": "document",
             "description": "Legal contract or agreement",
             "icon": "📝",
