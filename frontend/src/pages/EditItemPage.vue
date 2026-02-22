@@ -71,6 +71,52 @@ const documentNameSuggestions = [
   { value: 'Inspection Certificate', label: 'Inspection Certificate', icon: '✅', description: 'Vehicle inspection', category: 'Vehicle' }
 ]
 
+// Subscription name suggestions
+const subscriptionNameSuggestions = [
+  // Streaming / Video
+  { value: 'Netflix Subscription', label: 'Netflix', icon: '🎬', description: 'Video streaming', category: 'Subscriptions' },
+  { value: 'YouTube Premium', label: 'YouTube Premium', icon: '🎥', description: 'Ad-free YouTube', category: 'Subscriptions' },
+  { value: 'Disney+', label: 'Disney+', icon: '🏰', description: 'Disney streaming', category: 'Subscriptions' },
+  { value: 'HBO Max', label: 'HBO Max', icon: '🎬', description: 'HBO streaming', category: 'Subscriptions' },
+  { value: 'Amazon Prime', label: 'Amazon Prime', icon: '📦', description: 'Amazon streaming & shopping', category: 'Subscriptions' },
+  { value: 'Apple TV+', label: 'Apple TV+', icon: '🍎', description: 'Apple streaming', category: 'Subscriptions' },
+  { value: 'Hulu', label: 'Hulu', icon: '📺', description: 'Hulu streaming', category: 'Subscriptions' },
+  { value: 'Paramount+', label: 'Paramount+', icon: '⭐', description: 'Paramount streaming', category: 'Subscriptions' },
+  { value: 'Crunchyroll', label: 'Crunchyroll', icon: '🍥', description: 'Anime streaming', category: 'Subscriptions' },
+  { value: 'Twitch', label: 'Twitch', icon: '🎮', description: 'Live streaming', category: 'Subscriptions' },
+  // Music
+  { value: 'Spotify Subscription', label: 'Spotify', icon: '🎵', description: 'Music streaming', category: 'Subscriptions' },
+  { value: 'Apple Music', label: 'Apple Music', icon: '🎵', description: 'Apple music streaming', category: 'Subscriptions' },
+  { value: 'Tidal', label: 'Tidal', icon: '🌊', description: 'HiFi music streaming', category: 'Subscriptions' },
+  { value: 'YouTube Music', label: 'YouTube Music', icon: '🎶', description: 'YouTube music streaming', category: 'Subscriptions' },
+  // Cloud / Productivity
+  { value: 'Dropbox Subscription', label: 'Dropbox', icon: '☁️', description: 'Cloud storage', category: 'Subscriptions' },
+  { value: 'Google One', label: 'Google One', icon: '☁️', description: 'Google cloud storage', category: 'Subscriptions' },
+  { value: 'iCloud+', label: 'iCloud+', icon: '🍏', description: 'Apple cloud storage', category: 'Subscriptions' },
+  { value: 'Microsoft 365', label: 'Microsoft 365', icon: '🖥️', description: 'Microsoft productivity suite', category: 'Subscriptions' },
+  { value: 'Adobe Creative Cloud', label: 'Adobe Creative Cloud', icon: '🎨', description: 'Adobe creative apps', category: 'Subscriptions' },
+  { value: 'Notion', label: 'Notion', icon: '📝', description: 'Notes & productivity', category: 'Subscriptions' },
+  { value: 'Slack', label: 'Slack', icon: '💬', description: 'Team communication', category: 'Subscriptions' },
+  { value: 'Zoom', label: 'Zoom', icon: '📹', description: 'Video conferencing', category: 'Subscriptions' },
+  { value: 'GitHub Subscription', label: 'GitHub', icon: '💻', description: 'Code hosting', category: 'Subscriptions' },
+  // Gaming
+  { value: 'PlayStation Plus', label: 'PlayStation Plus', icon: '🎮', description: 'PlayStation online gaming', category: 'Subscriptions' },
+  { value: 'Xbox Game Pass', label: 'Xbox Game Pass', icon: '🎯', description: 'Xbox games subscription', category: 'Subscriptions' },
+  { value: 'Nintendo Switch Online', label: 'Nintendo Switch Online', icon: '🕹️', description: 'Nintendo online gaming', category: 'Subscriptions' },
+  { value: 'Steam', label: 'Steam', icon: '🎲', description: 'PC gaming platform', category: 'Subscriptions' },
+  { value: 'Gym Membership', label: 'Gym Membership', icon: '💪', description: 'Fitness membership', category: 'Subscriptions' },
+  // Other Popular
+  { value: 'ChatGPT Plus', label: 'ChatGPT Plus', icon: '🤖', description: 'AI assistant subscription', category: 'Subscriptions' },
+  { value: 'NordVPN', label: 'NordVPN', icon: '🔒', description: 'VPN service', category: 'Subscriptions' },
+  { value: 'ExpressVPN', label: 'ExpressVPN', icon: '🛡️', description: 'VPN service', category: 'Subscriptions' },
+  { value: 'Duolingo', label: 'Duolingo', icon: '🦉', description: 'Language learning', category: 'Subscriptions' },
+  { value: 'Audible', label: 'Audible', icon: '🎧', description: 'Audiobook subscription', category: 'Subscriptions' },
+  { value: 'Kindle Unlimited', label: 'Kindle Unlimited', icon: '📚', description: 'Ebook subscription', category: 'Subscriptions' },
+  // Insurance / Memberships
+  { value: 'Auto Insurance', label: 'Auto Insurance', icon: '🚗', description: 'Vehicle insurance', category: 'Subscriptions' },
+  { value: 'Professional Membership', label: 'Professional Membership', icon: '👔', description: 'Professional org membership', category: 'Subscriptions' },
+]
+
 // Category options
 const categoryOptions = [
   'Travel',
@@ -115,6 +161,14 @@ const filteredDocumentNameSuggestions = computed(() => {
     return documentNameSuggestions // Show all if no category selected
   }
   return documentNameSuggestions.filter(suggestion => suggestion.category === item.value.category)
+})
+
+// Filter subscription name suggestions based on selected category
+const filteredSubscriptionNameSuggestions = computed(() => {
+  if (!item.value.category) {
+    return subscriptionNameSuggestions // Show all if no category selected
+  }
+  return subscriptionNameSuggestions.filter(suggestion => suggestion.category === item.value.category)
 })
 
 function formatDateInput(date) {
@@ -357,6 +411,15 @@ onMounted(async () => {
                 v-model="item.name"
                 :suggestions="filteredDocumentNameSuggestions"
                 placeholder="e.g., Passport, Visa, or type your own"
+                :required="true"
+                :disabled="saving"
+                color="teal"
+              />
+              <Autocomplete
+                v-else-if="isSubscription"
+                v-model="item.name"
+                :suggestions="filteredSubscriptionNameSuggestions"
+                placeholder="e.g., Netflix, Spotify, or type your own"
                 :required="true"
                 :disabled="saving"
                 color="teal"

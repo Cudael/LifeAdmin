@@ -2,6 +2,7 @@
 import { onMounted, ref, computed } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { apiFetch, BASE_URL } from "../utils/api"
+import { getItemTypeImage } from "../utils/itemTypeImages"
 import { useAuthStore } from "../stores/auth"
 import { useItemsStore } from "../stores/items"
 import { useItemStatus } from "../composables/useItemStatus"
@@ -173,6 +174,13 @@ onMounted(async () => {
       <!-- HERO CARD -->
       <div class="relative overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800/80 rounded-xl border border-gray-700/40 p-8 md:p-10">
         
+        <!-- Item type background image -->
+        <img
+          :src="item.file_path ? `${BASE_URL}${item.file_path}` : getItemTypeImage(item.item_type_name || item.name)"
+          class="absolute inset-0 w-full h-full object-cover opacity-10 mix-blend-luminosity pointer-events-none"
+          :alt="item.name"
+        />
+
         <!-- Decorative element -->
         <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-teal-500/10 to-cyan-500/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
 
